@@ -4,7 +4,8 @@
   --color-sunglow: #faa53d;
   --color-bgresult: #f5e8d5;
   --text-btn: 14px;
-  --text-dash-header: 10px;
+  --text-10: 10px;
+  --text-12: 12px;
   --text-dash-it: 12px; /*Dashbord item Title (it) */
   --text-dash-i: 9px;
   --spacing-sg-lg: 6rem; /*section gap =sg larger screen (on Y)*/
@@ -12,6 +13,8 @@
   --spacing-sg-sm: 1rem;
   --spacing-dash-lg: 50rem;
   --spacing-dash-: 40rem;
+  --spacing-templist: 4px;
+  --spacing-templist-md: 8px;
 }
 
 .section {
@@ -20,4 +23,13 @@
 body {
   font-family: "Inter", sans-serif;
   background-color: #f5f5f5;
+}
+.custom_grid {
+  @apply grid block grid-cols-5 gap-4 items-center;
+}
+.custom_grid > :first-child {
+  @apply col-span-3;
+}
+.custom_grid > :not(:first-child) {
+  @apply place-self-center;
 }

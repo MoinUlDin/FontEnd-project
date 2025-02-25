@@ -1,5 +1,5 @@
 import apiClient from "./apiClient";
-import { setTemplates } from "../features/templateSlice";
+import { setDetailedTemplate, setTemplates } from "../features/templateSlice";
 
 class TemplatesService {
   static async fetchTemplates(dispatch) {
@@ -17,6 +17,15 @@ class TemplatesService {
       dispatch(fetchTemplates(dispatch)); // Refresh templates after adding
     } catch (error) {
       console.error("Error creating template:", error);
+    }
+  }
+
+  static async fetchTemplatedetail(id = "", dispatch) {
+    try {
+      const response = await apiClient.get(`tests/templates/${id}`);
+      dispatch(setDetailedTemplate(response.data));
+    } catch (error) {
+      console.error("Error fetching detail template:", error);
     }
   }
 }

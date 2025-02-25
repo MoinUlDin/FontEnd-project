@@ -8,6 +8,7 @@ import LoginPage from "./LoginPage";
 import RegisterPage from "./RegisterPage";
 import DHelp from "./DHelp";
 import DUsers from "./DUsers";
+import TemplateDetail from "./TemplateDetail";
 export {
   AboutPage,
   ContactPage,
@@ -19,4 +20,5 @@ export {
   DSettings,
   DHelp,
   DUsers,
+  TemplateDetail,
 };

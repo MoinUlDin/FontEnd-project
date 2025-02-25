@@ -8,7 +8,7 @@ import { login } from "./features/authslice";
 import { store } from "./store/store.js";
 import { DSettings, HomePage, AboutPage, ContactPage } from "./pages/index.js";
 import { RegisterPage, DUsers, DAssesment, DTemplates } from "./pages/index.js";
-import { LoginPage, DHelp } from "./pages/index.js";
+import { LoginPage, DHelp, TemplateDetail } from "./pages/index.js";
 
 function App() {
   // Check localStorage for persisted auth state
@@ -45,6 +45,7 @@ function App() {
 
         <Route path="/dashboard" element={<DashboardLayout />}>
           <Route path="templates" element={<DTemplates />} />
+          <Route path="template/:id" element={<TemplateDetail />} />
           <Route path="assesments" element={<DAssesment />} />
           <Route path="users" element={<DUsers />} />
           <Route path="settings" element={<DSettings />} />

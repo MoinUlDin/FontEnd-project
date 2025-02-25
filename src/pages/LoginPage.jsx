@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import Logo from "../components/childrens/Logo";
 import Title from "../components/childrens/Title";
 import InputField from "../components/childrens/InputField";
@@ -10,6 +10,7 @@ import UserService from "../services/userServices"; // Import UserService
 function LoginPage() {
   const dispatch = useDispatch();
   const navigate = useNavigate(); // Fixed typo from "navegate"
+  const emailInputRef = useRef(null);
   const [formData, setFormData] = useState({
     email: "",
     password: "",
@@ -17,6 +18,11 @@ function LoginPage() {
 
   const [error, setError] = useState("");
 
+  useEffect(() => {
+    if (emailInputRef.current) {
+      emailInputRef.current.focus();
+    }
+  }, []);
   // Handle input change
   const handleChange = (e) => {
     const { id, value } = e.target;
@@ -63,6 +69,7 @@ function LoginPage() {
           clable="Email"
           css="w-80"
           ctype="email"
+          ref={emailInputRef}
           onChange={handleChange}
         />
 

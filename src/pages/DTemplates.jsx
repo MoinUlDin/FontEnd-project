@@ -11,7 +11,9 @@ function DTemplates() {
 
   useEffect(() => {
     setLoading(true);
-    TemplatesService.fetchTemplates(dispatch).finally(() => setLoading(false));
+    TemplatesService.fetchTemplates(dispatch)
+      .catch((e) => console.log("Custom ", e))
+      .finally(() => setLoading(false));
   }, [dispatch]);
 
   console.log(templates);
@@ -20,7 +22,14 @@ function DTemplates() {
       <h1 className="text-2xl font-bold mb-4">Dashboard Template</h1>
       <div className="max-w-dash-lg mt-8 ">
         <PrimaryListHeader title="name"></PrimaryListHeader>
-        <PrimaryListItem title="Backend Develper" />
+        {templates.map((item) => (
+          <PrimaryListItem
+            id={item.id}
+            title={item.name}
+            createdat={item.created_at}
+            createdby={item.created_by}
+          />
+        ))}
       </div>
     </div>
   );
