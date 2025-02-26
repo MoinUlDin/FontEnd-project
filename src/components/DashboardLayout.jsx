@@ -4,16 +4,30 @@ import Sidebar from "./SideBar";
 import { useSelector, useDispatch } from "react-redux";
 import { logoutAndClear } from "../features/authslice";
 import defualt_img from "../assets/profile_img.png";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 
 const DashboardLayout = () => {
   // Access user data from Redux store
   const user = useSelector((state) => state.auth.user);
   const dispatch = useDispatch();
   const navigate = useNavigate();
-
+  const location = useLocation();
   // Local state to toggle the dropdown menu
   const [dropdownOpen, setDropdownOpen] = useState(false);
+  let title = "";
+  if (location.pathname.includes("/dashboard/templates")) {
+    title = "Templates";
+  } else if (location.pathname.includes("/dashboard/assesments")) {
+    title = "Assesments";
+  } else if (location.pathname.includes("/dashboard/users")) {
+    title = "Users";
+  } else if (location.pathname.includes("/dashboard/settings")) {
+    title = "Settings";
+  } else if (location.pathname.includes("/dashboard/help")) {
+    title = "Help";
+  } else {
+    title = "Dashboard";
+  }
 
   const handleLogout = () => {
     // Dispatch the logout action
@@ -32,7 +46,8 @@ const DashboardLayout = () => {
       {/* Main content area */}
       <main className="flex-1 bg-gray-100">
         {/* Sticky header with user info */}
-        <div className="sticky top-0 z-10 bg-gray-100 p-4 flex justify-end items-center border-b border-gray-200">
+        <div className="sticky top-0 z-10 bg-gray-100 p-4 flex justify-between items-center border-b border-gray-200">
+          <h1 className="text-2xl font-bold">{title}</h1>
           <div className="relative">
             <button
               onClick={() => setDropdownOpen(!dropdownOpen)}

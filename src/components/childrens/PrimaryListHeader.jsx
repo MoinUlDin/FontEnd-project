@@ -1,9 +1,9 @@
 import React from "react";
 
 function PrimaryListHeader({
-  title = "name",
-  createdat = "date",
-  createdby = "user",
+  title = "Name",
+  createdat = "Date",
+  createdby = "Created By",
   css = "",
 }) {
   return (

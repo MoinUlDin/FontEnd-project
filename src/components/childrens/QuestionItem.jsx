@@ -9,7 +9,7 @@ export default function QuestionItem({ question }) {
   };
 
   return (
-    <div className="border p-2 my-1">
+    <div className="p-2 md:p-4 my-1 rounded-lg bg-white">
       {/* Question header */}
       <div
         className="flex justify-between items-center cursor-pointer"

@@ -26,6 +26,23 @@ class UserService {
       throw new Error(errorMessage);
     }
   }
+
+  static async registerUser(payload) {
+    try {
+      const response = await apiClient.post("users/register/", payload);
+      return response.data;
+    } catch (error) {
+      const errorData = error.response?.data;
+      let errorMessage = "Registration failed. Please try again.";
+      if (errorData) {
+        // Convert each error message array into a single string and join them
+        errorMessage += Object.keys(errorData)
+          .map((field) => `${field}: ${errorData[field].join(", ")}`)
+          .join(" | ");
+      }
+      throw new Error(errorMessage);
+    }
+  }
 }
 
 export default UserService;

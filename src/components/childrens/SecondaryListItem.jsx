@@ -11,9 +11,11 @@ function SecondaryListItem({ title, id, weight, questions }) {
     <div
       key={id}
       className="md:max-w-dash-lg max-w-dash mt-templist md:mt-templist-md"
-      onClick={toggleExpand}
     >
-      <div className="custom_grid bg-white shadow-md rounded-lg p-4 hover:shadow-lg hover:shadow-gray-400  hover:scale-x-101   hover:cursor-pointer transition-all duration-100">
+      <div
+        onClick={toggleExpand}
+        className="custom_grid bg-white shadow-md rounded-lg p-4 hover:shadow-lg hover:shadow-gray-400  hover:scale-x-101   hover:cursor-pointer transition-all duration-100"
+      >
         <div className="col-span-3">
           <div className="flex items-center gap-2">
             <a
