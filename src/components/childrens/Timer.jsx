@@ -22,12 +22,14 @@ export default function Timer({ remainingTime, setRemainingTime }) {
   // Format remaining time (e.g., HH:mm:ss)
   const formattedTime = dayjs
     .duration(remainingTime, "seconds")
-    .format("HH:mm:ss");
+    .format("HH:mm");
 
   return (
-    <div className="mb-4 text-center">
-      <h4 className="font-bold">Time Left</h4>
-      <p className="text-xl">{formattedTime}</p>
+    <div>
+      <div className="mb-4 text-center gap-4 flex justify-end items-center">
+        <h4 className="font-bold">Time Left:</h4>
+        <p className="text-xl">{formattedTime}</p>
+      </div>
     </div>
   );
 }

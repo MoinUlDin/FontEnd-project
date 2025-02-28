@@ -1,23 +1,20 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useMemo, useRef, useEffect } from "react";
 
-function FilterBy({ id = "", list = [] }) {
+function FilterBy({ id = "", list = [], css = "" }) {
   const [inputValue, setInputValue] = useState("");
   const [isFocused, setIsFocused] = useState(false);
   const [dropdownOpen, setDropdownOpen] = useState(false);
-  const [filteredOptions, setFilteredOptions] = useState(list);
   const maxw = "max-w-50";
   const containerRef = useRef(null);
 
-  // Filter the list as user types
-  useEffect(() => {
+  // useMemo to filter options based on inputValue and list
+  const filteredOptions = useMemo(() => {
     if (inputValue.trim() !== "") {
-      const filtered = list.filter((option) =>
+      return list.filter((option) =>
         option.toLowerCase().includes(inputValue.toLowerCase())
       );
-      setFilteredOptions(filtered);
-    } else {
-      setFilteredOptions(list);
     }
+    return list;
   }, [inputValue, list]);
 
   // Close dropdown if click is outside the component
@@ -56,7 +53,7 @@ function FilterBy({ id = "", list = [] }) {
   };
 
   return (
-    <div className="relative" ref={containerRef}>
+    <div className={`relative ${css}`} ref={containerRef}>
       <div
         className={`flex items-center bg-white justify-between px-3 border min-h-9 ${maxw} rounded-3xl ${
           isFocused || dropdownOpen ? "border-blue-600" : "border-gray-300"

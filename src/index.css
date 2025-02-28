@@ -34,3 +34,13 @@ body {
 .custom_grid > :not(:first-child) {
   @apply place-self-center;
 }
+.assessment_grid {
+  @apply grid grid-cols-8 items-center gap-3;
+}
+.assessment_grid > :nth-child(2) {
+  @apply col-span-2;
+}
+
+.alter_bg > :nth-child(even) {
+  @apply bg-gray-200;
+}

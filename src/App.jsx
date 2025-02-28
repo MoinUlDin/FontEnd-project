@@ -8,7 +8,7 @@ import { login } from "./features/authslice";
 import { store } from "./store/store.js";
 import { DSettings, HomePage, AboutPage, ContactPage } from "./pages/index.js";
 import { RegisterPage, DUsers, DAssesment, DTemplates } from "./pages/index.js";
-import { LoginPage, DHelp, TemplateDetail } from "./pages/index.js";
+import { LoginPage, DHelp, TemplateDetail, TestPage } from "./pages/index.js";
 import ConfirmEmail from "./components/ConfirmEmail.jsx";
 
 function App() {
@@ -41,9 +41,14 @@ function App() {
         <Route path="/about" element={<AboutPage />} />
         <Route path="/contact" element={<ContactPage />} />
         <Route path="/register" element={<RegisterPage />} />
+        <Route path="/users/confirm-email/:token" element={<ConfirmEmail />} />
+        <Route
+          path="/tests/take_test/:test_instance_id"
+          element={<TestPage />}
+        />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/users/confirm-email/:token" element={<ConfirmEmail />} />
-        <Route path="/*" element={<h1>Page Not Found 404</h1>} />
+
         <Route path="/dashboard" element={<DashboardLayout />}>
           <Route path="templates" element={<DTemplates />} />
           <Route path="template/:id" element={<TemplateDetail />} />
@@ -52,6 +57,12 @@ function App() {
           <Route path="settings" element={<DSettings />} />
           <Route path="help" element={<DHelp />} />
         </Route>
+        <Route
+          path="/*"
+          element={
+            <h1 className="m-5 text-center text-5xl">Page Not Found 404</h1>
+          }
+        />
       </Routes>
     </Router>
   );

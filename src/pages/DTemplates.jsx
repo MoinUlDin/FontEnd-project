@@ -51,11 +51,8 @@ function DTemplates() {
         <FilterBy />
         <button
           onClick={() => setShowModal(true)}
-          className="text-[8px] hover:cursor-pointer bg-sunglow rounded-4xl px-2 p-1"
+          className="text-[8px] hover:cursor-pointer bg-sunglow rounded-4xl px-4 p-1"
         >
-          <span className="text-green-700 mx-1 text-[18px] font-extrabold">
-            +
-          </span>{" "}
           Create Template
         </button>
         <div className="text-10 min-w-[20%] px-2 flex justify-between mr-2">

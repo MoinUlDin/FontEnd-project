@@ -13,7 +13,7 @@ function Navebar() {
       <Logo />
       <ul className="flex justify-evenly grow space-x-4">
         <ListItem href="/">Home</ListItem>
-        <ListItem href="/">Pricing</ListItem>
+        <ListItem href="/users/assesment-test/">Pricing</ListItem>
         <ListItem href="About">About Us</ListItem>
         <ListItem href="contact">Contact Us</ListItem>
         {user ? <ListItem href="dashboard/templates"> Dashboard</ListItem> : ""}

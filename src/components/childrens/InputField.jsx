@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, forwardRef } from "react";
+import React, { useState, useRef, forwardRef } from "react";
 
 const InputField = forwardRef((props, ref) => {
   const {
@@ -25,17 +25,6 @@ const InputField = forwardRef((props, ref) => {
 
   const handleFocus = () => setIsFocused(true);
   const handleBlur = () => setIsFocused(false);
-
-  useEffect(() => {
-    // Using a timeout helps ensure that autofill has completed.
-    // TODO: Fix floating label issue.
-    setTimeout(() => {
-      if (inputRef.current) {
-        console.log("we are inside");
-        inputRef.current.focus();
-      }
-    }, 100);
-  }, [inputRef]);
 
   return (
     <div className={`relative ${css} w-68 h-10 md:mb-4 mb-2`}>
