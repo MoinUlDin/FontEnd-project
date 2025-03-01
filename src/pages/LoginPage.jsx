@@ -6,6 +6,7 @@ import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { login } from "../features/authslice";
 import UserService from "../services/userServices"; // Import UserService
+import { ImSpinner8 } from "react-icons/im";
 
 function LoginPage() {
   const dispatch = useDispatch();
@@ -17,6 +18,7 @@ function LoginPage() {
   });
 
   const [error, setError] = useState("");
+  const [isLoading, setIsLoading] = useState("");
 
   useEffect(() => {
     if (emailInputRef.current) {
@@ -41,17 +43,20 @@ function LoginPage() {
       setError("Please fill all fields.");
       return;
     }
-
+    setIsLoading(true);
     try {
       // Call the loginUser service
       const data = await UserService.loginUser(formData);
 
       // Dispatch login to Redux
       dispatch(login(data));
+      console.log(data);
       navigate("/dashboard/templates");
     } catch (err) {
       console.error("Login Error:", err);
       setError(err.message); // Show error message from service
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -89,9 +94,17 @@ function LoginPage() {
 
         <button
           type="submit"
+          disabled={isLoading}
           className="uppercase hover:cursor-pointer py-2 md:py-3 bg-blue-600 text-white rounded-xl px-8 md:px-18 mt-2 md:mt-6 hover:-translate-y-1.5 transition-all duration-500"
         >
-          Login
+          {isLoading ? (
+            <span className="flex items-center gap-2">
+              <ImSpinner8 className="animate-spin" />
+              <span>Login</span>
+            </span>
+          ) : (
+            "Login"
+          )}
         </button>
 
         <p className="mt-4 md:mt-8 text-[14px] text-gray-600">

@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import TemplatesService from "../services/templatesService";
 import FilterBy from "../components/childrens/FilterBy";
 import CreateTemplateModal from "../components/CreateTemplateModel"; // Import the new modal
+import CreateAssessmentModel from "../components/CreateAssessmentModel";
 
 function DTemplates() {
   const dispatch = useDispatch();
@@ -12,9 +13,16 @@ function DTemplates() {
   const [loading, setLoading] = useState(true);
   const inactiveClass = "border-b-1 border-gray-400 text-10";
   const activeClass = "border-b-2 border-blue-400 font-bold text-12";
+  const [showAssessmentModal, setShowAssessmentModal] = useState(false);
+  const [selectedTemplateId, setSelectedTemplateId] = useState(null);
 
   // State to control modal visibility
   const [showModal, setShowModal] = useState(false);
+
+  const handleInvite = (templateId) => {
+    setSelectedTemplateId(templateId);
+    setShowAssessmentModal(true);
+  };
 
   useEffect(() => {
     setLoading(true);
@@ -44,6 +52,8 @@ function DTemplates() {
       </div>
     );
   }
+
+  console.log(templates);
 
   return (
     <div>
@@ -83,6 +93,7 @@ function DTemplates() {
             title={item.name}
             createdat={item.created_at}
             createdby={item.created_by}
+            onInvite={handleInvite}
           />
         ))}
       </div>
@@ -92,6 +103,16 @@ function DTemplates() {
         <CreateTemplateModal
           onClose={() => setShowModal(false)}
           onSubmit={handleModalSubmit}
+        />
+      )}
+
+      {showAssessmentModal && (
+        <CreateAssessmentModel
+          onClose={() => {
+            setShowAssessmentModal(false);
+            setSelectedTemplateId(null);
+          }}
+          selectedTemplateId={selectedTemplateId}
         />
       )}
     </div>

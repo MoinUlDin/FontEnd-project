@@ -1,5 +1,6 @@
 import React from "react";
 import Card from "./childrens/Card";
+import sideimg from "../assets/report.avif";
 
 function ReportSection() {
   return (
@@ -10,7 +11,7 @@ function ReportSection() {
           title="Candidate Selection Report"
           paragraph="We measure job-specific cognitive abilities and work personality using two different online tests. The results of these assessments are compiled into a candidate selection report."
           btntext="Get Assessment Report"
-          imageLink="https://static.wixstatic.com/media/d79df2_564f3c82dbc94fa8af907dcf13fc24b8~mv2.png/v1/fill/w_172,h_288,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/Group%201000001447.png"
+          imageLink={sideimg}
         />
         <Card
           title="Structured Interview Guide"

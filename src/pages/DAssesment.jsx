@@ -32,7 +32,7 @@ function DAssesment() {
 
   // Convert normalized assessments object to array
   const assessments = Object.values(assessmentsObject);
-
+  console.log(assessments);
   return (
     <div className="mx-2 md:mx-4 max-w-[95%]">
       <div className="text-2xl font-bold pb-6 border-b border-gray-200 flex justify-between ">
@@ -80,19 +80,16 @@ function DAssesment() {
             email={assessment.candidate.email}
             template={assessment.template}
             status={assessment.status}
-            start_time={assessment.start_time}
-            end_time={assessment.end_time}
-            final_score={assessment.final_score}
+            start={assessment.start_time}
+            end={assessment.end_time}
+            finalScore={assessment.final_score}
           />
         ))}
       </div>
 
       {/* Render the modal popup when showModal is true */}
       {showModal && (
-        <CreateAssessmentModel
-          onClose={() => setShowModal(false)}
-          onSubmit={handleModalSubmit}
-        />
+        <CreateAssessmentModel onClose={() => setShowModal(false)} />
       )}
     </div>
   );

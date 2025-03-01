@@ -30,7 +30,7 @@ export default function QuestionCard({ question, currentAnswer, onSave }) {
   };
 
   return (
-    <div className="bg-white p-6 h-svh rounded-lg shadow-lg">
+    <div className="bg-white p-6 h-full rounded-lg shadow-lg">
       <h2 className="text-xl font-bold mb-4">{question.text}</h2>
       <div className="grid grid-cols-1 gap-2">
         {Object.entries(question.options).map(([key, text]) => (

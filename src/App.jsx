@@ -8,8 +8,15 @@ import { login } from "./features/authslice";
 import { store } from "./store/store.js";
 import { DSettings, HomePage, AboutPage, ContactPage } from "./pages/index.js";
 import { RegisterPage, DUsers, DAssesment, DTemplates } from "./pages/index.js";
-import { LoginPage, DHelp, TemplateDetail, TestPage } from "./pages/index.js";
+import {
+  LoginPage,
+  DHelp,
+  TemplateDetail,
+  TestPage,
+  TemplateEditPage,
+} from "./pages/index.js";
 import ConfirmEmail from "./components/ConfirmEmail.jsx";
+import TemplateEditPages from "./pages/TemplateEditPages.jsx";
 
 function App() {
   // Check localStorage for persisted auth state
@@ -42,6 +49,10 @@ function App() {
         <Route path="/contact" element={<ContactPage />} />
         <Route path="/register" element={<RegisterPage />} />
         <Route path="/users/confirm-email/:token" element={<ConfirmEmail />} />
+        <Route
+          path="/tempate/edit-template/:id"
+          element={<TemplateEditPages />}
+        />
         <Route
           path="/tests/take_test/:test_instance_id"
           element={<TestPage />}

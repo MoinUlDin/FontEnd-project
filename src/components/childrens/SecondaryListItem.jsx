@@ -1,12 +1,51 @@
-import React, { useState } from "react";
-import QuestionItem from "./QuestionItem"; // import the question component
+import React, { useState, useEffect } from "react";
+import QuestionItem from "./QuestionItem"; // Your question component
+import { useDispatch, useSelector } from "react-redux";
+import CategoryService from "../../services/categoriesService";
 
-function SecondaryListItem({ title, id, weight, questions }) {
+function SecondaryListItem({ title, id, weight, questions = [] }) {
+  const dispatch = useDispatch();
+
+  const [localQuestions, setLocalQuestions] = useState(questions);
+
   const [isExpanded, setIsExpanded] = useState(false);
+
+  // Selector to get any cached detailed data for this category from Redux.
+  // Our store is set up so that detailed category data is stored in state.category.details keyed by id.
+  const storedDetail = useSelector((state) => state.category.details[id]);
+
+  // When the item is expanded and there are no questions yet,
+  // check if we have data in the store; if not, fetch from the API.
+  useEffect(() => {
+    if (isExpanded && localQuestions.length === 0) {
+      if (
+        storedDetail &&
+        storedDetail.questions &&
+        storedDetail.questions.length > 0
+      ) {
+        setLocalQuestions(storedDetail.questions);
+      } else {
+        CategoryService.fetchDetailedCategory(dispatch, id).catch((error) => {
+          console.error("Error fetching category details: ", error);
+        });
+      }
+    }
+  }, [isExpanded, localQuestions, storedDetail, dispatch, id]);
+
+  useEffect(() => {
+    if (
+      storedDetail &&
+      storedDetail.questions &&
+      storedDetail.questions.length > 0
+    ) {
+      setLocalQuestions(storedDetail.questions);
+    }
+  }, [storedDetail]);
 
   const toggleExpand = () => {
     setIsExpanded((prev) => !prev);
   };
+
   return (
     <div
       key={id}
@@ -28,12 +67,19 @@ function SecondaryListItem({ title, id, weight, questions }) {
         </div>
 
         <div className="place-self-center text-dash-it">{weight}</div>
-        <div className="place-self-center text-dash-it">{questions.length}</div>
+        <div className="place-self-center text-dash-it">
+          {localQuestions.length}
+        </div>
       </div>
       {isExpanded && (
         <div className="ml-4 mt-2">
-          {questions.map((question, index) => (
-            <QuestionItem key={index} question={question} />
+          {localQuestions.map((question, index) => (
+            <QuestionItem
+              key={index}
+              question={question}
+              fontsize="text-12"
+              margin="mt-2"
+            />
           ))}
         </div>
       )}
@@ -42,35 +88,3 @@ function SecondaryListItem({ title, id, weight, questions }) {
 }
 
 export default SecondaryListItem;
-
-// export default function SecondaryListItem({ title, id, weight, questions }) {
-//   const [isExpanded, setIsExpanded] = useState(false);
-
-//   const toggleExpand = () => {
-//     setIsExpanded((prev) => !prev);
-//   };
-
-//   return (
-//     <div className="border p-2 my-2">
-//       {/* Category header */}
-//       <div
-//         className="flex justify-between items-center cursor-pointer"
-//         onClick={toggleExpand}
-//       >
-//         <div className="font-semibold">{title}</div>
-//         <div>
-//           Weight: {weight} | Questions: {questions.length}
-//         </div>
-//       </div>
-
-//       {/* Expandable list of questions */}
-//       {isExpanded && (
-//         <div className="ml-4 mt-2">
-//           {questions.map((question, index) => (
-//             <QuestionItem key={index} question={question} />
-//           ))}
-//         </div>
-//       )}
-//     </div>
-//   );
-// }

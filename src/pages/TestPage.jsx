@@ -119,7 +119,7 @@ export default function TestPage() {
     return <div>Loading test...</div>;
   }
   return (
-    <div className="p-4 grid grid-cols-12 gap-4 md:gap-8">
+    <div className="p-4 inset-0 grid grid-cols-12 gap-4 md:gap-8">
       <div className="col-span-12">
         <Timer
           remainingTime={remainingTime}

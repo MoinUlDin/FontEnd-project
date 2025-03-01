@@ -27,7 +27,7 @@ const InputField = forwardRef((props, ref) => {
   const handleBlur = () => setIsFocused(false);
 
   return (
-    <div className={`relative ${css} w-68 h-10 md:mb-4 mb-2`}>
+    <div className={`relative ${css}  h-10 md:mb-4 mb-2`}>
       <input
         ref={inputRef}
         type={ctype}
@@ -42,10 +42,10 @@ const InputField = forwardRef((props, ref) => {
       />
       <label
         htmlFor={id}
-        className={`absolute z-10 left-4 text-gray-500 text-sm transition-all duration-300 rounded p-1 hover:cursor-text ${
+        className={`absolute z-10 left-4 text-gray-500 text-sm transition-all duration-300 rounded p-[2px] hover:cursor-text ${
           isFocused || isFilled
-            ? `-top-5 text-sm text-blue-500 ${css1}`
-            : "top-0 text-[16px] font-semibold text-gray-400"
+            ? `-top-4 text-sm text-blue-500 ${css1}`
+            : "top-1 text-[16px] font-semibold text-gray-400"
         }`}
       >
         {clable} {required}

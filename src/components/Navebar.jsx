@@ -8,6 +8,7 @@ import { useSelector } from "react-redux";
 
 function Navebar() {
   const user = useSelector((state) => state.auth.user);
+  console.log("user:", user);
   return (
     <nav className="w-full h-15 bg-gray-100 px-10 flex items-center justify-between mt-2 mb-4 md:mb-8">
       <Logo />

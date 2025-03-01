@@ -10,6 +10,8 @@ import DHelp from "./DHelp";
 import DUsers from "./DUsers";
 import TemplateDetail from "./TemplateDetail";
 import TestPage from "./TestPage";
+import TemplateEditPage from "./TemplateEditPage";
+
 export {
   AboutPage,
   ContactPage,
@@ -23,4 +25,5 @@ export {
   DUsers,
   TemplateDetail,
   TestPage,
+  TemplateEditPage,
 };

@@ -3,6 +3,7 @@ import authReducer from "../features/authslice";
 import templatesReducer from "../features/templateSlice";
 import assessmentReducer from "../features/assessmentSlice";
 import testSubmissionReducer from "../features/testSubmissionSlice";
+import categorySlice from "../features/categorySlice";
 
 export const store = configureStore({
   reducer: {
@@ -10,5 +11,6 @@ export const store = configureStore({
     templates: templatesReducer,
     assessment: assessmentReducer,
     testSubmission: testSubmissionReducer,
+    category: categorySlice,
   },
 });

@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import InputField from "../components/childrens/InputField";
+import sideimg from "../assets/report.avif";
 
 function CreateTemplateModal({ onClose, onSubmit }) {
   const bgColor = "bg-white";
@@ -33,8 +34,8 @@ function CreateTemplateModal({ onClose, onSubmit }) {
         className="absolute inset-0 bg-black opacity-60"
         onClick={onClose}
       ></div>
-      <div className="relative bg-white rounded-2xl overflow-hidden min-h-90 z-10 min-w-[500px]">
-        <div className="text-xl flex px-3 md:px-5 justify-between font-bold bg-black py-4 text-white ">
+      <div className="relative border-2 border-amber-800 bg-white rounded-2xl overflow-hidden min-h-90 z-10 min-w-[500px]">
+        <div className="text-xl  flex px-3 md:px-5 justify-between font-bold bg-black py-4 text-white ">
           <h2 className="">Create Template</h2>
           <span onClick={onClose} className="hover:cursor-pointer p-1">
             ❌
@@ -44,8 +45,8 @@ function CreateTemplateModal({ onClose, onSubmit }) {
           className="grid grid-cols-8 h-[320px]"
           onSubmit={handleFormSubmit}
         >
-          <div className="h-full col-span-3 bg-orange-300  min-w-22">
-            leftSide Imge
+          <div className="h-full flex items-end justify-center col-span-3 bg-[#ebe5a7] min-w-22">
+            <img src={sideimg} alt="" />
           </div>
           <div className="col-span-5 flex flex-col justify-center items-end px-4 ">
             <div className="mt-5">

@@ -37,9 +37,9 @@ export default function TemplateDetail() {
       <header className="w-full px-4 pb-1 border-b">
         <div className="w-full flex justify-between mb-1">
           <h1 className="font-bold text-2xl">{detailedTemplate.name}</h1>
-          <div>
-            <span className="text-dash-it">by</span>{" "}
-            {detailedTemplate.created_by}
+          <div className="flex gap-2">
+            <span className="text-dash-it">CreatedBy: </span>
+            <span className="text-dash-it">{detailedTemplate.created_by}</span>
           </div>
         </div>
         <div className="w-full flex justify-between">

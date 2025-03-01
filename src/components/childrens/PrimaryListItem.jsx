@@ -1,17 +1,17 @@
 import React from "react";
-import EmailIcon from "./EmailI";
-import EmailI from "./EmailI";
 import dayjs from "dayjs";
 import { Link } from "react-router-dom";
+import { FiEdit, FiEye, FiMail } from "react-icons/fi";
+import { useNavigate } from "react-router-dom";
 
-function PrimaryListItem({
-  id,
-  title,
-  createdat,
-  createdby,
-  ispredefined = false,
-}) {
+function PrimaryListItem({ id, title, createdat, createdby, onInvite }) {
   const fDate = dayjs(createdat).format("D-MMM-YYYY");
+  const navigate = useNavigate();
+  const handleInviteClick = (e) => {
+    e.preventDefault();
+    onInvite(id);
+  };
+
   return (
     <div
       key={id}
@@ -29,17 +29,26 @@ function PrimaryListItem({
             </a>
           </div>
           <div className="flex gap-3 text-sm text-gray-500 mt-2 md:mt-3">
-            <Link to="" className="hover:text-purple-600 text-dash-i">
-              <EmailI></EmailI> Invite
+            <Link
+              onClick={handleInviteClick}
+              to=""
+              className="hover:text-purple-600 text-dash-i flex gap-1"
+            >
+              <FiMail /> Invite
             </Link>
             <Link
               to={`/dashboard/template/${id}`}
-              className="hover:text-purple-600 text-dash-i"
+              className="hover:text-purple-600 text-dash-i flex gap-1"
             >
-              👁️ Preview
+              <FiEye />
+              Preview
             </Link>
-            <Link to="#" className="hover:text-purple-600 text-dash-i">
-              ⚙️ Settings
+            <Link
+              to={`/tempate/edit-template/${id}`}
+              className="hover:text-purple-600 text-dash-i flex gap-1"
+            >
+              <FiEdit />
+              Edit
             </Link>
           </div>
         </div>

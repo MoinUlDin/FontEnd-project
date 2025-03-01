@@ -44,3 +44,6 @@ body {
 .alter_bg > :nth-child(even) {
   @apply bg-gray-200;
 }
+.btn {
+  @apply hover:cursor-pointer outline-0 transition-all duration-200;
+}

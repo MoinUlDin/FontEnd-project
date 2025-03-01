@@ -3,11 +3,12 @@ import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import InputField from "../components/childrens/InputField";
 import UserService from "../services/userServices"; // Service for API calls
+import { ImSpinner8 } from "react-icons/im"; // Import spinner icon
 
 function RegisterPage() {
   const navigate = useNavigate();
   const cardbackground = "bg-slate-200";
-
+  const [isLoading, setIsLoading] = useState(false);
   // For API messages
   const [apiMessage, setApiMessage] = useState("");
 
@@ -28,7 +29,7 @@ function RegisterPage() {
       });
       return;
     }
-
+    setIsLoading(true);
     // Prepare the payload for your API endpoint
     const payload = {
       first_name: data.rFirstName,
@@ -45,12 +46,14 @@ function RegisterPage() {
       setApiMessage(response.message || "Registration successful.");
       // Optionally, after a delay, navigate to login
       setTimeout(() => {
-        navigate("/login");
-      }, 3000);
+        navigate("/");
+      }, 5000);
     } catch (err) {
       console.error("Registration error:", err);
       // If the API provides a message, display it.
       setApiMessage(err.message || "Registration failed. Please try again.   ");
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -181,9 +184,17 @@ function RegisterPage() {
 
             <button
               type="submit"
+              disabled={isLoading}
               className="uppercase hover:cursor-pointer py-2 md:py-3 bg-blue-600 text-white rounded-xl px-8 md:px-14 mt-2 md:mt-6"
             >
-              Submit
+              {isLoading ? (
+                <span className="flex items-center gap-2">
+                  <ImSpinner8 className="animate-spin" />
+                  <span>Registering...</span>
+                </span>
+              ) : (
+                "Register"
+              )}
             </button>
           </div>
         </form>
