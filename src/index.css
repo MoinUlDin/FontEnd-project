@@ -47,3 +47,6 @@ body {
 .btn {
   @apply hover:cursor-pointer outline-0 transition-all duration-200;
 }
+.ptr {
+  @apply hover:cursor-pointer transition-all duration-300;
+}

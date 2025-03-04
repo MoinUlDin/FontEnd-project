@@ -36,7 +36,6 @@ class ApiClient {
           if (userData?.refreshToken) {
             try {
               // Step 2: Send request to refresh the token.
-              console.log("refreshing the token");
               const refreshResponse = await axios.post(
                 "http://127.0.0.1:8000/api/token/refresh/",
                 { refresh: userData.refreshToken }

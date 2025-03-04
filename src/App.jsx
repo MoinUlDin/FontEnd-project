@@ -1,6 +1,3 @@
-import { useState } from "react";
-import reactLogo from "./assets/react.svg";
-import viteLogo from "/vite.svg";
 import "./App.css";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import DashboardLayout from "./components/DashboardLayout";
@@ -16,7 +13,6 @@ import {
   TemplateEditPage,
 } from "./pages/index.js";
 import ConfirmEmail from "./components/ConfirmEmail.jsx";
-import TemplateEditPages from "./pages/TemplateEditPages.jsx";
 
 function App() {
   // Check localStorage for persisted auth state
@@ -46,12 +42,12 @@ function App() {
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/about" element={<AboutPage />} />
-        <Route path="/contact" element={<ContactPage />} />
+        <Route path="/contact" element={<ContactPage />} /> {/*  */}
         <Route path="/register" element={<RegisterPage />} />
         <Route path="/users/confirm-email/:token" element={<ConfirmEmail />} />
         <Route
           path="/tempate/edit-template/:id"
-          element={<TemplateEditPages />}
+          element={<TemplateEditPage />}
         />
         <Route
           path="/tests/take_test/:test_instance_id"
@@ -59,7 +55,6 @@ function App() {
         />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/users/confirm-email/:token" element={<ConfirmEmail />} />
-
         <Route path="/dashboard" element={<DashboardLayout />}>
           <Route path="templates" element={<DTemplates />} />
           <Route path="template/:id" element={<TemplateDetail />} />

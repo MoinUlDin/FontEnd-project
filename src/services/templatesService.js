@@ -8,6 +8,7 @@ class TemplatesService {
       dispatch(setTemplates(response.data)); // Update Redux store
     } catch (error) {
       console.error("Error fetching templates:", error);
+      throw error;
     }
   }
 
@@ -17,6 +18,7 @@ class TemplatesService {
       dispatch(fetchTemplates(dispatch)); // Refresh templates after adding
     } catch (error) {
       console.error("Error creating template:", error);
+      throw error;
     }
   }
 
@@ -26,6 +28,16 @@ class TemplatesService {
       dispatch(setDetailedTemplate(response.data));
     } catch (error) {
       console.error("Error fetching detail template:", error);
+      throw error;
+    }
+  }
+  static async postTemplate(data, dispatch) {
+    try {
+      const response = await apiClient.post(`tests/edit_template/`, data);
+      return response.data;
+    } catch (error) {
+      console.error("Error fetching detail template:", error);
+      throw error;
     }
   }
 }

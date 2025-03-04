@@ -5,7 +5,7 @@ import AssessmentService from "../services/assessmentService";
 import { useDispatch, useSelector } from "react-redux";
 import { ImSpinner8 } from "react-icons/im"; //
 import sideimg from "../assets/report.avif";
-
+import { FiX } from "react-icons/fi";
 function CreateAssessmentModel({ onClose, selectedTemplateId }) {
   const bgColor = "bg-white";
   const dispatch = useDispatch();
@@ -65,9 +65,9 @@ function CreateAssessmentModel({ onClose, selectedTemplateId }) {
         {/* Header */}
         <div className="text-xl flex px-3 md:px-5 justify-between font-bold bg-black py-4 text-white">
           <h2>Create Assessment</h2>
-          <span onClick={onClose} className="hover:cursor-pointer p-1">
-            ❌
-          </span>
+          <div onClick={onClose} className="hover:cursor-pointer p-1">
+            <FiX className="text-2xl transition-all duration-300 font-extrabold hover:text-red-600" />
+          </div>
         </div>
         {/* Form */}
         <form

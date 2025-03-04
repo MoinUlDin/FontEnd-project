@@ -1,7 +1,9 @@
 import React, { useState, useEffect, useRef } from "react";
 import Logo from "../components/childrens/Logo";
 import Title from "../components/childrens/Title";
-import InputField from "../components/childrens/InputField";
+import { TextField, IconButton, InputAdornment } from "@mui/material";
+import Visibility from "@mui/icons-material/Visibility";
+import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { login } from "../features/authslice";
@@ -10,7 +12,7 @@ import { ImSpinner8 } from "react-icons/im";
 
 function LoginPage() {
   const dispatch = useDispatch();
-  const navigate = useNavigate(); // Fixed typo from "navegate"
+  const navigate = useNavigate();
   const emailInputRef = useRef(null);
   const [formData, setFormData] = useState({
     email: "",
@@ -20,11 +22,15 @@ function LoginPage() {
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState("");
 
+  // Local state to toggle password visibility
+  const [showPassword, setShowPassword] = useState(false);
+
   useEffect(() => {
     if (emailInputRef.current) {
       emailInputRef.current.focus();
     }
   }, []);
+
   // Handle input change
   const handleChange = (e) => {
     const { id, value } = e.target;
@@ -68,22 +74,38 @@ function LoginPage() {
       >
         <Logo />
         <Title css="mt-2">Login</Title>
-
-        <InputField
+        {/* Email Input with added bottom margin */}
+        <TextField
           id="email"
-          clable="Email"
-          css="w-80"
-          ctype="email"
-          ref={emailInputRef}
+          label="Email"
+          type="email"
+          className="w-80"
           onChange={handleChange}
+          size="small"
+          margin="normal"
+          inputRef={emailInputRef}
         />
 
-        <InputField
+        {/* Password Input with visibility toggle and added bottom margin */}
+        <TextField
           id="password"
-          clable="Password"
-          css="w-80"
-          ctype="password"
+          label="Password"
+          type={showPassword ? "text" : "password"}
+          className="w-80 mb-4"
           onChange={handleChange}
+          size="small"
+          InputProps={{
+            endAdornment: (
+              <InputAdornment position="end">
+                <IconButton
+                  onClick={() => setShowPassword(!showPassword)}
+                  edge="end"
+                >
+                  {showPassword ? <VisibilityOff /> : <Visibility />}
+                </IconButton>
+              </InputAdornment>
+            ),
+          }}
         />
 
         {error && <p className="text-red-500 mt-2">{error}</p>}

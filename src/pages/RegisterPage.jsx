@@ -1,9 +1,11 @@
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
-import InputField from "../components/childrens/InputField";
 import UserService from "../services/userServices"; // Service for API calls
 import { ImSpinner8 } from "react-icons/im"; // Import spinner icon
+import { TextField, IconButton, InputAdornment } from "@mui/material";
+import Visibility from "@mui/icons-material/Visibility";
+import VisibilityOff from "@mui/icons-material/VisibilityOff";
 
 function RegisterPage() {
   const navigate = useNavigate();
@@ -11,6 +13,10 @@ function RegisterPage() {
   const [isLoading, setIsLoading] = useState(false);
   // For API messages
   const [apiMessage, setApiMessage] = useState("");
+
+  // Local state for toggling password visibility for both password fields
+  const [showPassword, setShowPassword] = useState(false);
+  const [showPassword2, setShowPassword2] = useState(false);
 
   // Initialize useForm hook
   const {
@@ -51,16 +57,16 @@ function RegisterPage() {
     } catch (err) {
       console.error("Registration error:", err);
       // If the API provides a message, display it.
-      setApiMessage(err.message || "Registration failed. Please try again.   ");
+      setApiMessage(err.message || "Registration failed. Please try again.");
     } finally {
       setIsLoading(false);
     }
   };
 
   return (
-    <div className="w-full min-h-svh bg-slate-300 flex flex-col justify-center items-center">
+    <div className="md:fixed md:inset-0 bg-slate-300 flex flex-col justify-center items-center">
       <div
-        className={`shadow-2xl shadow-slate-600 min-w-[640px] rounded-xl md:rounded-3xl p-2 md:p-6 min-h-[455px] flex flex-col items-center ${cardbackground}`}
+        className={`shadow-2xl overflow-hidden bg-white shadow-slate-600 max-w-[700px] rounded-xl md:rounded-3xl p-2 md:p-6 flex flex-col justify-center items-center ${cardbackground}`}
       >
         <h1 className="text-lg md:text-3xl mb-4 md:mb-8">
           Employer Registration Form
@@ -68,11 +74,13 @@ function RegisterPage() {
         <form onSubmit={handleSubmit(onSubmit)} className="w-full">
           <div className="flex flex-col md:flex-row gap-4 ">
             <div>
-              <InputField
-                ctype="text"
+              <TextField
                 id="rFirstName"
-                clable="First Name"
-                css1={cardbackground}
+                label="First Name"
+                variant="outlined"
+                margin="normal"
+                size="small"
+                className="w-80"
                 {...register("rFirstName", {
                   required: "First Name is required",
                 })}
@@ -82,12 +90,13 @@ function RegisterPage() {
                   {errors.rFirstName.message}
                 </p>
               )}
-              <InputField
-                ctype="text"
+              <TextField
                 id="rCompanyName"
-                clable="Company Name"
-                css="mt-6"
-                css1={cardbackground}
+                label="Company Name"
+                variant="outlined"
+                margin="normal"
+                size="small"
+                className="w-80"
                 {...register("rCompanyName", {
                   required: "Company Name is required",
                 })}
@@ -97,13 +106,34 @@ function RegisterPage() {
                   {errors.rCompanyName.message}
                 </p>
               )}
-              <InputField
-                ctype="password"
+              <TextField
                 id="rpassword"
-                clable="Password"
-                css="mt-6"
-                css1={cardbackground}
+                label="Password"
+                variant="outlined"
+                margin="normal"
+                size="small"
+                type={showPassword ? "text" : "password"}
+                className="w-80"
                 {...register("rpassword", { required: "Password is required" })}
+                slotProps={{
+                  input: {
+                    endAdornment: (
+                      <InputAdornment position="end" sx={{ m: 0, p: 0 }}>
+                        <IconButton
+                          onClick={() => setShowPassword(!showPassword)}
+                          edge="end"
+                          sx={{ p: 0.5 }}
+                        >
+                          {showPassword ? (
+                            <VisibilityOff fontSize="small" />
+                          ) : (
+                            <Visibility fontSize="small" />
+                          )}
+                        </IconButton>
+                      </InputAdornment>
+                    ),
+                  },
+                }}
               />
               {errors.rpassword && (
                 <p className="text-red-500 text-xs">
@@ -112,11 +142,13 @@ function RegisterPage() {
               )}
             </div>
             <div>
-              <InputField
-                ctype="text"
+              <TextField
                 id="rLastName"
-                clable="Last Name"
-                css1={cardbackground}
+                label="Last Name"
+                variant="outlined"
+                margin="normal"
+                size="small"
+                className="w-80"
                 {...register("rLastName", {
                   required: "Last Name is required",
                 })}
@@ -126,12 +158,13 @@ function RegisterPage() {
                   {errors.rLastName.message}
                 </p>
               )}
-              <InputField
-                ctype="text"
+              <TextField
                 id="rEmail"
-                clable="Email"
-                css="mt-6"
-                css1={cardbackground}
+                label="Email"
+                variant="outlined"
+                margin="normal"
+                size="small"
+                className="w-80"
                 {...register("rEmail", {
                   required: "Email is required",
                   pattern: {
@@ -143,15 +176,36 @@ function RegisterPage() {
               {errors.rEmail && (
                 <p className="text-red-500 text-xs">{errors.rEmail.message}</p>
               )}
-              <InputField
-                ctype="password"
+              <TextField
                 id="rpassword2"
-                clable="Re-Enter Password"
-                css="mt-6"
-                css1={cardbackground}
+                label="Re-Enter Password"
+                variant="outlined"
+                margin="normal"
+                size="small"
+                type={showPassword2 ? "text" : "password"}
+                className="w-80"
                 {...register("rpassword2", {
                   required: "Please re-enter your password",
                 })}
+                slotProps={{
+                  input: {
+                    endAdornment: (
+                      <InputAdornment position="end" sx={{ m: 0, p: 0 }}>
+                        <IconButton
+                          onClick={() => setShowPassword2(!showPassword2)}
+                          edge="end"
+                          sx={{ p: 0.5 }}
+                        >
+                          {showPassword2 ? (
+                            <VisibilityOff fontSize="small" />
+                          ) : (
+                            <Visibility fontSize="small" />
+                          )}
+                        </IconButton>
+                      </InputAdornment>
+                    ),
+                  },
+                }}
               />
               {errors.rpassword2 && (
                 <p className="text-red-500 text-xs">
@@ -185,12 +239,12 @@ function RegisterPage() {
             <button
               type="submit"
               disabled={isLoading}
-              className="uppercase hover:cursor-pointer py-2 md:py-3 bg-blue-600 text-white rounded-xl px-8 md:px-14 mt-2 md:mt-6"
+              className="uppercase hover:cursor-pointer py-2 bg-blue-600 text-white rounded-xl px-8 md:px-12 mt-2 md:mt-6"
             >
               {isLoading ? (
                 <span className="flex items-center gap-2">
                   <ImSpinner8 className="animate-spin" />
-                  <span>Registering...</span>
+                  <span>Creating..</span>
                 </span>
               ) : (
                 "Register"

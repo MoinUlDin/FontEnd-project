@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import InputField from "../components/childrens/InputField";
 import sideimg from "../assets/report.avif";
+import { FiX } from "react-icons/fi";
 
 function CreateTemplateModal({ onClose, onSubmit }) {
   const bgColor = "bg-white";
@@ -37,9 +38,9 @@ function CreateTemplateModal({ onClose, onSubmit }) {
       <div className="relative border-2 border-amber-800 bg-white rounded-2xl overflow-hidden min-h-90 z-10 min-w-[500px]">
         <div className="text-xl  flex px-3 md:px-5 justify-between font-bold bg-black py-4 text-white ">
           <h2 className="">Create Template</h2>
-          <span onClick={onClose} className="hover:cursor-pointer p-1">
-            ❌
-          </span>
+          <div onClick={onClose} className="hover:cursor-pointer p-1">
+            <FiX className="text-2xl  transition-all duration-300 font-extrabold hover:text-red-600" />
+          </div>
         </div>
         <form
           className="grid grid-cols-8 h-[320px]"
