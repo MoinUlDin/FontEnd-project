@@ -11,7 +11,7 @@ import {
 } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
 import { addQuestion } from "../../features/templateSlice";
-import { FiX } from "react-icons/fi";
+import { FiXCircle } from "react-icons/fi";
 import { FcAddDatabase } from "react-icons/fc";
 
 const AddQuestionForm = ({ onSubmitSuccess, onClose }) => {
@@ -89,7 +89,7 @@ const AddQuestionForm = ({ onSubmitSuccess, onClose }) => {
               <FcAddDatabase />
             </span>
           </p>
-          <FiX
+          <FiXCircle
             className="text-4xl  ptr hover:text-white hover:font-extrabold p-2 cursor-pointer"
             onClick={onClose}
           />

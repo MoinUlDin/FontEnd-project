@@ -63,7 +63,7 @@ function DAssesment() {
         </div>
       </div>
       {/* Header */}
-      <header className="assessment_grid font-semibold text-slate-800  bg-gray-300 py-2 md:py-3 px-1 md:px-2 mb-2 md:mb-3">
+      <header className="assessment_grid gap-6 font-semibold text-slate-800  bg-gray-300 py-2 md:py-3 px-1 md:px-2 mb-2 md:mb-3">
         <span>Name</span>
         <span>Email</span>
         <span>Template</span>
@@ -72,10 +72,10 @@ function DAssesment() {
         <span>End</span>
         <span>FinalScore</span>
       </header>
-      <div className="alter_bg">
-        {assessments.map((assessment) => (
+      <div className="alter_bg gap-6">
+        {assessments.map((assessment, index) => (
           <AssessmentListItem
-            key={assessment.id}
+            key={assessment.id || index}
             name={assessment.candidate.username}
             email={assessment.candidate.email}
             template={assessment.template}

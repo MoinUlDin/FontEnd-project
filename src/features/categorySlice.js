@@ -4,7 +4,6 @@ const initialState = {
   list: [],
   details: {},
   selected: [],
-  newCategories: {},
   copiedQuestions: {}, // new property to store the copy result
 };
 
@@ -29,14 +28,6 @@ const categorySlice = createSlice({
     },
     clearSelectedQuestion: (state, action) => {
       state.selected = [];
-    },
-    setNewCategory: (state, action) => {
-      const { id, data } = action.payload;
-      state.newCategories[id] = data;
-    },
-    removeNewCategory: (state, action) => {
-      const { id } = action.payload;
-      delete state.newCategories[id];
     },
     deleteFromCopiedQuestins: (state, action) => {
       const { name } = action.payload;
@@ -67,8 +58,6 @@ export const {
   setDetailedCategory,
   addSelectedQuestion,
   removeSelectedQuestion,
-  setNewCategory,
-  removeNewCategory,
   setCopiedCategory,
   clearSelectedQuestion,
   deleteFromCopiedQuestins,

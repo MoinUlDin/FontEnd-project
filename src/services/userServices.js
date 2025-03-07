@@ -1,6 +1,7 @@
 // services/userServices.js
+import { ErrorOutline } from "@mui/icons-material";
 import apiClient from "./apiClient"; // Assuming apiClient is set up with Axios
-
+import { setUserList, deleteUser } from "../features/authslice";
 class UserService {
   // Login Method
   static async loginUser(formData) {
@@ -26,7 +27,35 @@ class UserService {
       throw new Error(errorMessage);
     }
   }
-
+  static async inviteUser(payload) {
+    try {
+      const response = await apiClient.post("users/invite/", payload);
+      return response.data;
+    } catch (error) {
+      throw error;
+    }
+  }
+  static async completeRegistration(payload) {
+    try {
+      // Here we use the token from payload as part of the URL.
+      // Your URL pattern is: 'invitation/confirm/<str:token>'
+      const response = await apiClient.post(
+        `users/invitation/confirm/${payload.token}`,
+        payload
+      );
+      return response.data;
+    } catch (error) {
+      throw error;
+    }
+  }
+  static async verifyInvitation(token) {
+    try {
+      const response = await apiClient.get(`users/invitation/confirm/${token}`);
+      return response.data;
+    } catch (error) {
+      throw error;
+    }
+  }
   static async registerUser(payload) {
     try {
       const response = await apiClient.post("users/register/", payload);
@@ -43,6 +72,26 @@ class UserService {
       throw new Error(errorMessage);
     }
   }
+  static async deleteUser(id, dispatch) {
+    try {
+      const response = await apiClient.delete(`users/delete/${id}/`);
+      dispatch(deleteUser(id));
+      return response.data;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  static async fetchUserList(dispatch) {
+    try {
+      const response = await apiClient.get("users/");
+      dispatch(setUserList(response.data));
+      return response.data;
+    } catch (error) {
+      throw error;
+    }
+  }
+  static async inviteUser(dispatch) {}
 }
 
 export default UserService;

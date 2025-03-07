@@ -1,62 +1,107 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import { useNavigate } from "react-router-dom";
-import UserService from "../services/userServices"; // Service for API calls
-import { ImSpinner8 } from "react-icons/im"; // Import spinner icon
-import { TextField, IconButton, InputAdornment } from "@mui/material";
+import { useNavigate, useParams } from "react-router-dom";
+import UserService from "../services/userServices";
+import { ImSpinner8 } from "react-icons/im";
+import { TextField, IconButton, InputAdornment, Button } from "@mui/material";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import Toast from "../components/childrens/FloatingMessage";
 
-function RegisterPage() {
+function InvitedUserPage() {
   const navigate = useNavigate();
-  const cardbackground = "bg-slate-200";
+  const { token } = useParams();
+
   const [isLoading, setIsLoading] = useState(false);
-  // For API messages
   const [apiMessage, setApiMessage] = useState("");
   const [toast, setToast] = useState(false);
-  // Local state for toggling password visibility for both password fields
+  const [prefilledData, setPrefilledData] = useState({
+    email: "",
+    companyName: "",
+    companyId: null,
+  });
   const [showPassword, setShowPassword] = useState(false);
   const [showPassword2, setShowPassword2] = useState(false);
 
-  // Initialize useForm hook
+  // Use consistent lower-case keys for all fields
   const {
     register,
     handleSubmit,
+    setValue,
     formState: { errors },
     setError,
-  } = useForm();
+  } = useForm({
+    defaultValues: {
+      email: "",
+      companyName: "",
+      firstName: "",
+      lastName: "",
+      password: "",
+      password2: "",
+    },
+    mode: "onBlur",
+  });
+
+  useEffect(() => {
+    if (!token) {
+      setApiMessage("No token provided.");
+      setToast(true);
+      return;
+    }
+    console.log("sending get request");
+    setIsLoading(true);
+    UserService.verifyInvitation(token)
+      .then((res) => {
+        if (res.message) {
+          setApiMessage(res.message);
+          setToast(true);
+        } else {
+          // if no message, set prefilled data
+          const { email, companyName, companyId } = res;
+          setPrefilledData({ email, companyName, companyId });
+          setValue("email", email);
+          setValue("companyName", companyName);
+        }
+      })
+      .catch((err) => {
+        setApiMessage(err.message || "Error verifying invitation.");
+        setToast(true);
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
+  }, [token, setValue]);
 
   const onSubmit = async (data) => {
-    // Check password match
-    if (data.rpassword !== data.rpassword2) {
-      setError("rpassword2", {
+    if (data.password !== data.password2) {
+      setError("password2", {
         type: "manual",
         message: "Passwords do not match",
       });
       return;
     }
     setIsLoading(true);
-    // Prepare the payload for your API endpoint
     const payload = {
-      first_name: data.rFirstName,
-      last_name: data.rLastName,
-      company: data.rCompanyName,
-      email: data.rEmail,
-      password: data.rpassword,
+      token,
+      first_name: data.firstName,
+      last_name: data.lastName,
+      password: data.password,
+      email: prefilledData.email,
+      companyName: prefilledData.companyName,
+      companyId: prefilledData.companyId,
     };
-
     try {
-      // Call your registration API via your service
-      const response = await UserService.registerUser(payload);
+      const response = await UserService.completeRegistration(payload);
+      localStorage.setItem("accessToken", response.access_token);
+      localStorage.setItem("refreshToken", response.refresh_token);
       setToast(true);
-      // Assume API sends back { message: "Your registration ...", ... }
       setApiMessage(response.message || "Registration successful.");
-      // Optionally, after a delay, navigate to login
+      setTimeout(() => {
+        navigate("/dashboard/templates");
+      }, 2000);
     } catch (err) {
-      console.error("Registration error:", err);
-      // If the API provides a message, display it.
       setApiMessage(err.message || "Registration failed. Please try again.");
+      setToast(true);
     } finally {
       setIsLoading(false);
     }
@@ -65,7 +110,7 @@ function RegisterPage() {
   return (
     <div className="md:fixed md:inset-0 bg-slate-300 flex flex-col justify-center items-center">
       <div
-        className={`shadow-2xl overflow-hidden bg-white shadow-slate-600 max-w-[700px] rounded-xl md:rounded-3xl p-2 md:p-6 flex flex-col justify-center items-center ${cardbackground}`}
+        className={`shadow-2xl overflow-hidden bg-white shadow-slate-600 max-w-[700px] rounded-xl md:rounded-3xl p-2 md:p-6 flex flex-col justify-center items-center`}
       >
         {toast && (
           <Toast
@@ -84,46 +129,51 @@ function RegisterPage() {
           <div className="flex flex-col md:flex-row gap-4 ">
             <div>
               <TextField
-                id="rFirstName"
+                id="firstName"
                 label="First Name"
                 variant="outlined"
                 margin="normal"
                 size="small"
                 className="w-80"
-                {...register("rFirstName", {
+                {...register("firstName", {
                   required: "First Name is required",
                 })}
               />
-              {errors.rFirstName && (
+              {errors.firstName && (
                 <p className="text-red-500 text-xs">
-                  {errors.rFirstName.message}
+                  {errors.firstName.message}
                 </p>
               )}
               <TextField
-                id="rCompanyName"
+                id="companyName"
                 label="Company Name"
                 variant="outlined"
                 margin="normal"
                 size="small"
                 className="w-80"
-                {...register("rCompanyName", {
+                {...register("companyName", {
                   required: "Company Name is required",
                 })}
+                slotProps={{
+                  input: { readOnly: true },
+                  inputLabel: { shrink: true },
+                }}
+                fullWidth
               />
-              {errors.rCompanyName && (
+              {errors.companyName && (
                 <p className="text-red-500 text-xs">
-                  {errors.rCompanyName.message}
+                  {errors.companyName.message}
                 </p>
               )}
               <TextField
-                id="rpassword"
+                id="password"
                 label="Password"
                 variant="outlined"
                 margin="normal"
                 size="small"
                 type={showPassword ? "text" : "password"}
                 className="w-80"
-                {...register("rpassword", { required: "Password is required" })}
+                {...register("password", { required: "Password is required" })}
                 slotProps={{
                   input: {
                     endAdornment: (
@@ -144,37 +194,37 @@ function RegisterPage() {
                   },
                 }}
               />
-              {errors.rpassword && (
+              {errors.password && (
                 <p className="text-red-500 text-xs">
-                  {errors.rpassword.message}
+                  {errors.password.message}
                 </p>
               )}
             </div>
             <div>
               <TextField
-                id="rLastName"
+                id="lastName"
                 label="Last Name"
                 variant="outlined"
                 margin="normal"
                 size="small"
                 className="w-80"
-                {...register("rLastName", {
+                {...register("lastName", {
                   required: "Last Name is required",
                 })}
               />
-              {errors.rLastName && (
+              {errors.lastName && (
                 <p className="text-red-500 text-xs">
-                  {errors.rLastName.message}
+                  {errors.lastName.message}
                 </p>
               )}
               <TextField
-                id="rEmail"
+                id="email"
                 label="Email"
                 variant="outlined"
                 margin="normal"
                 size="small"
                 className="w-80"
-                {...register("rEmail", {
+                {...register("email", {
                   required: "Email is required",
                   pattern: {
                     value: /^\S+@\S+$/i,
@@ -182,18 +232,18 @@ function RegisterPage() {
                   },
                 })}
               />
-              {errors.rEmail && (
-                <p className="text-red-500 text-xs">{errors.rEmail.message}</p>
+              {errors.email && (
+                <p className="text-red-500 text-xs">{errors.email.message}</p>
               )}
               <TextField
-                id="rpassword2"
+                id="password2"
                 label="Re-Enter Password"
                 variant="outlined"
                 margin="normal"
                 size="small"
                 type={showPassword2 ? "text" : "password"}
                 className="w-80"
-                {...register("rpassword2", {
+                {...register("password2", {
                   required: "Please re-enter your password",
                 })}
                 slotProps={{
@@ -216,9 +266,9 @@ function RegisterPage() {
                   },
                 }}
               />
-              {errors.rpassword2 && (
+              {errors.password2 && (
                 <p className="text-red-500 text-xs">
-                  {errors.rpassword2.message}
+                  {errors.password2.message}
                 </p>
               )}
             </div>
@@ -269,4 +319,4 @@ function RegisterPage() {
   );
 }
 
-export default RegisterPage;
+export default InvitedUserPage;

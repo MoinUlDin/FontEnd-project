@@ -5,6 +5,7 @@ const initialState = {
   accessToken: null,
   refreshToken: null,
   user: null,
+  list: [],
 };
 
 const authSlice = createSlice({
@@ -16,7 +17,9 @@ const authSlice = createSlice({
       const { access_token, refresh_token, user_name, email, company, role } =
         action.payload;
       state.accessToken = access_token;
+      console.log("we set access token", state.accessToken);
       state.refreshToken = refresh_token;
+      console.log("we set refresh token", state.refreshToken);
       state.user = {
         userName: user_name,
         email,
@@ -29,6 +32,12 @@ const authSlice = createSlice({
       state.refreshToken = null;
       state.user = null;
     },
+    setUserList(state, action) {
+      state.list = action.payload;
+    },
+    deleteUser(state, action) {
+      state.list = state.list.filter((user) => user.id !== action.payload);
+    },
   },
 });
 
@@ -38,5 +47,5 @@ export const logoutAndClear = () => (dispatch) => {
   // Dispatch the logout action to clear Redux state
   dispatch(logout());
 };
-export const { login, logout } = authSlice.actions;
+export const { login, logout, setUserList, deleteUser } = authSlice.actions;
 export default authSlice.reducer;

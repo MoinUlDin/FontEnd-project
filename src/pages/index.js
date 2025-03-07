@@ -11,6 +11,7 @@ import DUsers from "./DUsers";
 import TemplateDetail from "./TemplateDetail";
 import TestPage from "./TestPage";
 import TemplateEditPage from "./TemplateEditPage";
+import InvitedUserPage from "./InvitedUserPage";
 
 export {
   AboutPage,
@@ -26,4 +27,5 @@ export {
   TemplateDetail,
   TestPage,
   TemplateEditPage,
+  InvitedUserPage,
 };

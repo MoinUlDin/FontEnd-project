@@ -11,6 +11,7 @@ import {
   TemplateDetail,
   TestPage,
   TemplateEditPage,
+  InvitedUserPage,
 } from "./pages/index.js";
 import ConfirmEmail from "./components/ConfirmEmail.jsx";
 
@@ -45,6 +46,7 @@ function App() {
         <Route path="/contact" element={<ContactPage />} /> {/*  */}
         <Route path="/register" element={<RegisterPage />} />
         <Route path="/users/confirm-email/:token" element={<ConfirmEmail />} />
+        <Route path="/users/invited/:token" element={<InvitedUserPage />} />
         <Route
           path="/tempate/edit-template/:id"
           element={<TemplateEditPage />}

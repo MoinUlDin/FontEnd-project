@@ -1,56 +1,76 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import { useSpring, animated } from "@react-spring/web";
 import { FiX } from "react-icons/fi";
 
-const Toast = ({ message, duration = 5, onClose }) => {
-  const [progress, setProgress] = useState(100);
+const Toast = ({ message, duration = 5, onClose, className }) => {
   const [show, setShow] = useState(true);
+  const [hasEntered, setHasEntered] = useState(false);
 
-  // Animation for entrance and exit
-  const springs = useSpring({
-    opacity: show ? 1 : 0,
-    transform: show ? "translateY(0)" : "translateY(-20px)",
-    config: { tension: 300, friction: 20 },
+  // Entrance animation with bounce sequence; run only once
+  const entranceSpring = useSpring({
+    from: { opacity: 0, transform: "translateX(100%)" },
+    to: async (next) => {
+      await next({
+        opacity: 1,
+        transform: "translateX(0)",
+        config: { tension: 300, friction: 20 },
+      });
+      await next({
+        transform: "translateX(-10px)",
+        config: { tension: 300, friction: 10 },
+      });
+      await next({
+        transform: "translateX(0)",
+        config: { tension: 300, friction: 20 },
+      });
+      setHasEntered(true);
+    },
+    reset: true,
   });
 
-  // Progress bar animation
+  // Exit animation (simple fade out and slide out)
+  const exitSpring = useSpring({
+    opacity: show ? 1 : 0,
+    transform: show ? "translateX(0)" : "translateX(100%)",
+    config: { tension: 300, friction: 25 },
+  });
+
+  // Combine entrance and exit: if not entered yet, use entranceSpring; else use exitSpring.
+  const containerSpring = hasEntered ? exitSpring : entranceSpring;
+
   const progressSpring = useSpring({
-    width: `${progress}%`,
+    from: { width: "100%" },
+    to: { width: "0%" },
+    delay: 600, // start after entrance animation finishes
     config: { duration: duration * 1000 },
   });
 
-  const startTimer = useCallback(() => {
-    const interval = 50; // Update every 50ms for smooth progress
-    const totalSteps = (duration * 1000) / interval;
-    let step = 0;
-
-    const timer = setInterval(() => {
-      step += 1;
-      const newProgress = 100 - (step / totalSteps) * 100;
-      setProgress(newProgress);
-
-      if (step >= totalSteps) {
-        clearInterval(timer);
-        setShow(false);
-        setTimeout(onClose, 300); // Wait for exit animation
-      }
-    }, interval);
-
-    return () => clearInterval(timer);
-  }, [duration, onClose]);
-
   useEffect(() => {
-    startTimer();
-  }, [startTimer]);
+    const totalDelay = duration * 1000 + 600;
+    const timer = setTimeout(() => {
+      setShow(false);
+      setTimeout(onClose, 300);
+    }, totalDelay);
+    return () => clearTimeout(timer);
+  }, [duration, onClose]);
 
   return (
     <animated.div
-      style={springs}
-      className="relative mb-3 p-4 pr-8 min-w-[300px] bg-white rounded-lg shadow-lg border-l-4 border-blue-500"
+      style={{
+        ...containerSpring,
+        position: "fixed",
+        top: "1rem",
+        right: "1rem",
+      }}
+      className={`mb-3 z-50 p-4 pr-8 min-w-[300px] bg-white rounded-lg shadow-lg ${className}`}
     >
-      <div className="flex items-center justify-between mb-2">
-        <span className="font-semibold text-gray-800">{message}</span>
+      <div className="flex items-center gap-4 justify-between mb-2">
+        <p
+          className={`font-semibold text-10 max-w-72 text-gray-800 ${className}`}
+        >
+          {message}
+        </p>
         <button
           onClick={() => {
             setShow(false);
@@ -63,7 +83,7 @@ const Toast = ({ message, duration = 5, onClose }) => {
       </div>
       <animated.div
         style={progressSpring}
-        className="h-1 bg-blue-400 rounded-full transition-colors"
+        className="h-1 bg-blue-400 rounded-full"
       />
     </animated.div>
   );
@@ -73,44 +93,7 @@ Toast.propTypes = {
   message: PropTypes.string.isRequired,
   duration: PropTypes.number,
   onClose: PropTypes.func.isRequired,
+  className: PropTypes.string,
 };
 
-// Toast Container Context/Provider
-const ToastContext = React.createContext();
-
-export const ToastProvider = ({ children }) => {
-  const [toasts, setToasts] = useState([]);
-
-  const showToast = (message, duration = 5) => {
-    const id = Date.now();
-    setToasts((prev) => [...prev, { id, message, duration }]);
-  };
-
-  const removeToast = (id) => {
-    setToasts((prev) => prev.filter((toast) => toast.id !== id));
-  };
-
-  return (
-    <ToastContext.Provider value={showToast}>
-      {children}
-      <div className="fixed top-4 right-4 z-[9999]">
-        {toasts.map((toast) => (
-          <Toast
-            key={toast.id}
-            message={toast.message}
-            duration={toast.duration}
-            onClose={() => removeToast(toast.id)}
-          />
-        ))}
-      </div>
-    </ToastContext.Provider>
-  );
-};
-
-export const useToast = () => {
-  const context = React.useContext(ToastContext);
-  if (!context) {
-    throw new Error("useToast must be used within a ToastProvider");
-  }
-  return context;
-};
+export default Toast;

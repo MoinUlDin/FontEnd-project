@@ -87,26 +87,28 @@ function LoginPage() {
         />
 
         {/* Password Input with visibility toggle and added bottom margin */}
-        <TextField
-          id="password"
-          label="Password"
-          type={showPassword ? "text" : "password"}
-          className="w-80 mb-4"
-          onChange={handleChange}
-          size="small"
-          InputProps={{
-            endAdornment: (
-              <InputAdornment position="end">
-                <IconButton
-                  onClick={() => setShowPassword(!showPassword)}
-                  edge="end"
-                >
-                  {showPassword ? <VisibilityOff /> : <Visibility />}
-                </IconButton>
-              </InputAdornment>
-            ),
-          }}
-        />
+        <div className="mt-3">
+          <TextField
+            id="password"
+            label="Password"
+            type={showPassword ? "text" : "password"}
+            className="w-80 mb-4"
+            onChange={handleChange}
+            size="small"
+            InputProps={{
+              endAdornment: (
+                <InputAdornment position="end">
+                  <IconButton
+                    onClick={() => setShowPassword(!showPassword)}
+                    edge="end"
+                  >
+                    {showPassword ? <VisibilityOff /> : <Visibility />}
+                  </IconButton>
+                </InputAdornment>
+              ),
+            }}
+          />
+        </div>
 
         {error && <p className="text-red-500 mt-2">{error}</p>}
 

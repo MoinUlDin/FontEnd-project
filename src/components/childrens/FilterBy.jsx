@@ -1,6 +1,6 @@
 import React, { useState, useMemo, useRef, useEffect } from "react";
 
-function FilterBy({ id = "", list = [], css = "" }) {
+function FilterBy({ id = "", list = [], css = "", onSelect }) {
   const [inputValue, setInputValue] = useState("");
   const [isFocused, setIsFocused] = useState(false);
   const [dropdownOpen, setDropdownOpen] = useState(false);
@@ -64,7 +64,13 @@ function FilterBy({ id = "", list = [], css = "" }) {
           type="text"
           id={id}
           value={inputValue}
-          onChange={(e) => setInputValue(e.target.value)}
+          onChange={(e) => {
+            const value = e.target.value;
+            setInputValue(value);
+            if (value.trim() === "") {
+              onSelect("");
+            }
+          }}
           onFocus={handleInputFocus}
           onBlur={handleInputBlur}
         />
@@ -88,6 +94,9 @@ function FilterBy({ id = "", list = [], css = "" }) {
                 // onMouseDown prevents input blur before selection
                 setInputValue(option);
                 setDropdownOpen(false);
+                if (onSelect) {
+                  onSelect(option);
+                }
               }}
             >
               {option}
