@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import TemplatesService from "../services/templatesService";
+import TempService from "../services/tempService";
 import { useDispatch, useSelector } from "react-redux";
 import SecondaryListItem from "../components/childrens/SecondaryListItem";
 import dayjs from "dayjs";
@@ -22,7 +22,7 @@ export default function TemplateDetail() {
 
   useEffect(() => {
     setLoading(true);
-    TemplatesService.fetchTemplatedetail(id, dispatch)
+    TempService.fetchTemplatedetail(id, dispatch)
       .catch((e) => console.log("Custom ", e))
       .finally(() => setLoading(false));
   }, [dispatch, id]);

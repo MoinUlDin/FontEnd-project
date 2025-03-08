@@ -2,10 +2,11 @@ import React, { useState, useEffect } from "react";
 import PrimaryListItem from "../components/childrens/PrimaryListItem";
 import PrimaryListHeader from "../components/childrens/PrimaryListHeader";
 import { useDispatch, useSelector } from "react-redux";
-import TemplatesService from "../services/templatesService";
+import TempService from "../services/tempService";
 import FilterBy from "../components/childrens/FilterBy";
 import CreateTemplateModal from "../components/CreateTemplateModel"; // Import the new modal
 import CreateAssessmentModel from "../components/CreateAssessmentModel";
+import Toast from "../components/childrens/FloatingMessage";
 
 function DTemplates() {
   const dispatch = useDispatch();
@@ -15,6 +16,8 @@ function DTemplates() {
   const activeClass = "border-b-2 border-blue-400 font-bold text-12";
   const [showAssessmentModal, setShowAssessmentModal] = useState(false);
   const [selectedTemplateId, setSelectedTemplateId] = useState(null);
+  const [showToast, setShowToast] = useState(false);
+  const [apiResponse, setApiResponse] = useState("");
 
   // State to control modal visibility
   const [showModal, setShowModal] = useState(false);
@@ -26,20 +29,23 @@ function DTemplates() {
 
   useEffect(() => {
     setLoading(true);
-    TemplatesService.fetchTemplates(dispatch)
+    TempService.fetchTemplates(dispatch)
       .catch((e) => console.log("Custom ", e))
       .finally(() => setLoading(false));
   }, [dispatch]);
 
   const handleModalSubmit = async (formData) => {
     try {
-      await TemplatesService.createTemplate(formData, dispatch);
+      await TempService.createTemplate(formData, dispatch);
       // Optionally refresh templates list after creating
-      await TemplatesService.fetchTemplates(dispatch);
+      const res = await TempService.fetchTemplates(dispatch);
+      setApiResponse(res?.message || "Template Created Successfully.");
+      setShowToast(true);
       setShowModal(false);
     } catch (error) {
-      console.error("Error creating template:", error);
-      alert("Error creating template. Please try again.");
+      setApiResponse(
+        "Error creating template. Please try again." + error?.message
+      );
     }
   };
 
@@ -115,6 +121,8 @@ function DTemplates() {
           selectedTemplateId={selectedTemplateId}
         />
       )}
+      {/* show floating messsage */}
+      {showToast && <Toast message={apiResponse} />}
     </div>
   );
 }

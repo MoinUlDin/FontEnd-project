@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { saveAnswer } from "../../features/testSubmissionSlice";
+import { TextField } from "@mui/material";
 
 export default function QuestionCard({ question, currentAnswer, onSave }) {
   const dispatch = useDispatch();
@@ -32,21 +33,32 @@ export default function QuestionCard({ question, currentAnswer, onSave }) {
   return (
     <div className="bg-white p-6 h-full rounded-lg shadow-lg">
       <h2 className="text-xl font-bold mb-4">{question.text}</h2>
-      <div className="grid grid-cols-1 gap-2">
-        {Object.entries(question.options).map(([key, text]) => (
-          <button
-            key={key}
-            onClick={() => setSelectedOption(key)}
-            className={`border rounded p-2 hover:cursor-pointer text-left transition-colors ${
-              selectedOption === key
-                ? "bg-blue-200 border-blue-500"
-                : "border-gray-300 hover:bg-gray-50"
-            }`}
-          >
-            {text}
-          </button>
-        ))}
-      </div>
+      {question.options ? (
+        <div className="grid grid-cols-1 gap-2">
+          {Object.entries(question.options).map(([key, text]) => (
+            <button
+              key={key}
+              onClick={() => setSelectedOption(key)}
+              className={`border rounded p-2 hover:cursor-pointer text-left transition-colors ${
+                selectedOption === key
+                  ? "bg-blue-200 border-blue-500"
+                  : "border-gray-300 hover:bg-gray-50"
+              }`}
+            >
+              {text}
+            </button>
+          ))}
+        </div>
+      ) : (
+        <div>
+          <TextField
+            label="Your Answer"
+            value={selectedOption}
+            onChange={(e) => setSelectedOption(e.target.value)}
+            fullWidth
+          />
+        </div>
+      )}
       <div className="mt-8 flex justify-end gap-3">
         <button
           onClick={handleSave}

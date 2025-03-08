@@ -1,6 +1,10 @@
 // src/services/assessmentService.js
 import apiClient from "./apiClient";
-import { setAssessments } from "../features/assessmentSlice";
+import {
+  setAssessments,
+  deleteAssessment,
+  setAssessmentDetail,
+} from "../features/assessmentSlice";
 class AssessmentService {
   static async fetchAssessments(dispatch) {
     try {
@@ -13,14 +17,31 @@ class AssessmentService {
       throw error;
     }
   }
+  static async fetchAssessmentDetail(id, dispatch) {
+    try {
+      const response = await apiClient.get(`tests/test_instances/${id}/`);
+      dispatch(setAssessmentDetail(response.data));
+      return response;
+    } catch (error) {
+      throw error;
+    }
+  }
   static async createAssessment(payload, dispatch) {
     try {
       const response = await apiClient.post("tests/test_instances/", payload);
-      // Optionally, if your API returns the updated list, dispatch it:
-      // dispatch(setAssessments(response.data));
+      await AssessmentService.fetchAssessments(dispatch);
       return response.data;
     } catch (error) {
       console.error("Error creating assessment:", error);
+      throw error;
+    }
+  }
+  static async deleteAssessment(id, dispatch) {
+    try {
+      const response = await apiClient.delete(`tests/test_instances/${id}/`);
+      dispatch(deleteAssessment(id));
+      return response.data;
+    } catch (error) {
       throw error;
     }
   }

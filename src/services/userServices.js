@@ -28,10 +28,15 @@ class UserService {
     }
   }
   static async inviteUser(payload) {
+    console.log("we are in request");
     try {
+      console.log("sending request");
       const response = await apiClient.post("users/invite/", payload);
+      console.log("reqeust successfull");
       return response.data;
     } catch (error) {
+      console.log("we got error ");
+
       throw error;
     }
   }
@@ -91,7 +96,6 @@ class UserService {
       throw error;
     }
   }
-  static async inviteUser(dispatch) {}
 }
 
 export default UserService;

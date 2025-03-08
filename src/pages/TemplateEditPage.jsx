@@ -1,19 +1,22 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useParams } from "react-router-dom";
-import TemplatesService from "../services/TemplatesService";
+import TempService from "../services/tempService";
 import ExistingCategories from "../components/TemplateEditorComponents/ExistingCategories";
 import CurrentCategories from "../components/TemplateEditorComponents/CurrentCategories";
 import { editTempInit } from "../features/templateSlice";
+import { useNavigate } from "react-router-dom";
 import { ImSpinner7 } from "react-icons/im";
 import KeyboardReturnIcon from "@mui/icons-material/KeyboardReturn";
+import Toast from "../components/childrens/FloatingMessage";
 
 function TemplateEditPage() {
   const { id } = useParams();
   const dispatch = useDispatch();
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
-
+  const [showToast, setShowToast] = useState(false);
+  const navigate = useNavigate();
   const detailedTemplate = useSelector(
     (state) => state.templates.detailedTemplate
   );
@@ -25,7 +28,7 @@ function TemplateEditPage() {
     } else {
       setLoading(true);
       console.log("Sending request for detailed template");
-      TemplatesService.fetchTemplatedetail(id, dispatch)
+      TempService.fetchTemplatedetail(id, dispatch)
         .catch((e) => {
           setError(e);
           console.log(e);
@@ -44,9 +47,14 @@ function TemplateEditPage() {
   // Handle saving the edited template.
   const handleSave = () => {
     setLoading(true);
-    TemplatesService.postTemplate(editTemplate, dispatch)
+    TempService.postTemplate(editTemplate, dispatch)
       .then((data) => {
+        setError(data?.message || "Template saved successfully");
+        setShowToast(true);
         console.log("Template saved successfully:", data);
+        setTimeout(() => {
+          navigate("/dashboard/templates");
+        }, 3000);
       })
       .catch((err) => {
         console.error("Save error:", err);
@@ -74,7 +82,7 @@ function TemplateEditPage() {
             className="bg-sunglow hover:cursor-pointer px-2 gap-2 items-center flex rounded-lg p-2"
             onClick={handleSave}
           >
-            {loading && <ImSpinner7 />}
+            {loading && <ImSpinner7 className="animate-spin" />}
             {loading ? "Saving" : "Submit"}
           </button>
         </div>
@@ -90,6 +98,8 @@ function TemplateEditPage() {
           <ExistingCategories />
         </span>
       </div>
+      {/* floating message box */}
+      {showToast && <Toast message={error} onClose={setShowToast} />}
     </div>
   );
 }

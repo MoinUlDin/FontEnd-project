@@ -11,42 +11,33 @@ function ExistingCategories() {
   const [error, setError] = useState("");
   const dispatch = useDispatch();
 
-  // For copying questions, selected questions come from state.category.selected.
+  // Selected questions
   const selected = useSelector((state) => state.category?.selected || []);
 
-  // Use API data: categories from state.category.list
-  const categories = useSelector((state) =>
-    state.category ? state.category.list : []
-  );
+  // API categories list
+  const categories = useSelector((state) => state.category?.list || []);
 
-  // Initialize Autocomplete selected options with "All"
-  const [selectedOptions, setSelectedOptions] = useState([
-    { id: "all", name: "All" },
-  ]);
+  // Remove "All" from the initial state
+  const [selectedOptions, setSelectedOptions] = useState([]);
 
   useEffect(() => {
     if (categories.length === 0) {
-      CategoryServive.fetchCategoriesList(dispatch).catch((error) => {
-        setError(error);
-      });
+      CategoryServive.fetchCategoriesList(dispatch).catch(setError);
     }
   }, [categories.length, dispatch]);
 
-  // Build Autocomplete options: use only id and name from API data.
-  const autocompleteOptions = [{ id: "all", name: "All" }, ...categories];
+  // Autocomplete options from API
+  const autocompleteOptions = categories.map(({ id, name }) => ({ id, name }));
 
-  // Filter categories based on Autocomplete selection.
-  let filteredCategories = categories;
-  if (
-    selectedOptions.length > 0 &&
-    !selectedOptions.find((option) => option.id === "all")
-  ) {
-    filteredCategories = categories.filter((cat) =>
-      selectedOptions.find((option) => option.id === cat.id)
-    );
-  }
+  // Filter categories when options are selected
+  const filteredCategories =
+    selectedOptions.length > 0
+      ? categories.filter((cat) =>
+          selectedOptions.some((option) => option.id === cat.id)
+        )
+      : categories; // Show all if nothing is selected
 
-  // State to manage open state of copy dialog.
+  // Dialog state
   const [dialogOpen, setDialogOpen] = useState(false);
 
   return (
@@ -62,13 +53,7 @@ function ExistingCategories() {
               options={autocompleteOptions}
               getOptionLabel={(option) => option.name}
               value={selectedOptions}
-              onChange={(event, newValue) => {
-                if (newValue.find((option) => option.id === "all")) {
-                  setSelectedOptions([{ id: "all", name: "All" }]);
-                } else {
-                  setSelectedOptions(newValue);
-                }
-              }}
+              onChange={(event, newValue) => setSelectedOptions(newValue)}
               renderInput={(params) => (
                 <TextField
                   {...params}

@@ -12,6 +12,7 @@ import {
   TestPage,
   TemplateEditPage,
   InvitedUserPage,
+  AssessmentDetailPage,
 } from "./pages/index.js";
 import ConfirmEmail from "./components/ConfirmEmail.jsx";
 
@@ -61,6 +62,10 @@ function App() {
           <Route path="templates" element={<DTemplates />} />
           <Route path="template/:id" element={<TemplateDetail />} />
           <Route path="assesments" element={<DAssesment />} />
+          <Route
+            path="assesments/detail/:id"
+            element={<AssessmentDetailPage />}
+          />
           <Route path="users" element={<DUsers />} />
           <Route path="settings" element={<DSettings />} />
           <Route path="help" element={<DHelp />} />

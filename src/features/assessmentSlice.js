@@ -3,6 +3,7 @@ import { createSlice } from "@reduxjs/toolkit";
 const initialState = {
   assessments: {}, // Store assessments by ID for quick lookup
   selectedAssessment: null,
+  details: {},
   testData: null,
 };
 
@@ -11,23 +12,33 @@ const assessmentSlice = createSlice({
   initialState: initialState,
   reducers: {
     setAssessments: (state, action) => {
-      // Convert array to object with IDs as keys
       const assessments = action.payload.reduce((acc, assessment) => {
         acc[assessment.id] = assessment;
         return acc;
       }, {});
       state.assessments = assessments;
     },
+    setAssessmentDetail: (state, action) => {
+      state.details = action.payload;
+    },
     selectAssessment: (state, action) => {
       state.selectedAssessment = action.payload;
     },
-    // Add more reducers as needed
     setTestData: (state, action) => {
       state.testData = action.payload;
+    },
+    deleteAssessment: (state, action) => {
+      const { id } = action.payload;
+      delete state.assessments[id]; // Remove the assessment from the object
     },
   },
 });
 
-export const { setAssessments, selectAssessment, setTestData } =
-  assessmentSlice.actions;
+export const {
+  setAssessments,
+  selectAssessment,
+  setTestData,
+  deleteAssessment,
+  setAssessmentDetail,
+} = assessmentSlice.actions;
 export default assessmentSlice.reducer;

@@ -3,8 +3,8 @@ import SidebarListItem from "./childrens/SidebarListItem"; // adjust the path as
 
 const Sidebar = () => {
   return (
-    <div className="px-4">
-      <h2 className=" text-xl text-center font-bold mb-4 p-[18px] border-b border-b-gray-300 -mx-4">
+    <div className="px-4 sticky top-0">
+      <h2 className=" text-xl  text-center font-bold mb-4 p-[18px] border-b border-b-gray-300 -mx-4">
         Dashboard
       </h2>
       <nav>

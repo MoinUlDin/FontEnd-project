@@ -1,7 +1,7 @@
 import apiClient from "./apiClient";
-import { setDetailedTemplate, setTemplates } from "../features/templateSlice";
+import { setTemplates, setDetailedTemplate } from "../features/templateSlice";
 
-class TemplatesService {
+class TempService {
   static async fetchTemplates(dispatch) {
     try {
       const response = await apiClient.get("tests/templates/");
@@ -15,7 +15,7 @@ class TemplatesService {
   static async createTemplate(data, dispatch) {
     try {
       const response = await apiClient.post("tests/templates/", data);
-      dispatch(fetchTemplates(dispatch)); // Refresh templates after adding
+      return response.datq;
     } catch (error) {
       console.error("Error creating template:", error);
       throw error;
@@ -42,4 +42,4 @@ class TemplatesService {
   }
 }
 
-export default TemplatesService;
+export default TempService;
