@@ -4,7 +4,8 @@ import axios from "axios";
 class ApiClient {
   constructor() {
     this.client = axios.create({
-      baseURL: "http://127.0.0.1:8000/",
+      baseURL:
+        "http://hrtestconductorbackend-04f6c2-1b196c-65-108-245-140.traefik.me",
       headers: { "Content-Type": "application/json" },
     });
 
@@ -37,7 +38,7 @@ class ApiClient {
             try {
               // Step 2: Send request to refresh the token.
               const refreshResponse = await axios.post(
-                "http://127.0.0.1:8000/api/token/refresh/",
+                "http://hrtestconductorbackend-04f6c2-1b196c-65-108-245-140.traefik.me/api/token/refresh/",
                 { refresh: userData.refreshToken }
               );
               const newAccessToken = refreshResponse.data.access;
