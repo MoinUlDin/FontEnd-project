@@ -1,6 +1,5 @@
 import AboutPage from "./AboutPage";
 import ContactPage from "./ContactPage";
-import DAssesment from "./DAssesment";
 import DSettings from "./DSettings";
 import DTemplates from "./DTemplates";
 import HomePage from "./HomePage";
@@ -17,7 +16,6 @@ import AssessmentDetailPage from "./AssessmentDetailPage";
 export {
   AboutPage,
   ContactPage,
-  DAssesment,
   DTemplates,
   HomePage,
   LoginPage,

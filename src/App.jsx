@@ -4,7 +4,8 @@ import DashboardLayout from "./components/DashboardLayout";
 import { login } from "./features/authslice";
 import { store } from "./store/store.js";
 import { DSettings, HomePage, AboutPage, ContactPage } from "./pages/index.js";
-import { RegisterPage, DUsers, DAssesment, DTemplates } from "./pages/index.js";
+import { RegisterPage, DUsers, DTemplates } from "./pages/index.js";
+import AssessmentPage from "./pages/AssessmentPage.jsx";
 import {
   LoginPage,
   DHelp,
@@ -61,7 +62,7 @@ function App() {
         <Route path="/dashboard" element={<DashboardLayout />}>
           <Route path="templates" element={<DTemplates />} />
           <Route path="template/:id" element={<TemplateDetail />} />
-          <Route path="assesments" element={<DAssesment />} />
+          <Route path="assesments" element={<AssessmentPage />} /> {/*  */}
           <Route
             path="assesments/detail/:id"
             element={<AssessmentDetailPage />}

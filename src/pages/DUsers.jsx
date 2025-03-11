@@ -57,13 +57,13 @@ function DUsers() {
       {/*Main Header */}
       <div className="Header flex justify-between px-4 mb-4">
         <FilterBy list={emailList} onSelect={onSelect} />
-        <div className="flex gap-3">
+        <div className="flex gap-1">
           <Tooltip
             onClick={() => setInviteVisible(true)}
             title="Invite"
             placement="top"
           >
-            <button className="btn text-lg hover:text-blue-600 flex items-center  gap-2 py-1 px-4 border-b-2 border-gray-100 hover:border-b-blue-600">
+            <button className="btn text-lg hover:text-blue-600 flex items-center  gap-2 p-1 border-b-2 border-gray-100 hover:border-b-blue-600">
               <CiMail />
             </button>
           </Tooltip>
@@ -72,7 +72,7 @@ function DUsers() {
             title="Delete"
             placement="top"
           >
-            <button className="btn text-lg  hover:text-red-600 flex items-center  gap-2 py-1 px-4 border-b-2 border-gray-100 hover:border-b-red-600">
+            <button className="btn text-lg  hover:text-red-600 flex items-center  gap-2 p-1 border-b-2 border-gray-100 hover:border-b-red-600">
               <FiTrash />
             </button>
           </Tooltip>
@@ -82,11 +82,13 @@ function DUsers() {
       <div className="bg-white h-svh  overflow-scroll">
         {/* body header */}
         <div className="grid grid-cols-10 sticky top-0 shadow-lg shadow-slate-500 font-semibold text-slate-800  bg-gray-300 py-2 md:py-3 px-1 md:px-2 mb-2 md:mb-3  text-sm uppercase">
-          <p className="col-span-3">User</p>
+          <p className="col-span-5 sm:col-span-4 md:col-span-3">User</p>
           <p className="col-span-2">Company</p>
-          <p className="col-span-2">Role</p>
-          <p className="col-span-1">Active</p>
-          <p className="col-span-2">Joined At</p>
+          <p className="col-span-2 sm:place-self-left place-self-center">
+            Role
+          </p>
+          <p className="col-span-1 hidden md:block">Active</p>
+          <p className="col-span-2 hidden sm:block">Joined At</p>
         </div>
         {/* contant */}
         <div className="grid grid-cols-10 gap-5 font-semibold text-slate-800 alter_bg y-2 md:py-3 px-1 md:px-2 mb-2 md:mb-3 text-12">
@@ -96,10 +98,10 @@ function DUsers() {
                 key={user.id || index}
                 className="grid grid-cols-10 col-span-10 py-3 px-2"
               >
-                <div className="col-span-3 flex gap-3">
+                <div className="col-span-5 sm:col-span-4 md:col-span-3 flex gap-3">
                   <img
                     src={profile_img}
-                    className="rounded-full max-h-8"
+                    className="rounded-full max-h-8 hidden sm:block"
                     alt="profile"
                   />
                   <div>
@@ -111,8 +113,12 @@ function DUsers() {
                 </div>
 
                 <p className="col-span-2">{user.company}</p>
-                <p className="col-span-2">{user.role}</p>
-                <p className="col-span-1">{user.is_active ? "Yes" : "No"}</p>
+                <p className="col-span-2 sm:place-self-left  hidden sm:block">
+                  {user.role}
+                </p>
+                <p className="col-span-1 hidden md:block">
+                  {user.is_active ? "Yes" : "No"}
+                </p>
                 <p className="col-span-2">
                   {dayjs(user.joined_at).format("D-MMM-YY")}
                 </p>

@@ -4,8 +4,8 @@ import Paragraph from "./childrens/Paragraph";
 
 function IntroSection() {
   return (
-    <section className="grid min-h-svh gap-3 grid-cols-12 mx-6 md:mx-18 place-content-center section">
-      <div className=" col-span-7 place-self-center">
+    <section className="md:grid md:grid-cols-12 flex flex-col-reverse justify-center items-center gap-3 min-h-svh  mx-6 md:mx-18 place-content-center section">
+      <div className=" md:col-span-7 place-self-center grow">
         <Title>The Problem?</Title>
         <Paragraph>
           Although the recruiting process at most businesses does a great job of
@@ -18,7 +18,7 @@ function IntroSection() {
         </Paragraph>
       </div>
       <img
-        className="col-span-5"
+        className="md:col-span-5 grow "
         src="https://static.wixstatic.com/media/d79df2_0dbb47b78390439ba5687ce244ea6766~mv2.png/v1/fill/w_467,h_449,fp_0.69_0.51,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/Group%201000001447%20(1).png"
         alt=""
       />

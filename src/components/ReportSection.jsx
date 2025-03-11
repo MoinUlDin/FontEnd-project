@@ -5,8 +5,8 @@ import sideimg from "../assets/report.avif";
 function ReportSection() {
   return (
     <section className="section">
-      <div className="flex gap-8 mx-4 md:mx-6 mb-30 relative">
-        <div className="absolute -z-100 bg-amber-700 w-sm h-70 rotate-12 left-80 top-24"></div>
+      <div className="flex flex-col lg:flex-row gap-8 mx-4 md:mx-6 mb-30 relative">
+        <div className="absolute -z-100 hidden lg:block bg-amber-700 w-sm h-70 rotate-12 left-80 top-24"></div>
         <Card
           title="Candidate Selection Report"
           paragraph="We measure job-specific cognitive abilities and work personality using two different online tests. The results of these assessments are compiled into a candidate selection report."

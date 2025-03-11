@@ -32,20 +32,20 @@ function PrimaryListItem({ id, title, createdat, createdby, onInvite }) {
             <Link
               onClick={handleInviteClick}
               to=""
-              className="hover:text-purple-600 text-dash-i flex gap-1"
+              className="hover:text-purple-600 text-dash-i flex gap-1 items-center"
             >
               <FiMail /> Invite
             </Link>
             <Link
               to={`/dashboard/template/${id}`}
-              className="hover:text-purple-600 text-dash-i flex gap-1"
+              className="hover:text-purple-600 text-dash-i flex gap-1 items-center"
             >
               <FiEye />
               Preview
             </Link>
             <Link
               to={`/tempate/edit-template/${id}`}
-              className="hover:text-purple-600 text-dash-i flex gap-1"
+              className="hover:text-purple-600 text-dash-i flex gap-1 items-center"
             >
               <FiEdit />
               Edit
@@ -54,8 +54,10 @@ function PrimaryListItem({ id, title, createdat, createdby, onInvite }) {
         </div>
 
         {/* Stats */}
-        <div className="place-self-center text-dash-it">{fDate}</div>
-        <div className="place-self-center text-dash-it">{createdby}</div>
+        <div className="hidden sm:block place-self-center text-dash-it">
+          {fDate}
+        </div>
+        <div className=" place-self-center text-dash-it">{createdby}</div>
       </div>
     </div>
   );

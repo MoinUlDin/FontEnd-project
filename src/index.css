@@ -47,3 +47,14 @@ body {
 .ptr {
   @apply hover:cursor-pointer transition-all duration-300;
 }
+
+.listItem {
+  /* Write the dynamic font-size directly */
+  font-size: clamp(1rem, calc(12px + 1vh), 20px);
+  /* Apply the rest of the Tailwind classes using @apply */
+  @apply hover:cursor-pointer font-semibold text-[#28296C] hover:text-[#EB1C35] transition-colors duration-300;
+}
+
+.bgred {
+  @apply bg-red-900;
+}

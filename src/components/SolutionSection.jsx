@@ -6,8 +6,9 @@ function SolutionSection() {
   return (
     <section className=" flex flex-col md:flex-row p-3 px-6 md:px-14 lg:px-20 md:p-6 justify-between items-center section">
       <div>
-        <Title css="leading-[4rem]">
-          What We Assess to <br /> Get the Best <br /> Candidates
+        <Title css="leading-[2rem] md:leading-[4rem]">
+          What We Assess to <br className="hidden md:block" /> Get the Best{" "}
+          <br /> Candidates
         </Title>
         <Paragraph>
           RightHire’s assessment system analyzes the mental and behavioral

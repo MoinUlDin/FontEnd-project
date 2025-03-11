@@ -6,14 +6,14 @@ import PrimaryShellbtn from "./childrens/PrimaryShellbtn";
 
 function ResultSection() {
   return (
-    <div className="bg-bgresult flex flex-col md:flex-row p-3 px-6 md:px-14 lg:px-20 md:p-6 justify-between items-center section">
+    <div className="bg-bgresult flex flex-col-reverse lg:flex-row py-3 px-6 md:px-14 lg:px-20 md:p-6 lg:justify-between justify-around items-center section">
       <div>
         <Title>A Bad Hire Costs a Company</Title>
         <Title css="text-[#FAA53D]">$40,000 at least</Title>
         <Paragraph>
           Choose RightHire and make the right hire the first time
         </Paragraph>
-        <div className="flex flex-col md:flex-row">
+        <div className="flex flex-col gap-3 md:flex-row">
           <Primarybtn chref="/register">Sign Up</Primarybtn>
           <PrimaryShellbtn chref="/contact">Contact Us</PrimaryShellbtn>
         </div>

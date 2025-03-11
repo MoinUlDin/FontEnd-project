@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Outlet } from "react-router-dom";
-import Sidebar from "./SideBar";
+import Sidebar from "./Sidebar";
 import { useSelector, useDispatch } from "react-redux";
 import { logoutAndClear } from "../features/authslice";
 import defualt_img from "../assets/profile_img.png";
@@ -39,7 +39,7 @@ const DashboardLayout = () => {
   return (
     <div className="flex min-h-screen">
       {/* Sidebar: fixed width and always visible */}
-      <aside className="w-64 bg-gray-800 text-white">
+      <aside>
         <Sidebar />
       </aside>
 

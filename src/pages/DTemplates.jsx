@@ -64,7 +64,9 @@ function DTemplates() {
   return (
     <div>
       <div className="text-2xl font-bold pb-6 border-b border-gray-200 flex justify-between ">
-        <FilterBy />
+        <div className="hidden md:block">
+          <FilterBy />
+        </div>
         <button
           onClick={() => setShowModal(true)}
           className="text-[8px] hover:cursor-pointer bg-sunglow rounded-4xl px-4 p-1"

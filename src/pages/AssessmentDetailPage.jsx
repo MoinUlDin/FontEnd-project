@@ -70,7 +70,7 @@ export default function AssessmentDetailPage() {
   const catPercentages = category_percentages || {};
   const selQuestions = selected_questions || [];
   const ans = answers || [];
-
+  console.log(catPercentages);
   // Compute duration if test is finished (end_time exists)
   let durationStr = "";
   if (start_time && end_time) {
@@ -92,7 +92,7 @@ export default function AssessmentDetailPage() {
 
   return (
     <div className="p-4">
-      <div className="flex items-center justify-between px-5 p-3 max-w-[80%] bg-gray-300 rounded-full">
+      <div className="flex items-center justify-between px-5 p-3 max-w-[80%] bg-gray-400 rounded-full">
         {/* Candidate Information */}
         <div className="flex items-center gap-3">
           <img className="h-14 w-14 rounded-full" src={profile_img} alt="" />
@@ -123,15 +123,24 @@ export default function AssessmentDetailPage() {
       </div>
 
       {/* Category Percentages */}
-      <div className="mb-4">
-        <h2 className="text-xl font-bold mb-2">Category Percentages</h2>
-        <ul>
-          {Object.entries(catPercentages).map(([key, value]) => (
-            <li key={key} className="text-lg">
-              {key}: {value}
-            </li>
-          ))}
-        </ul>
+      <div className="md:mt-10 mb-3 p-3 md:mb-15 md:p-5 w-[80%] bg-gray-700 rounded-tl-[5rem]  rounded-br-[5rem] flex flex-col items-center text-blue-200">
+        <h2 className="text-2xl font-bold mb-2 pb-2 border-b border-gray-500">
+          Category Percentages
+        </h2>
+        <div className="self-start flex justify-evenly w-full">
+          <p>Name</p>
+          <p>Questions</p>
+          <p>Score</p>
+        </div>
+
+        {Object.entries(catPercentages).map(([key, value]) => (
+          <div
+            key={key}
+            className="text-lg self-start flex justify-evenly w-full"
+          >
+            {key}: {value}
+          </div>
+        ))}
       </div>
 
       {/* Questions and Answers */}

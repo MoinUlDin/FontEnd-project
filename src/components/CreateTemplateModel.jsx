@@ -35,7 +35,7 @@ function CreateTemplateModal({ onClose, onSubmit }) {
         className="absolute inset-0 bg-black opacity-60"
         onClick={onClose}
       ></div>
-      <div className="relative border-2 border-amber-800 bg-white rounded-2xl overflow-hidden min-h-90 z-10 min-w-[500px]">
+      <div className="relative border-2 border-amber-800 bg-white rounded-2xl overflow-hidden min-h-90 z-10 md:min-w-[500px] max-w-[70%]">
         <div className="text-xl  flex px-3 md:px-5 justify-between font-bold bg-black py-4 text-white ">
           <h2 className="">Create Template</h2>
           <div onClick={onClose} className="hover:cursor-pointer p-1">
@@ -46,7 +46,7 @@ function CreateTemplateModal({ onClose, onSubmit }) {
           className="grid grid-cols-8 h-[320px]"
           onSubmit={handleFormSubmit}
         >
-          <div className="h-full flex items-end justify-center col-span-3 bg-[#ebe5a7] min-w-22">
+          <div className="hidden h-full md:flex items-end justify-center col-span-3 bg-[#ebe5a7] min-w-22">
             <img src={sideimg} alt="" />
           </div>
           <div className="col-span-5 flex flex-col justify-center items-end px-4 ">
