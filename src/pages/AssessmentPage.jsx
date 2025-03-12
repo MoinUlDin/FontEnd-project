@@ -91,7 +91,7 @@ export default function AssessmentPage() {
   }
 
   return (
-    <div className="mx-2 md:mx-4 max-w-[95%] overflow-x-auto">
+    <div className="mx-2 md:mx-4 max-w-[98%] overflow-x-scroll">
       {/* Create Assessment Modal */}
       {showModal && (
         <CreateAssessmentModel onClose={() => setShowModal(false)} />
@@ -135,15 +135,15 @@ export default function AssessmentPage() {
         </div>
       </div>
       <table className="min-w-full border-collapse">
-        <thead className="bg-gray-300">
+        <thead className="bg-gray-300 text-xl whitespace-nowrap">
           <tr>
             <th className="px-4 py-2 text-left">Candidate</th>
-            <th className="px-4 py-2 text-left">Template</th>
+            <th className="px-4 py-2 text-left hidden sm:block">Template</th>
             <th className="px-4 py-2 text-left">Status</th>
-            <th className="px-4 py-2 text-left">Start</th>
+            <th className="px-4 py-2 text-left">Started </th>
             <th className="hidden md:block px-4 py-2 text-left ">Time Taken</th>
             <th className="px-4 py-2 text-left">Final Score</th>
-            <th className="px-4 py-2 text-left">Actions</th>
+            <th className="px-4 py-2 text-left hidden sm:block">Actions</th>
           </tr>
         </thead>
         <tbody>
@@ -165,11 +165,31 @@ export default function AssessmentPage() {
                       {assessment.candidate?.email || "-"}
                       <CopyEmail email={assessment.candidate?.email || "-"} />
                     </p>
+                    {/* Actions Cell */}
+                    <td className="px-4 py-2 flex gap-2 md:gap-3 sm:hidden">
+                      <Tooltip title="View Detail" placement="top">
+                        <Link
+                          to={`/dashboard/assesments/detail/${assessment.id}`}
+                          className="ptr hover:text-blue-500"
+                        >
+                          <FcViewDetails />
+                        </Link>
+                      </Tooltip>
+                      <Tooltip title="Delete" placement="top">
+                        <button
+                          onClick={() => handleDeleteClick(assessment.id)}
+                        >
+                          <FiTrash2 className="text-red-600 ptr hover:text-red-800" />
+                        </button>
+                      </Tooltip>
+                    </td>
                   </div>
                 </div>
               </td>
               {/* Template Cell */}
-              <td className="px-4 py-2">{assessment.template || "-"}</td>
+              <td className="px-4 py-2 hidden sm:block">
+                {assessment.template || "-"}
+              </td>
               {/* Status Cell */}
               <td className="px-4 py-2">{assessment.status || "-"}</td>
               {/* Start Time Cell */}
@@ -194,7 +214,7 @@ export default function AssessmentPage() {
                   : "-"}
               </td>
               {/* Actions Cell */}
-              <td className="px-4 py-2 flex gap-3">
+              <td className="px-4 py-2 sm:flex gap-2 md:gap-3 hidden">
                 <Tooltip title="View Detail" placement="top">
                   <Link
                     to={`/dashboard/assesments/detail/${assessment.id}`}

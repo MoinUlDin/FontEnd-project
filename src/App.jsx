@@ -5,6 +5,7 @@ import { login } from "./features/authslice";
 import { store } from "./store/store.js";
 import { DSettings, HomePage, AboutPage, ContactPage } from "./pages/index.js";
 import { RegisterPage, DUsers, DTemplates } from "./pages/index.js";
+import AssessmentDataTable from "./pages/AssessmentDataTable.jsx";
 import AssessmentPage from "./pages/AssessmentPage.jsx";
 import {
   LoginPage,
@@ -13,6 +14,7 @@ import {
   TestPage,
   TemplateEditPage,
   InvitedUserPage,
+  PricePage,
   AssessmentDetailPage,
 } from "./pages/index.js";
 import ConfirmEmail from "./components/ConfirmEmail.jsx";
@@ -47,7 +49,7 @@ function App() {
         <Route path="/about" element={<AboutPage />} />
         <Route path="/contact" element={<ContactPage />} /> {/*  */}
         <Route path="/register" element={<RegisterPage />} />
-        <Route path="/users/confirm-email/:token" element={<ConfirmEmail />} />
+        <Route path="/price" element={<PricePage />} />
         <Route path="/users/invited/:token" element={<InvitedUserPage />} />
         <Route
           path="/tempate/edit-template/:id"
@@ -62,7 +64,7 @@ function App() {
         <Route path="/dashboard" element={<DashboardLayout />}>
           <Route path="templates" element={<DTemplates />} />
           <Route path="template/:id" element={<TemplateDetail />} />
-          <Route path="assesments" element={<AssessmentPage />} /> {/*  */}
+          <Route path="assesments" element={<AssessmentDataTable />} /> {/*  */}
           <Route
             path="assesments/detail/:id"
             element={<AssessmentDetailPage />}

@@ -1,10 +1,9 @@
 import React, { useState } from "react";
-import InputField from "../components/childrens/InputField";
 import sideimg from "../assets/report.avif";
 import { FiX } from "react-icons/fi";
+import { TextField } from "@mui/material";
 
 function CreateTemplateModal({ onClose, onSubmit }) {
-  const bgColor = "bg-white";
   const [errorMessage, setErrorMessage] = useState("");
   const [formData, setFormData] = useState({
     name: "",
@@ -17,6 +16,11 @@ function CreateTemplateModal({ onClose, onSubmit }) {
       ...prevData,
       [name]: value,
     }));
+
+    // Optionally clear error message when user types valid input
+    if (name === "name" && value.trim()) {
+      setErrorMessage("");
+    }
   };
 
   const handleFormSubmit = (e) => {
@@ -35,40 +39,41 @@ function CreateTemplateModal({ onClose, onSubmit }) {
         className="absolute inset-0 bg-black opacity-60"
         onClick={onClose}
       ></div>
-      <div className="relative border-2 border-amber-800 bg-white rounded-2xl overflow-hidden min-h-90 z-10 md:min-w-[500px] max-w-[70%]">
-        <div className="text-xl  flex px-3 md:px-5 justify-between font-bold bg-black py-4 text-white ">
-          <h2 className="">Create Template</h2>
+      <div className="relative border-2 border-amber-800 bg-white rounded-2xl overflow-hidden md:min-h-90 z-10 md:min-w-[500px] max-w-[70%]">
+        <div className="text-xl flex px-3 md:px-5 justify-between font-bold bg-black py-4 text-white">
+          <h2>Create Template</h2>
           <div onClick={onClose} className="hover:cursor-pointer p-1">
-            <FiX className="text-2xl  transition-all duration-300 font-extrabold hover:text-red-600" />
+            <FiX className="text-2xl transition-all duration-300 font-extrabold hover:text-red-600" />
           </div>
         </div>
         <form
-          className="grid grid-cols-8 h-[320px]"
+          className="grid grid-cols-1 md:grid-cols-8 h-auto md:h-[320px]"
           onSubmit={handleFormSubmit}
         >
-          <div className="hidden h-full md:flex items-end justify-center col-span-3 bg-[#ebe5a7] min-w-22">
-            <img src={sideimg} alt="" />
+          <div className="hidden md:flex h-full items-end justify-center col-span-3 bg-[#ebe5a7] md:min-w-22">
+            <img src={sideimg} alt="Side visual" />
           </div>
-          <div className="col-span-5 flex flex-col justify-center items-end px-4 ">
-            <div className="mt-5">
-              <InputField
-                ctype="text"
+          <div className="col-span-1 md:col-span-5 flex flex-col justify-center items-end px-4">
+            <div className="mt-5 w-full">
+              <TextField
+                fullWidth
                 id="templateName"
-                clable="Template Name"
-                css1={bgColor}
+                label="Template Name"
+                variant="outlined"
+                size="small"
                 name="name"
                 value={formData.name}
                 onChange={handleChange}
+                error={Boolean(errorMessage)}
+                helperText={errorMessage}
               />
-              {errorMessage && (
-                <p className="text-red-500 text-xs -mt-3">{errorMessage}</p>
-              )}
             </div>
-            <div className="mt-5">
+            <div className="mt-5 w-full">
               <textarea
-                className="min-w-input-width min-h-[5rem] py-2 max-h-[125px] border-2 border-gray-300 rounded-md px-4 text-sm focus:border-blue-500 focus:outline-none"
+                className="md:min-w-input-width min-h-[5rem] py-2 max-h-[125px] border-2 border-gray-300 rounded-md px-4 text-sm focus:border-blue-500 focus:outline-none w-full"
                 name="description"
                 id="templateDescription"
+                label="Description"
                 placeholder="Description (optional)"
                 value={formData.description}
                 onChange={handleChange}

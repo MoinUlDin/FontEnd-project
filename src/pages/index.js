@@ -12,6 +12,7 @@ import TestPage from "./TestPage";
 import TemplateEditPage from "./TemplateEditPage";
 import InvitedUserPage from "./InvitedUserPage";
 import AssessmentDetailPage from "./AssessmentDetailPage";
+import PricePage from "./PricePage";
 
 export {
   AboutPage,
@@ -28,4 +29,5 @@ export {
   TemplateEditPage,
   InvitedUserPage,
   AssessmentDetailPage,
+  PricePage,
 };

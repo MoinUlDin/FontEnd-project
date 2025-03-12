@@ -22,7 +22,7 @@ const NavLinks = ({ mobile = false, fn }) => {
       <Link className="listItem text-white !important" to="/">
         Home
       </Link>
-      <Link className="listItem" to="/users/assesment-test/">
+      <Link className="listItem" to="/price">
         Pricing
       </Link>
       <Link className="listItem" to="/about">

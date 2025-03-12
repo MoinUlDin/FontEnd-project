@@ -17,39 +17,39 @@ import {
 
 const Sidebar = () => {
   return (
-    <div className="px-4 min-h-screen sticky top-0 w-10 sm:w-17 md:w-46 lg:w-52 bg-gray-800 text-white">
+    <div className="px-4 min-h-screen sticky top-0 w-14 sm:w-17 md:w-46 lg:w-52 bg-gray-800 text-white">
       <h2 className=" text-xl   text-center font-bold mb-4 p-[18px] border-b border-b-gray-300 -mx-4 ">
         <span className="hidden md:block">Dashboard</span>
       </h2>
       <nav>
-        <ul className="space-y-2">
+        <ul className="space-y-2 ">
           <SidebarListItem to="/dashboard/templates">
             <div className="flex gap-4 items-center ">
-              <MdDescription />
+              <MdDescription className="text-2xl md:text-xl mt-8 md:mt-0 shrink-0" />
               <p className="hidden md:block">Templates</p>
             </div>
           </SidebarListItem>
           <SidebarListItem to="/dashboard/assesments">
             <div className="flex gap-4 items-center ">
-              <MdAssessment />
+              <MdAssessment className="text-2xl md:text-xl mt-8 md:mt-0 shrink-0" />
               <p className="hidden md:block">Assesments</p>
             </div>
           </SidebarListItem>
           <SidebarListItem to="/dashboard/users">
             <div className="flex gap-4 items-center ">
-              <MdPeople />
+              <MdPeople className="text-2xl md:text-xl mt-8 md:mt-0 shrink-0" />
               <p className="hidden md:block">Users </p>
             </div>
           </SidebarListItem>
           <SidebarListItem to="/dashboard/settings">
             <div className="flex gap-4 items-center ">
-              <MdSettings />
+              <MdSettings className="text-2xl md:text-xl mt-8 md:mt-0 shrink-0" />
               <p className="hidden md:block">Settings</p>
             </div>
           </SidebarListItem>
           <SidebarListItem to="/dashboard/help">
             <div className="flex gap-4 items-center ">
-              <MdHelpOutline />
+              <MdHelpOutline className="text-2xl md:text-xl mt-8 md:mt-0 shrink-0" />
               <p className="hidden md:block">Help</p>
             </div>
           </SidebarListItem>
