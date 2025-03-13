@@ -115,7 +115,7 @@ export default function AssessmentPage() {
         >
           Create Assessment
         </button>
-        <div className="text-10 px-2 flex gap-2 justify-between">
+        <div className="hidden sm:flex text-10 px-2  gap-2 justify-between">
           <div>
             <button
               className={`p-2 hover:cursor-pointer hover:-translate-y-0.5 transition-all duration-300 `}
@@ -134,105 +134,109 @@ export default function AssessmentPage() {
           </div>
         </div>
       </div>
-      <table className="min-w-full border-collapse">
-        <thead className="bg-gray-300 text-xl whitespace-nowrap">
-          <tr>
-            <th className="px-4 py-2 text-left">Candidate</th>
-            <th className="px-4 py-2 text-left hidden sm:block">Template</th>
-            <th className="px-4 py-2 text-left">Status</th>
-            <th className="px-4 py-2 text-left">Started </th>
-            <th className="hidden md:block px-4 py-2 text-left ">Time Taken</th>
-            <th className="px-4 py-2 text-left">Final Score</th>
-            <th className="px-4 py-2 text-left hidden sm:block">Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          {assessments.map((assessment) => (
-            <tr key={assessment.id} className="mt-[90px]">
-              {/* Candidate Cell */}
-              <td className="px-4 py-2 truncate">
-                <div className="flex items-center gap-2">
-                  <img
-                    src={profile_img}
-                    alt="profile"
-                    className="rounded-full h-8 w-8"
-                  />
-                  <div>
-                    <p className="text-sm font-bold text-purple-700">
-                      {assessment.candidate?.username || "-"}
-                    </p>
-                    <p className="truncate text-xs lg:flex items-center gap-1">
-                      {assessment.candidate?.email || "-"}
-                      <CopyEmail email={assessment.candidate?.email || "-"} />
-                    </p>
-                    {/* Actions Cell */}
-                    <td className="px-4 py-2 flex gap-2 md:gap-3 sm:hidden">
-                      <Tooltip title="View Detail" placement="top">
-                        <Link
-                          to={`/dashboard/assesments/detail/${assessment.id}`}
-                          className="ptr hover:text-blue-500"
-                        >
-                          <FcViewDetails />
-                        </Link>
-                      </Tooltip>
-                      <Tooltip title="Delete" placement="top">
-                        <button
-                          onClick={() => handleDeleteClick(assessment.id)}
-                        >
-                          <FiTrash2 className="text-red-600 ptr hover:text-red-800" />
-                        </button>
-                      </Tooltip>
-                    </td>
-                  </div>
-                </div>
-              </td>
-              {/* Template Cell */}
-              <td className="px-4 py-2 hidden sm:block">
-                {assessment.template || "-"}
-              </td>
-              {/* Status Cell */}
-              <td className="px-4 py-2">{assessment.status || "-"}</td>
-              {/* Start Time Cell */}
-              <td className="px-4 py-2">
-                {assessment.start_time
-                  ? dayjs(assessment.start_time).format("D-MMM-YY")
-                  : "-"}
-              </td>
-              {/* Duration Cell */}
-              <td className="px-4 py-2 hidden md:block">
-                {assessment.start_time && assessment.end_time
-                  ? calculateDuration(
-                      assessment.start_time,
-                      assessment.end_time
-                    )
-                  : "-"}
-              </td>
-              {/* Final Score Cell */}
-              <td className="px-4 py-2">
-                {assessment.final_score !== undefined
-                  ? `${assessment.final_score}%`
-                  : "-"}
-              </td>
-              {/* Actions Cell */}
-              <td className="px-4 py-2 sm:flex gap-2 md:gap-3 hidden">
-                <Tooltip title="View Detail" placement="top">
-                  <Link
-                    to={`/dashboard/assesments/detail/${assessment.id}`}
-                    className="ptr hover:text-blue-500"
-                  >
-                    <FcViewDetails />
-                  </Link>
-                </Tooltip>
-                <Tooltip title="Delete" placement="top">
-                  <button onClick={() => handleDeleteClick(assessment.id)}>
-                    <FiTrash2 className="text-red-600 ptr hover:text-red-800" />
-                  </button>
-                </Tooltip>
-              </td>
+      <div className="w-svw h-96 overflow-scroll">
+        <table className="border-collapse ">
+          <thead className="bg-gray-300 text-xl whitespace-nowrap">
+            <tr>
+              <th className="px-4 py-2 text-left">Candidate</th>
+              <th className="px-4 py-2 text-left hidden sm:block">Template</th>
+              <th className="px-4 py-2 text-left">Status</th>
+              <th className="px-4 py-2 text-left">Started </th>
+              <th className="hidden md:block px-4 py-2 text-left ">
+                Time Taken
+              </th>
+              <th className="px-4 py-2 text-left">Final Score</th>
+              <th className="px-4 py-2 text-left hidden sm:block">Actions</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {assessments.map((assessment) => (
+              <tr key={assessment.id} className="mt-[90px]">
+                {/* Candidate Cell */}
+                <td className="px-4 py-2 truncate">
+                  <div className="flex items-center gap-2">
+                    <img
+                      src={profile_img}
+                      alt="profile"
+                      className="rounded-full h-8 w-8"
+                    />
+                    <div>
+                      <p className="text-sm font-bold text-purple-700">
+                        {assessment.candidate?.username || "-"}
+                      </p>
+                      <p className="truncate text-xs lg:flex items-center gap-1">
+                        {assessment.candidate?.email || "-"}
+                        <CopyEmail email={assessment.candidate?.email || "-"} />
+                      </p>
+                      {/* Actions Cell */}
+                      <td className="px-4 py-2 flex gap-2 md:gap-3 sm:hidden">
+                        <Tooltip title="View Detail" placement="top">
+                          <Link
+                            to={`/dashboard/assesments/detail/${assessment.id}`}
+                            className="ptr hover:text-blue-500"
+                          >
+                            <FcViewDetails />
+                          </Link>
+                        </Tooltip>
+                        <Tooltip title="Delete" placement="top">
+                          <button
+                            onClick={() => handleDeleteClick(assessment.id)}
+                          >
+                            <FiTrash2 className="text-red-600 ptr hover:text-red-800" />
+                          </button>
+                        </Tooltip>
+                      </td>
+                    </div>
+                  </div>
+                </td>
+                {/* Template Cell */}
+                <td className="px-4 py-2 hidden sm:block">
+                  {assessment.template || "-"}
+                </td>
+                {/* Status Cell */}
+                <td className="px-4 py-2">{assessment.status || "-"}</td>
+                {/* Start Time Cell */}
+                <td className="px-4 py-2">
+                  {assessment.start_time
+                    ? dayjs(assessment.start_time).format("D-MMM-YY")
+                    : "-"}
+                </td>
+                {/* Duration Cell */}
+                <td className="px-4 py-2 hidden md:block">
+                  {assessment.start_time && assessment.end_time
+                    ? calculateDuration(
+                        assessment.start_time,
+                        assessment.end_time
+                      )
+                    : "-"}
+                </td>
+                {/* Final Score Cell */}
+                <td className="px-4 py-2">
+                  {assessment.final_score !== undefined
+                    ? `${assessment.final_score}%`
+                    : "-"}
+                </td>
+                {/* Actions Cell */}
+                <td className="px-4 py-2 sm:flex gap-2 md:gap-3 hidden">
+                  <Tooltip title="View Detail" placement="top">
+                    <Link
+                      to={`/dashboard/assesments/detail/${assessment.id}`}
+                      className="ptr hover:text-blue-500"
+                    >
+                      <FcViewDetails />
+                    </Link>
+                  </Tooltip>
+                  <Tooltip title="Delete" placement="top">
+                    <button onClick={() => handleDeleteClick(assessment.id)}>
+                      <FiTrash2 className="text-red-600 ptr hover:text-red-800" />
+                    </button>
+                  </Tooltip>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 }

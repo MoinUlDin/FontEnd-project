@@ -66,7 +66,7 @@ const InviteUserForm = ({ setApiResponse, onClose }) => {
         </div>
         <form
           onSubmit={handleSubmit(onSubmit)}
-          className="space-y-4 p-4 min-w-90 min-h-48 mt-5"
+          className="space-y-4 p-4 md:min-w-90 min-h-48 mt-5"
         >
           <Controller
             name="email"

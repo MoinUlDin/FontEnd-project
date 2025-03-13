@@ -10,11 +10,13 @@ import AssessmentPage from "./pages/AssessmentPage.jsx";
 import {
   LoginPage,
   DHelp,
+  ProfilePage,
   TemplateDetail,
   TestPage,
   TemplateEditPage,
   InvitedUserPage,
   PricePage,
+  DPayments,
   AssessmentDetailPage,
 } from "./pages/index.js";
 import ConfirmEmail from "./components/ConfirmEmail.jsx";
@@ -62,9 +64,11 @@ function App() {
         <Route path="/login" element={<LoginPage />} />
         <Route path="/users/confirm-email/:token" element={<ConfirmEmail />} />
         <Route path="/dashboard" element={<DashboardLayout />}>
+          <Route path="assesments" element={<AssessmentPage />} /> {/*  */}
           <Route path="templates" element={<DTemplates />} />
+          <Route path="profile" element={<ProfilePage />} />
           <Route path="template/:id" element={<TemplateDetail />} />
-          <Route path="assesments" element={<AssessmentDataTable />} /> {/*  */}
+          <Route path="price" element={<DPayments />} />
           <Route
             path="assesments/detail/:id"
             element={<AssessmentDetailPage />}

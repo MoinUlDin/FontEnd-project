@@ -79,7 +79,7 @@ function DUsers() {
         </div>
       </div>
       {/* body */}
-      <div className="bg-white h-svh  overflow-scroll">
+      <div className="bg-white h-svh min-w-[370px]  overflow-scroll">
         {/* body header */}
         <div className="grid grid-cols-10 sticky top-0 shadow-lg shadow-slate-500 font-semibold text-slate-800  bg-gray-300 py-2 md:py-3 px-1 md:px-2 mb-2 md:mb-3  text-sm uppercase">
           <p className="col-span-5 sm:col-span-4 md:col-span-3">User</p>

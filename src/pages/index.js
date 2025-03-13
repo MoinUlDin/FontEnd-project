@@ -13,6 +13,8 @@ import TemplateEditPage from "./TemplateEditPage";
 import InvitedUserPage from "./InvitedUserPage";
 import AssessmentDetailPage from "./AssessmentDetailPage";
 import PricePage from "./PricePage";
+import DPayments from "./DPayments";
+import ProfilePage from "./ProfilePage";
 
 export {
   AboutPage,
@@ -30,4 +32,6 @@ export {
   InvitedUserPage,
   AssessmentDetailPage,
   PricePage,
+  DPayments,
+  ProfilePage,
 };

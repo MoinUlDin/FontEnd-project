@@ -1,8 +1,37 @@
-import React from "react";
+import React, { useState } from "react";
 import Navebar from "../components/Navebar";
 import Footer from "../components/Footer";
 import { FiCheck } from "react-icons/fi";
+import { Button, TextField } from "@mui/material";
+import apiClient from "../services/apiClient";
+
 function PricePage() {
+  const [redeemCode, setRedeemCode] = useState("");
+  const [message, setMessage] = useState(null);
+
+  const handleSubmit = async () => {
+    if (!redeemCode.trim()) {
+      setMessage({ type: "error", text: "Please enter a redeem code." });
+      return;
+    }
+
+    try {
+      console.log("Submitting:", redeemCode);
+      const response = await apiClient.post("/payments/redeeme/", {
+        code: redeemCode,
+      });
+      setMessage({
+        type: "success",
+        text: response.data.message || "Code redeemed successfully!",
+      });
+      setRedeemCode(""); // Clear the input field
+    } catch (error) {
+      setMessage({
+        type: "error",
+        text: error.response?.data?.message || "Failed to redeem code.",
+      });
+    }
+  };
   return (
     <div>
       <Navebar />
@@ -101,6 +130,30 @@ function PricePage() {
             </div>
           </div>
         </div>
+      </div>
+
+      <div className="flex flex-col gap-4 justify-center w-full items-center mt-10">
+        <h4>Have a Redeem Code?</h4>
+        <div className="flex gap-3">
+          <TextField
+            label="Your Redeem Code"
+            size="small"
+            value={redeemCode}
+            onChange={(e) => setRedeemCode(e.target.value)}
+          />
+          <Button onClick={handleSubmit} variant="contained" size="small">
+            Submit
+          </Button>
+        </div>
+        {message && (
+          <p
+            className={`mt-2 text-sm ${
+              message.type === "error" ? "text-red-600" : "text-green-600"
+            }`}
+          >
+            {message.text}
+          </p>
+        )}
       </div>
       <div className="mt-20">
         <Footer />

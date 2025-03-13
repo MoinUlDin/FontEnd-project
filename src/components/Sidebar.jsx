@@ -1,5 +1,6 @@
 import React from "react";
 import SidebarListItem from "./childrens/SidebarListItem"; // adjust the path as needed
+import PaymentIcon from "@mui/icons-material/Payment";
 import {
   FiLayers,
   FiClipboard,
@@ -14,6 +15,7 @@ import {
   MdSettings,
   MdHelpOutline,
 } from "react-icons/md";
+import { Payment } from "@mui/icons-material";
 
 const Sidebar = () => {
   return (
@@ -45,6 +47,12 @@ const Sidebar = () => {
             <div className="flex gap-4 items-center ">
               <MdSettings className="text-2xl md:text-xl mt-8 md:mt-0 shrink-0" />
               <p className="hidden md:block">Settings</p>
+            </div>
+          </SidebarListItem>
+          <SidebarListItem to="/dashboard/price">
+            <div className="flex gap-4 items-center ">
+              <Payment className="text-2xl md:text-xl mt-8 md:mt-0 shrink-0" />
+              <p className="hidden md:block">Payments</p>
             </div>
           </SidebarListItem>
           <SidebarListItem to="/dashboard/help">

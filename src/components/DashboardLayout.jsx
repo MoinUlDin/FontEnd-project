@@ -1,10 +1,10 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Outlet } from "react-router-dom";
 import Sidebar from "./Sidebar";
 import { useSelector, useDispatch } from "react-redux";
 import { logoutAndClear } from "../features/authslice";
 import defualt_img from "../assets/profile_img.png";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate, useLocation, Link } from "react-router-dom";
 
 const DashboardLayout = () => {
   // Access user data from Redux store
@@ -12,8 +12,12 @@ const DashboardLayout = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const location = useLocation();
+
   // Local state to toggle the dropdown menu
   const [dropdownOpen, setDropdownOpen] = useState(false);
+  // Create a ref for the dropdown container
+  const dropdownRef = useRef(null);
+
   let title = "";
   if (location.pathname.includes("/dashboard/templates")) {
     title = "Templates";
@@ -33,8 +37,20 @@ const DashboardLayout = () => {
     // Dispatch the logout action
     dispatch(logoutAndClear());
     navigate("/");
-    // Optionally, redirect to the login page or clear tokens from storage
   };
+
+  // Listen for clicks outside of the dropdown
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      // If the dropdown is open and the click target is outside of the dropdown, close it.
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setDropdownOpen(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
 
   return (
     <div className="flex min-h-screen">
@@ -48,7 +64,8 @@ const DashboardLayout = () => {
         {/* Sticky header with user info */}
         <div className="sticky top-0 z-10 bg-gray-100 p-4 flex justify-between items-center border-b border-gray-200">
           <h1 className="text-2xl font-bold">{title}</h1>
-          <div className="relative">
+          {/* Wrap the profile button and dropdown in a ref */}
+          <div ref={dropdownRef} className="relative">
             <button
               onClick={() => setDropdownOpen(!dropdownOpen)}
               className="flex items-center hover:cursor-pointer focus:outline-none mr-2 md:mr-4"
@@ -64,12 +81,12 @@ const DashboardLayout = () => {
             </button>
             {dropdownOpen && (
               <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-2">
-                <a
-                  href="/dashboard/profile"
+                <Link
+                  to="/dashboard/profile"
                   className="block px-4 py-2 text-gray-700 hover:bg-gray-100"
                 >
                   Profile
-                </a>
+                </Link>
                 <a
                   href="/dashboard/settings"
                   className="block px-4 py-2 text-gray-700 hover:bg-gray-100"

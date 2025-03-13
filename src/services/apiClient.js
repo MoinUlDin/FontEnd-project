@@ -4,6 +4,7 @@ import axios from "axios";
 class ApiClient {
   constructor() {
     this.client = axios.create({
+      // baseURL: "hrtestconductorbackend-04f6c2-1b196c-65-108-245-140.traefik.me",
       baseURL: "http://localhost:8000",
       headers: { "Content-Type": "application/json" },
     });
@@ -35,11 +36,15 @@ class ApiClient {
           const userData = JSON.parse(localStorage.getItem("userData"));
           if (userData?.refreshToken) {
             try {
+              console.log("We are in");
               // Step 2: Send request to refresh the token.
-              const refreshResponse = await axios.post(
-                "http://hrtestconductorbackend-04f6c2-1b196c-65-108-245-140.traefik.me/api/token/refresh/",
-                { refresh: userData.refreshToken }
+              const refreshResponse = await this.client.post(
+                "/api/token/refresh/",
+                {
+                  refresh: userData.refreshToken,
+                }
               );
+
               const newAccessToken = refreshResponse.data.access;
               // Update localStorage with the new access token.
               const updatedUserData = {
