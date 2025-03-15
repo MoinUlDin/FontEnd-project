@@ -92,18 +92,20 @@ function DTemplates() {
           </div>
         </div>
       </div>
+
       <div className="max-w-dash-lg mt-8 ">
         <PrimaryListHeader title="name" />
-        {templates.map((item) => (
-          <PrimaryListItem
-            key={item.id}
-            id={item.id}
-            title={item.name}
-            createdat={item.created_at}
-            createdby={item.created_by}
-            onInvite={handleInvite}
-          />
-        ))}
+        {Array.isArray(templates) &&
+          templates.map((item) => (
+            <PrimaryListItem
+              key={item.id}
+              id={item.id}
+              title={item.name}
+              createdat={item.created_at}
+              createdby={item.created_by}
+              onInvite={handleInvite}
+            />
+          ))}
       </div>
 
       {/* Render the modal popup when showModal is true */}
