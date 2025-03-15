@@ -6,7 +6,7 @@ import { store } from "./store/store.js";
 import { DSettings, HomePage, AboutPage, ContactPage } from "./pages/index.js";
 import { RegisterPage, DUsers, DTemplates } from "./pages/index.js";
 import AssessmentDataTable from "./pages/AssessmentDataTable.jsx";
-import AssessmentPage from "./pages/AssessmentPage.jsx";
+// import AssessmentPage from "./pages/AssessmentPage.jsx";
 import {
   LoginPage,
   DHelp,
@@ -64,7 +64,7 @@ function App() {
         <Route path="/login" element={<LoginPage />} />
         <Route path="/users/confirm-email/:token" element={<ConfirmEmail />} />
         <Route path="/dashboard" element={<DashboardLayout />}>
-          <Route path="assesments" element={<AssessmentPage />} /> {/*  */}
+          <Route path="assesments" element={<AssessmentDataTable />} /> {/*  */}
           <Route path="templates" element={<DTemplates />} />
           <Route path="profile" element={<ProfilePage />} />
           <Route path="template/:id" element={<TemplateDetail />} />
