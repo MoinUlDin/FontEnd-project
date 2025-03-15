@@ -166,7 +166,7 @@ export default function AssessmentDataTable() {
     {
       name: "Actions",
       cell: (row) => (
-        <div>
+        <div className="flex gap-3">
           <Tooltip title="View Detail" placement="top">
             <Link
               to={`/dashboard/assesments/detail/${row.id}`}
