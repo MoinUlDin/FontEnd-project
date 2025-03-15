@@ -6,7 +6,7 @@ function Footer() {
   return (
     <div className="grid grid-cols-6 h-64 relative w-full bg-white  place-content-center py-3 px-3 md:px-12 gap-4">
       <div className="col-span-6 md:col-span-2 flex justify-center ">
-        <Logo />
+        <Logo css="h-18 md:h-20 lg:h-26" />
       </div>
       <div className="col-span-6 md:col-span-2 place-self-center">
         <Primarybtn>Contact Us Now</Primarybtn>
