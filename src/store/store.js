@@ -1,12 +1,12 @@
 import { configureStore, combineReducers } from "@reduxjs/toolkit";
 import { persistStore, persistReducer } from "redux-persist";
 import storage from "redux-persist/lib/storage"; // Uses localStorage for web
-
 import authReducer from "../features/authslice";
 import templatesReducer from "../features/templateSlice";
 import assessmentReducer from "../features/assessmentSlice";
 import testSubmissionReducer from "../features/testSubmissionSlice";
 import categoryReducer from "../features/categorySlice";
+import companyReducer from "../features/companySlice";
 
 // Combine all your reducers
 const rootReducer = combineReducers({
@@ -15,6 +15,7 @@ const rootReducer = combineReducers({
   assessment: assessmentReducer,
   testSubmission: testSubmissionReducer,
   category: categoryReducer,
+  company: companyReducer,
 });
 
 // Create a persist configuration.
@@ -22,7 +23,7 @@ const rootReducer = combineReducers({
 const persistConfig = {
   key: "root",
   storage,
-  whitelist: ["auth", "templates", "assessment", "testSubmission", "category"],
+  whitelist: ["auth"],
 };
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

@@ -4,13 +4,13 @@ import { TextField, Button } from "@mui/material";
 function DHelp() {
   return (
     <div>
-      <div className="p-10 ">
-        <h1 className="m-3 font-extrabold text-5xl text-center">
+      <div className=" ">
+        <h1 className="m-3 font-semibold md:font-extrabold text-lg  md:text-2xl lg:text-5xl text-center">
           Have any Question?
         </h1>
-        <h4 className="text-center mb-2">
+        <h6 className="text-center mb-2 text-sm md:text-lg">
           Share your thought with us, our active team will reach you soon{" "}
-        </h4>
+        </h6>
         <div className="flex flex-col items-center mt-10">
           <TextField
             id="email"
@@ -24,7 +24,7 @@ function DHelp() {
             multiline
             rows={4}
             variant="outlined"
-            sx={"margin-top: 20px; min-width:300px"}
+            sx={"margin-top: 20px; min-width:225px"}
           />
           <Button variant="contained" sx={"margin-top: 20px;"}>
             {" "}

@@ -1,13 +1,7 @@
 import React from "react";
 import SidebarListItem from "./childrens/SidebarListItem"; // adjust the path as needed
-import PaymentIcon from "@mui/icons-material/Payment";
-import {
-  FiLayers,
-  FiClipboard,
-  FiUsers,
-  FiSettings,
-  FiHelpCircle,
-} from "react-icons/fi";
+import { Payment } from "@mui/icons-material";
+
 import {
   MdDescription,
   MdAssessment,
@@ -15,7 +9,6 @@ import {
   MdSettings,
   MdHelpOutline,
 } from "react-icons/md";
-import { Payment } from "@mui/icons-material";
 
 const Sidebar = () => {
   return (
@@ -24,7 +17,7 @@ const Sidebar = () => {
         <span className="hidden md:block">Dashboard</span>
       </h2>
       <nav>
-        <ul className="space-y-2 ">
+        <ul className="space-y-6 ">
           <SidebarListItem to="/dashboard/templates">
             <div className="flex gap-4 items-center ">
               <MdDescription className="text-2xl md:text-xl mt-8 md:mt-0 shrink-0" />

@@ -106,6 +106,7 @@ function DTemplates() {
               onInvite={handleInvite}
             />
           ))}
+        <div className="my-18 min-h-3"></div>
       </div>
 
       {/* Render the modal popup when showModal is true */}

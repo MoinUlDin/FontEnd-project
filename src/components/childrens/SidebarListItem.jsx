@@ -6,7 +6,7 @@ function SidebarListItem({ to, children, css = "", css1 = "" }) {
       <NavLink
         to={to}
         className={({ isActive }) =>
-          `${isActive ? "text-blue-200" : "text-white"} ${css1}`
+          `${isActive ? "text-blue-300 " : "text-white"} ${css1}`
         }
       >
         {children}

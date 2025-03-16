@@ -1,13 +1,56 @@
-import React, { useState } from "react";
-import Navebar from "../components/Navebar";
-import Footer from "../components/Footer";
-import { FiCheck } from "react-icons/fi";
+import React, { useState, useEffect } from "react";
 import { Button, TextField } from "@mui/material";
+import { useSelector, useDispatch } from "react-redux";
+import { fetchList } from "../features/companySlice";
+import apiClient from "../services/apiClient";
+import CompanyListItem from "../components/childrens/CompanyListItem";
 
 function DPayments() {
   const [redeemCode, setRedeemCode] = useState("");
   const [message, setMessage] = useState(null);
+  const [active, setActive] = useState(true);
+  const [loading, setLoading] = useState(false);
+  const [credits, setCredits] = useState(""); // initially empty
+  const dispatch = useDispatch();
+  const user = useSelector((state) => state.auth.user);
+  const companies = useSelector((state) => state.company.list);
 
+  const fetchcompanylist = () => {
+    console.log("fn is called");
+    setLoading(true);
+    apiClient
+      .get("company/")
+      .then((res) => {
+        dispatch(fetchList(res.data));
+      })
+      .catch((error) => {
+        console.log(error);
+      })
+      .finally(() => {
+        setLoading(false);
+      });
+  };
+  useEffect(() => {
+    if (companies.length == 0) {
+      fetchcompanylist();
+    }
+  }, [dispatch]);
+  const handleChange = (event) => {
+    const value = event.target.value;
+    if (value === "") {
+      setCredits("");
+      return;
+    }
+    const numberValue = Number(value);
+
+    if (numberValue < 1) {
+      setCredits(1);
+    } else {
+      setCredits(numberValue);
+    }
+  };
+
+  const active1 = "shadow-2xl shadow-gray-300 bg-blue-800 text-gray-100";
   const handleSubmit = async () => {
     if (!redeemCode.trim()) {
       setMessage({ type: "error", text: "Please enter a redeem code." });
@@ -15,7 +58,7 @@ function DPayments() {
     }
 
     try {
-      const response = await ApiClient.post("/payments/redeeme/", {
+      const response = await apiClient.post("/payments/redeeme/", {
         code: redeemCode,
       });
       setMessage({
@@ -30,11 +73,48 @@ function DPayments() {
       });
     }
   };
+
+  console.log("Companies:", companies);
+  // Check if the user is admin or super-admin (case-insensitive)
+  if (user && user.role.toLowerCase().includes("admin")) {
+    return (
+      <div className="">
+        <h1 className="md:text-3xl text-gray-800 font-extrabold text-center mb-8 ">
+          For Admin View Only
+        </h1>
+
+        {/*Main content */}
+        <div className="">
+          <ul className="grid grid-cols-9 px-4 text-gray-900 py-3 md:px-6 md:text-xl font-bold bg-gray-400">
+            <li className="col-span-3">Company</li>
+            <li className="col-span-3">Owner</li>
+            <li className="col-span-1 place-self-center">Credites</li>
+            <li className="col-span-2 place-self-center">Actions</li>
+          </ul>
+        </div>
+        {/* List Items */}
+        <div className="pt-4">
+          {companies.map((item) => (
+            <CompanyListItem
+              key={item.id}
+              name={item.name}
+              id={item.id}
+              owner={item.ownerName}
+              email={item.ownerEmail}
+              credits={item.credits}
+              fn={fetchcompanylist}
+            />
+          ))}
+          <div className="mt-24"></div>
+        </div>
+      </div>
+    );
+  }
   return (
     <div>
       {/* main container */}
       <div>
-        <h1 className="text-4xl mb-10 font-extrabold mt-12 text-blue-900 text-center">
+        <h1 className="text-4xl mb-10 font-extrabold md:mt-2 text-blue-900 text-center">
           Explore our{" "}
           <span className="relative mx-3">
             Flexible
@@ -42,90 +122,48 @@ function DPayments() {
           </span>
           Pricing
         </h1>
-        <div className="grid gap-10 grid-cols-6 w-full px-3 md:px-7 py-2 md:py-8 place-content-center  bg-amber-00">
-          {/* First Card */}
-          <div className="col-span-6 md:col-span-2 flex flex-col m-auto gap-6 px-6  lg:px-20  p-3 md:p-6 ">
-            <h2 className="mb-2 text-2xl font-bold">Standard</h2>
-            <p className="flex items-center gap-4">
-              <FiCheck className="text-blue-700 font-extrabold mr-3" />{" "}
-              <span className="text-gray-800">First Offer</span>
-            </p>
-            <p className="flex items-center gap-4">
-              <FiCheck className="text-blue-700 font-extrabold mr-3" />{" "}
-              <span className="text-gray-800">Second Offer</span>
-            </p>
-            <p className="flex items-center gap-4">
-              <FiCheck className="text-blue-700 font-extrabold mr-3" />
-              <span className="text-gray-800">Third Offer</span>
-            </p>
-            <p className="flex items-center gap-4">
-              <FiCheck className="text-blue-700 font-extrabold mr-3" />
-              <span className="text-gray-800">Fourth Offer Offer</span>
-            </p>
-            <div className="flex col-span-2 ">
-              <button className="bg-blue-900 text-lg m-auto text-white font-bold p-1 rounded-xl px-9 ptr hover:bg-blue-950 mt-7">
-                Order Now
-              </button>
-            </div>
+        <div className="flex items-center flex-col">
+          <div className="max-w-[350px]:text-[8px] text-10 md:text-xl min-w-[225px]">
+            <button
+              onClick={() => setActive(true)}
+              className={` relative font-bold rounded-tl-3xl ptr py-3 md:py-4 px-4 md:px-8 ${
+                active ? active1 : "bg-blue-600 text-black"
+              }`}
+            >
+              Pay Per Assessment
+              {active && (
+                <div className="absolute -bottom-3 h-[2px] w-full bg-blue-800 right-0"></div>
+              )}
+            </button>
+            <button
+              onClick={() => setActive(false)}
+              className={`relative font-bold rounded-tr-3xl  ptr py-3 md:py-4 px-4 md:px-8 ${
+                active ? "bg-blue-600 text-black" : active1
+              }`}
+            >
+              Annual Plan
+              {!active && (
+                <div className="absolute -bottom-2 h-[2px] w-full bg-blue-800 right-0"></div>
+              )}
+            </button>
           </div>
-          {/* Second Card */}
-          <div className="col-span-6 md:col-span-2 flex flex-col m-auto gap-6 px-6  lg:px-20  p-3 md:p-6 shadow-2xl  shadow-gray-700">
-            <h2 className="mb-2 text-2xl font-bold">Primium</h2>
-            <p className="flex items-center gap-4">
-              <FiCheck className="text-blue-700 font-extrabold mr-3" />{" "}
-              <span className="text-gray-800">First Offer</span>
-            </p>
-            <p className="flex items-center gap-4">
-              <FiCheck className="text-blue-700 font-extrabold mr-3" />{" "}
-              <span className="text-gray-800">Second Offer</span>
-            </p>
-            <p className="flex items-center gap-4">
-              <FiCheck className="text-blue-700 font-extrabold mr-3" />
-              <span className="text-gray-800">Third Offer</span>
-            </p>
-            <p className="flex items-center gap-4">
-              <FiCheck className="text-blue-700 font-extrabold mr-3" />
-              <span className="text-gray-800">Fourth Offer Offer</span>
-            </p>
-            <p className="flex items-center gap-4">
-              <FiCheck className="text-blue-700 font-extrabold mr-3" />
-              <span className="text-gray-800">5th Super Offer</span>
-            </p>
-            <div className="flex col-span-2 ">
-              <button className="bg-blue-900 text-lg m-auto text-white font-bold p-1 rounded-xl px-9 ptr hover:bg-blue-950 mt-7">
-                Order Now
-              </button>
-            </div>
+          <div className="mt-6 md:min-w-[350px] min-w-[225] ">
+            <TextField
+              id="credits"
+              label={active ? "Credits" : "Candidates / Year"}
+              variant="outlined"
+              margin="normal"
+              size="medium"
+              type="number"
+              value={credits}
+              fullWidth
+              onChange={handleChange}
+              slotProps={{ input: { min: 1 } }}
+            />
           </div>
-          {/* 3rd Card */}
-          <div className="col-span-6 md:col-span-2 flex flex-col m-auto gap-6 px-6  lg:px-20  p-3 md:p-6">
-            <h2 className="mb-2 text-2xl font-bold">Platinum</h2>
-            <p className="flex items-center gap-4">
-              <FiCheck className="text-blue-700 font-extrabold mr-3" />{" "}
-              <span className="text-gray-800">First Offer</span>
-            </p>
-            <p className="flex items-center gap-4">
-              <FiCheck className="text-blue-700 font-extrabold mr-3" />{" "}
-              <span className="text-gray-800">Second Offer</span>
-            </p>
-            <p className="flex items-center gap-4">
-              <FiCheck className="text-blue-700 font-extrabold mr-3" />
-              <span className="text-gray-800">Third Offer</span>
-            </p>
-            <p className="flex items-center gap-4">
-              <FiCheck className="text-blue-700 font-extrabold mr-3" />
-              <span className="text-gray-800">Fourth Offer Offer</span>
-            </p>
-            <p className="flex items-center gap-4">
-              <FiCheck className="text-blue-700 font-extrabold mr-3" />
-              <span className="text-gray-800">Alternate Offer</span>
-            </p>
-            <div className="flex col-span-2 ">
-              <button className="bg-blue-900 text-lg m-auto text-white font-bold p-1 rounded-xl px-9 ptr hover:bg-blue-950 mt-7">
-                Order Now
-              </button>
-            </div>
-          </div>
+          <button className="my-8 ptr bg-amber-600 hover:font-bold hover:bg-amber-700 p-2 md:p-4 md:px-12 px-6 rounded-xl">
+            Purchase
+          </button>
         </div>
       </div>
 

@@ -6,6 +6,8 @@ import AssessmentService from "../services/assessmentService";
 import duration from "dayjs/plugin/duration";
 import { useParams } from "react-router-dom";
 import profile_img from "../assets/profile_img.png";
+import { BsClockHistory } from "react-icons/bs";
+import { CgSandClock } from "react-icons/cg";
 dayjs.extend(duration);
 
 export default function AssessmentDetailPage() {
@@ -91,32 +93,48 @@ export default function AssessmentDetailPage() {
   };
 
   return (
-    <div className="p-4">
-      <div className="flex items-center justify-between px-5 p-3 max-w-[80%] bg-gray-400 rounded-full">
+    <div className="">
+      <div className="grid grid-cols-9 justify-items-center space-y-4 px-2 md:px-5 py-2 mb-3 md:mb-6 md:py-4 bg-gray-400 rounded-lg md:rounded-[1.5rem]">
         {/* Candidate Information */}
-        <div className="flex items-center gap-3">
-          <img className="h-14 w-14 rounded-full" src={profile_img} alt="" />
+        <div className="flex items-center gap-3 col-span-5">
+          <img
+            className="size-8 md:size-12 lg:size-14 rounded-full"
+            src={profile_img}
+            alt=""
+          />
           <div>
-            <p className="text-lg capitalize">{candidate.userName}</p>
-            <p className="text-12">{candidate.email}</p>
+            <p className="w-[calc(51px+5vw)] sm:w-auto text-sm md:text-lg truncate capitalize">
+              {candidate.userName}
+            </p>
+            <div className="w-[calc(51px+5vw)] sm:w-auto">
+              <p className="text-[8px] md:text-12 truncate">
+                {candidate.email}
+              </p>
+            </div>
           </div>
         </div>
         {/* Started */}
-        <div>
-          <p className="text-14">Test Started </p>
-          <p className="text-12 mt-2">
-            {start_time ? dayjs(start_time).format("D-MMM-YYYY HH:mm") : "-"}
-          </p>
+        <div className="col-span-4 flex gap-3 items-center">
+          <CgSandClock className="text-xl sm:text-2xl md:text-3xl  text-blue-800" />
+          <div>
+            <p className="text-sm md:text-14">Test Started </p>
+            <p className="text-10 md:text-12 mt-2">
+              {start_time ? dayjs(start_time).format("D-MMM-YYYY HH:mm") : "-"}
+            </p>
+          </div>
         </div>
         {/* Ens */}
-        <div>
-          <p className="text-14">Test Duration</p>
-          <p className="text-12 mt-2">{durationStr ? durationStr : "n/a"}</p>
+        <div className="flex items-center col-span-5 gap-3">
+          <BsClockHistory className="text-xl sm:text-2xl md:text-4xl  text-blue-800" />
+          <div>
+            <p className="text-sm md:text-14">Test Duration</p>
+            <p className="text-12 mt-2">{durationStr ? durationStr : "n/a"}</p>
+          </div>
         </div>
         {/* Scoring */}
-        <div>
-          <p className="text-14">Final Score</p>
-          <p className="text-12 mt-2">
+        <div className="col-span-4">
+          <p className="text-sm md:text-14">Final Score</p>
+          <p className="text-12 md:text-12 mt-2">
             {final_score ? `${final_score}%` : "-"}
           </p>
         </div>
@@ -133,14 +151,14 @@ export default function AssessmentDetailPage() {
           <p>Score</p>
         </div>
 
-        {Object.entries(catPercentages).map(([key, value]) => (
+        {/* {Object.entries(catPercentages).map(([key, value]) => (
           <div
             key={key}
             className="text-lg self-start flex justify-evenly w-full"
           >
             {key}: {value}
           </div>
-        ))}
+        ))} */}
       </div>
 
       {/* Questions and Answers */}
