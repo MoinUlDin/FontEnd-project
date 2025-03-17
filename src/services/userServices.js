@@ -69,14 +69,20 @@ class UserService {
       const errorData = error.response?.data;
       let errorMessage = "Registration failed. Please try again.";
       if (errorData) {
-        // Convert each error message array into a single string and join them
         errorMessage += Object.keys(errorData)
-          .map((field) => `${field}: ${errorData[field].join(", ")}`)
+          .map((field) => {
+            const fieldErrors = errorData[field];
+            const message = Array.isArray(fieldErrors)
+              ? fieldErrors.join(", ")
+              : fieldErrors.toString();
+            return `${field}: ${message}`;
+          })
           .join(" | ");
       }
       throw new Error(errorMessage);
     }
   }
+
   static async deleteUser(id, dispatch) {
     try {
       const response = await apiClient.delete(`users/delete/${id}/`);
