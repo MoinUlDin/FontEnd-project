@@ -80,7 +80,7 @@ function CompanyListItem({ id, name, credits, owner, email, fn }) {
         >
           <button
             onClick={toggleDropdown}
-            className="bg-blue-500 text-white py-1 px-2 rounded flex items-center gap-1"
+            className="bg-amber-600 ptr text-white py-1 px-2 rounded flex items-center gap-1"
           >
             Actions{" "}
             <ExpandMoreIcon

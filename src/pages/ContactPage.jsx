@@ -18,7 +18,7 @@ function ContactPage() {
         <div className="flex flex-col items-center mt-10">
           <TextField
             id="email"
-            label="Email"
+            label="Your Email"
             variant="outlined"
             size="small"
             name="name"

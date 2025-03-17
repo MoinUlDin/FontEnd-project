@@ -11,9 +11,11 @@ import Toast from "../components/childrens/FloatingMessage";
 function DTemplates() {
   const dispatch = useDispatch();
   const templates = useSelector((state) => state.templates.list);
+  const user = useSelector((state) => state.auth.user); // Get current user info
+  const [all, setAll] = useState(true);
   const [loading, setLoading] = useState(true);
   const inactiveClass = "border-b-1 border-gray-400 text-10";
-  const activeClass = "border-b-2 border-blue-400 font-bold text-12";
+  const activeClass = "border-b-2 border-blue-400 font-bold ";
   const [showAssessmentModal, setShowAssessmentModal] = useState(false);
   const [selectedTemplateId, setSelectedTemplateId] = useState(null);
   const [showToast, setShowToast] = useState(false);
@@ -49,6 +51,11 @@ function DTemplates() {
     }
   };
 
+  // Filter templates by created_by_id when "My Templates" is selected.
+  const filteredTemplates = all
+    ? templates
+    : templates.filter((template) => template.created_by_id === user.id);
+
   if (loading) {
     return (
       <div className="flex w-full h-full justify-center items-center">
@@ -58,8 +65,6 @@ function DTemplates() {
       </div>
     );
   }
-
-  console.log(templates);
 
   return (
     <div>
@@ -76,27 +81,37 @@ function DTemplates() {
         <div className="text-10 min-w-[20%] px-2 flex justify-between mr-2">
           <div>
             <button
-              className={`p-2 hover:cursor-pointer hover:-translate-y-0.5 transition-all duration-300 mb-1 `}
+              className={`p-2 ${
+                all ? "font-bold text-blue-800" : ""
+              } hover:cursor-pointer hover:-translate-y-0.5 transition-all duration-300 `}
+              onClick={() => setAll(true)}
             >
               All Templates
             </button>
-            <div className={`w-full ${activeClass}`}></div>
+            <div
+              className={`w-full ${all ? activeClass : inactiveClass}`}
+            ></div>
           </div>
           <div>
             <button
-              className={`p-2 hover:cursor-pointer hover:-translate-y-0.5 transition-all duration-300 mb-1`}
+              className={`p-2 ${
+                all ? "" : "font-bold text-blue-800"
+              } hover:cursor-pointer hover:-translate-y-0.5 transition-all duration-300`}
+              onClick={() => setAll(false)}
             >
               My Templates
             </button>
-            <div className={`w-full ${inactiveClass}`}></div>
+            <div
+              className={`w-full ${all ? inactiveClass : activeClass}`}
+            ></div>
           </div>
         </div>
       </div>
 
       <div className="max-w-dash-lg mt-8 ">
         <PrimaryListHeader title="name" />
-        {Array.isArray(templates) &&
-          templates.map((item) => (
+        {filteredTemplates.length > 0 ? (
+          filteredTemplates.map((item) => (
             <PrimaryListItem
               key={item.id}
               id={item.id}
@@ -105,7 +120,12 @@ function DTemplates() {
               createdby={item.created_by}
               onInvite={handleInvite}
             />
-          ))}
+          ))
+        ) : (
+          <h1 className="text-center text-xl font-semibold mt-8">
+            You haven't created a template yet.
+          </h1>
+        )}
         <div className="my-18 min-h-3"></div>
       </div>
 
@@ -126,7 +146,7 @@ function DTemplates() {
           selectedTemplateId={selectedTemplateId}
         />
       )}
-      {/* show floating messsage */}
+      {/* Show floating message */}
       {showToast && <Toast message={apiResponse} />}
     </div>
   );
