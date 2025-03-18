@@ -187,7 +187,7 @@ export default function AssessmentDataTable() {
 
   if (loading) {
     return (
-      <div className="text-2xl flex gap-5">
+      <div className="text-xl md:text-[3rem] mt-10 md:mt-20 font-bold flex gap-5 items-center justify-center ">
         <ImSpinner10 className="animate-spin" />
         <span>Loading assessments...</span>
       </div>

@@ -7,6 +7,7 @@ import FilterBy from "../components/childrens/FilterBy";
 import CreateTemplateModal from "../components/CreateTemplateModel"; // Import the new modal
 import CreateAssessmentModel from "../components/CreateAssessmentModel";
 import Toast from "../components/childrens/FloatingMessage";
+import { ImSpinner10 } from "react-icons/im";
 
 function DTemplates() {
   const dispatch = useDispatch();
@@ -58,10 +59,9 @@ function DTemplates() {
 
   if (loading) {
     return (
-      <div className="flex w-full h-full justify-center items-center">
-        <h1 className="text-4xl text-black font-bold mt-5 md:mt-14">
-          Loading Templates ...
-        </h1>
+      <div className="flex text-[3rem] mt-10 md:mt-20 w-full h-full justify-center gap-5 items-center">
+        <ImSpinner10 className="animate-spin" />
+        <h1 className=" text-black font-bold ">Loading Templates . . .</h1>
       </div>
     );
   }

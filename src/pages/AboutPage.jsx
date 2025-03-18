@@ -13,12 +13,12 @@ import Navebar from "../components/Navebar";
 
 const AboutPage = () => {
   return (
-    <>
+    <div className="bg-white">
       <Navebar />
       <Container maxWidth="lg" sx={{ py: 8 }}>
         {/* Hero Section */}
         <Box sx={{ textAlign: "center", mb: 8, font: "bold" }}>
-          <h1 className="text-5xl font-extrabold text-blue-900">
+          <h1 className=" text-5xl font-extrabold text-blue-900">
             Welcome to Vista
           </h1>
           <Typography variant="h5" color="textSecondary">
@@ -156,7 +156,7 @@ const AboutPage = () => {
         </Box>
       </Container>
       <Footer />
-    </>
+    </div>
   );
 };
 

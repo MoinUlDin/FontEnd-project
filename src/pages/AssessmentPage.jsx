@@ -83,9 +83,9 @@ export default function AssessmentPage() {
 
   if (loading) {
     return (
-      <div className="text-2xl flex gap-5">
+      <div className="text-4xl font-extrabold flex gap-5">
         <ImSpinner10 className="animate-spin" />
-        <span>Loading assessments...</span>
+        <h1>Loading assessments...</h1>
       </div>
     );
   }
