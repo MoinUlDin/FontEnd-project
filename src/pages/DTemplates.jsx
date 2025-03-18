@@ -55,8 +55,9 @@ function DTemplates() {
   // Filter templates by created_by_id when "My Templates" is selected.
   const filteredTemplates = all
     ? templates
-    : templates.filter((template) => template.created_by_id === user.id);
+    : templates.filter((template) => template.created_by_id === user.userId);
 
+  console.log("user ID", user.userId);
   if (loading) {
     return (
       <div className="flex text-[3rem] mt-10 md:mt-20 w-full h-full justify-center gap-5 items-center">
@@ -122,7 +123,7 @@ function DTemplates() {
             />
           ))
         ) : (
-          <h1 className="text-center text-xl font-semibold mt-8">
+          <h1 className="text-center text-xl font-semibold mt-10">
             You haven't created a template yet.
           </h1>
         )}

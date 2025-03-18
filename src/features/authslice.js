@@ -14,12 +14,20 @@ const authSlice = createSlice({
   reducers: {
     // Action to store all the authentication data
     login(state, action) {
-      const { access_token, refresh_token, user_name, email, company, role } =
-        action.payload;
+      const {
+        access_token,
+        user_id,
+        refresh_token,
+        user_name,
+        email,
+        company,
+        role,
+      } = action.payload;
       state.accessToken = access_token;
       state.refreshToken = refresh_token;
       state.user = {
         userName: user_name,
+        userId: user_id,
         email,
         company,
         role,
