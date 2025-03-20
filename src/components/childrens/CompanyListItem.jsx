@@ -3,7 +3,7 @@ import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import CompanyForm from "../Forms/CompanyForm";
 import apiClient from "../../services/apiClient";
 
-function CompanyListItem({ id, name, credits, owner, email, fn }) {
+function CompanyListItem({ id, name, credits, owner, email, fn, showToast }) {
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [modalOpen, setModalOpen] = useState(false);
   const [modalAction, setModalAction] = useState("");
@@ -49,6 +49,7 @@ function CompanyListItem({ id, name, credits, owner, email, fn }) {
       // Make the PATCH request using the company id.
       const response = await apiClient.patch(`company/${id}/`, payload);
       fn(); // call parent's fetch function to update the list
+      showToast(true);
       console.log("Update successful:", response.data);
     } catch (error) {
       console.error("Error updating company:", error);
@@ -101,7 +102,7 @@ function CompanyListItem({ id, name, credits, owner, email, fn }) {
                 className="px-4 py-2 hover:bg-gray-100 cursor-pointer"
                 onClick={() => openModalForAction("addCredits")}
               >
-                Add Credits
+                Update Credits
               </li>
               <li className="px-4 py-2 hover:bg-gray-100 cursor-pointer">
                 Delete

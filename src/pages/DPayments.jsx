@@ -4,6 +4,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { fetchList } from "../features/companySlice";
 import apiClient from "../services/apiClient";
 import CompanyListItem from "../components/childrens/CompanyListItem";
+import Toast from "../components/childrens/FloatingMessage";
 
 function DPayments() {
   const [redeemCode, setRedeemCode] = useState("");
@@ -14,9 +15,9 @@ function DPayments() {
   const dispatch = useDispatch();
   const user = useSelector((state) => state.auth.user);
   const companies = useSelector((state) => state.company.list);
+  const [showToast, setShowToast] = useState(false);
 
   const fetchcompanylist = () => {
-    console.log("fn is called");
     setLoading(true);
     apiClient
       .get("company/")
@@ -65,7 +66,8 @@ function DPayments() {
         type: "success",
         text: response.data.message || "Code redeemed successfully!",
       });
-      setRedeemCode(""); // Clear the input field
+      setRedeemCode("");
+      setShowToast(true);
     } catch (error) {
       setMessage({
         type: "error",
@@ -103,10 +105,13 @@ function DPayments() {
               email={item.ownerEmail}
               credits={item.credits}
               fn={fetchcompanylist}
+              showToast={setShowToast}
             />
           ))}
           <div className="mt-24"></div>
         </div>
+
+        {showToast && <Toast message={"Action successfull"} />}
       </div>
     );
   }
@@ -169,17 +174,6 @@ function DPayments() {
 
       <div className="flex flex-col gap-4 justify-center w-full items-center mt-10">
         <h4>Have a Redeem Code?</h4>
-        <div className="flex gap-3">
-          <TextField
-            label="Your Redeem Code"
-            size="small"
-            value={redeemCode}
-            onChange={(e) => setRedeemCode(e.target.value)}
-          />
-          <Button onClick={handleSubmit} variant="contained" size="small">
-            Submit
-          </Button>
-        </div>
         {message && (
           <p
             className={`mt-2 text-sm ${
@@ -189,7 +183,20 @@ function DPayments() {
             {message.text}
           </p>
         )}
+        <div className="flex gap-3">
+          <TextField
+            label="Your Redeem Code"
+            size="small"
+            value={redeemCode}
+            onChange={(e) => setRedeemCode(e.target.value)}
+          />
+
+          <Button onClick={handleSubmit} variant="contained" size="small">
+            Submit
+          </Button>
+        </div>
       </div>
+      <div className="mt-20"></div>
     </div>
   );
 }
