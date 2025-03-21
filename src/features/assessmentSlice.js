@@ -5,6 +5,7 @@ const initialState = {
   selectedAssessment: null,
   details: {},
   testData: null,
+  difficultyLevels: [],
 };
 
 const assessmentSlice = createSlice({
@@ -31,6 +32,9 @@ const assessmentSlice = createSlice({
       const { id } = action.payload;
       delete state.assessments[id]; // Remove the assessment from the object
     },
+    setDifficultyLevels: (state, action) => {
+      state.difficultyLevels = action.payload;
+    },
   },
 });
 
@@ -40,5 +44,6 @@ export const {
   setTestData,
   deleteAssessment,
   setAssessmentDetail,
+  setDifficultyLevels,
 } = assessmentSlice.actions;
 export default assessmentSlice.reducer;

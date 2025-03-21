@@ -5,6 +5,7 @@ import {
   deleteAssessment,
   setAssessmentDetail,
 } from "../features/assessmentSlice";
+
 class AssessmentService {
   static async fetchAssessments(dispatch) {
     try {

@@ -2,12 +2,16 @@
 import React, { useState, useEffect } from "react";
 import apiClient from "../services/apiClient"; // Axios instance
 import { ImSpinner10 } from "react-icons/im";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Autocomplete, TextField } from "@mui/material";
+import { setDifficultyLevels } from "../features/assessmentSlice";
 
 function DSettings() {
-  const [difficultyLevels, setDifficultyLevels] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const dispatch = useDispatch();
+  const difficultyLevels = useSelector(
+    (state) => state.assessment.difficultyLevels
+  );
+  const [loading, setLoading] = useState(false);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState("");
   const [message, setMessage] = useState("");
@@ -28,20 +32,21 @@ function DSettings() {
   }, [user]);
 
   // Fetch the difficulty levels when the component mounts.
+
   useEffect(() => {
-    setLoading(true);
-    apiClient
-      .get("/tests/difficulty_levels/")
-      .then((response) => {
-        // Assuming response.data is an array of level objects
-        setDifficultyLevels(response.data);
-      })
-      .catch((err) => {
-        console.error(err);
-        setError("Error fetching difficulty levels");
-      })
-      .finally(() => setLoading(false));
-  }, []);
+    if (difficultyLevels.length === 0) {
+      setLoading(true);
+      apiClient
+        .get("/tests/difficulty_levels/")
+        .then((response) => {
+          dispatch(setDifficultyLevels(response.data));
+        })
+        .catch((err) => {
+          console.error("Error fetching difficulty levels:", err);
+        })
+        .finally(() => setLoading(false));
+    }
+  }, [dispatch, difficultyLevels]);
 
   // Load preferred difficulty from localStorage for the current user
   useEffect(() => {
