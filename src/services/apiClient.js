@@ -10,7 +10,7 @@ class ApiClient {
       headers: { "Content-Type": "application/json" },
     });
 
-    // Request interceptor: Attach access token from localStorage.
+    // Request interceptor: Attach access token from localStorage .
     this.client.interceptors.request.use(
       (config) => {
         const userData = JSON.parse(localStorage.getItem("userData"));
