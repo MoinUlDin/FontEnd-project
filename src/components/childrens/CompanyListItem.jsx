@@ -50,7 +50,6 @@ function CompanyListItem({ id, name, credits, owner, email, fn, showToast }) {
       const response = await apiClient.patch(`company/${id}/`, payload);
       fn(); // call parent's fetch function to update the list
       showToast(true);
-      console.log("Update successful:", response.data);
     } catch (error) {
       console.error("Error updating company:", error);
     } finally {

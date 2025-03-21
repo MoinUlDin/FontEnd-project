@@ -1,7 +1,8 @@
 // services/userServices.js
 import { ErrorOutline } from "@mui/icons-material";
-import apiClient from "./apiClient"; // Assuming apiClient is set up with Axios
+import apiClient from "./apiClient"; // set up with Axios
 import { setUserList, deleteUser } from "../features/authslice";
+
 class UserService {
   // Login Method
   static async loginUser(formData) {
@@ -28,15 +29,11 @@ class UserService {
     }
   }
   static async inviteUser(payload) {
-    console.log("we are in request");
     try {
-      console.log("sending request");
       const response = await apiClient.post("users/invite/", payload);
-      console.log("reqeust successfull");
+
       return response.data;
     } catch (error) {
-      console.log("we got error ");
-
       throw error;
     }
   }

@@ -9,9 +9,7 @@ function EditAbleList({ title, id, weight, questions, bin, checkbox }) {
   const dispatch = useDispatch();
   const editTemplate = useSelector((state) => state.templates.editTemplate);
   const [isExpanded, setIsExpanded] = useState(false);
-  useEffect(() => {
-    console.log("rerendering");
-  }, [editTemplate]);
+
   const toggleExpand = () => {
     setIsExpanded((prev) => !prev);
   };

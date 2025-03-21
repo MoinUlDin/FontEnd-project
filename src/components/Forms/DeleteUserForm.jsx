@@ -27,7 +27,6 @@ const DeleteUserForm = ({ userList, emailList, onClose, setApiResponse }) => {
       }
     });
     // Call your invite API endpoint
-    console.log("Id we are sending: ", id);
     userServices
       .deleteUser(id, dispatch)
       .then(() => {

@@ -16,11 +16,9 @@ const templatesSlice = createSlice({
     },
     editTempInit(state) {
       // Deep copy the detailedTemplate into editTemplate
-      console.log("tempinit get called");
       state.editTemplate = JSON.parse(JSON.stringify(state.detailedTemplate));
     },
     addCategory(state, action) {
-      console.log("addCategory get called");
       // Ensure categories exists on editTemplate
       if (!state.editTemplate.categories) {
         state.editTemplate.categories = [];

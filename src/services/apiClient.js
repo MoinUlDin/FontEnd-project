@@ -37,7 +37,6 @@ class ApiClient {
           const userData = JSON.parse(localStorage.getItem("userData"));
           if (userData?.refreshToken) {
             try {
-              console.log("We are in");
               // Step 2: Send request to refresh the token.
               const refreshResponse = await this.client.post(
                 "/api/token/refresh/",

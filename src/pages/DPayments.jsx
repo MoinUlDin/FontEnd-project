@@ -76,7 +76,6 @@ function DPayments() {
     }
   };
 
-  console.log("Companies:", companies);
   // Check if the user is admin or super-admin (case-insensitive)
   if (user && user.role.toLowerCase().includes("admin")) {
     return (

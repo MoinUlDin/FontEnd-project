@@ -57,7 +57,6 @@ function DTemplates() {
     ? templates
     : templates.filter((template) => template.created_by_id === user.userId);
 
-  console.log("user ID", user.userId);
   if (loading) {
     return (
       <div className="flex text-[3rem] mt-10 md:mt-20 w-full h-full justify-center gap-5 items-center">

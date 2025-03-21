@@ -13,6 +13,7 @@ const categorySlice = createSlice({
   reducers: {
     setCategoryList(state, action) {
       state.list = action.payload;
+      console.log(action.payload);
     },
     setDetailedCategory(state, action) {
       const { id, data } = action.payload;

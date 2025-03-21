@@ -25,10 +25,6 @@ export default function AssessmentDetailPage() {
   useEffect(() => {
     if (id) {
       setLoading(true);
-      console.log(
-        "calling AssessmentService to fetch assessment details. ID:",
-        id
-      );
       AssessmentService.fetchAssessmentDetail(id, dispatch)
         .catch((err) => {
           setError(true);
@@ -72,7 +68,6 @@ export default function AssessmentDetailPage() {
   const catPercentages = category_percentages || {};
   const selQuestions = selected_questions || [];
   const ans = answers || [];
-  console.log(catPercentages);
   // Compute duration if test is finished (end_time exists)
   let durationStr = "";
   if (start_time && end_time) {
