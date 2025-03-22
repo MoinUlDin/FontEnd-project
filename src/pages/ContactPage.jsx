@@ -22,6 +22,7 @@ function ContactPage() {
             variant="outlined"
             size="small"
             name="name"
+            sx={"min-width:300px"}
           />
           <TextField
             label="Your Message"

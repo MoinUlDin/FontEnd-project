@@ -9,7 +9,7 @@ function Footer() {
         <Logo css="h-18 md:h-20 lg:h-26" />
       </div>
       <div className="col-span-6 md:col-span-2 place-self-center">
-        <Primarybtn>Contact Us Now</Primarybtn>
+        <Primarybtn chref="/contact">Contact Us Now</Primarybtn>
       </div>
       <ul className="col-span-3 mb-10  md:col-span-1 flex flex-col ">
         <Link className="listItem">BUY CREDITS</Link>

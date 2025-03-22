@@ -1,6 +1,5 @@
 import React from "react";
 import Title from "./childrens/Title";
-import logo from "../assets/react.svg";
 import Paragraph from "./childrens/Paragraph";
 import Primarybtn from "./childrens/Primarybtn";
 import PrimaryShellbtn from "./childrens/PrimaryShellbtn";
@@ -32,7 +31,7 @@ function HeroSection() {
         </Paragraph>
         <div className="flex ">
           <Primarybtn chref="/register">Sign Up</Primarybtn>
-          <PrimaryShellbtn chref="/register">Contact Us</PrimaryShellbtn>
+          <PrimaryShellbtn chref="/contact">Contact Us</PrimaryShellbtn>
         </div>
       </div>
 

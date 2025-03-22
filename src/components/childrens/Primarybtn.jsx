@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
-function Primarybtn({ children, chref = "/home", css = "" }) {
+function Primarybtn({ children, chref = "/", css = "" }) {
   return (
     <Link
       to={chref}

@@ -5,16 +5,24 @@ import { TextField } from "@mui/material";
 
 function CreateTemplateModal({ onClose, onSubmit }) {
   const [errorMessage, setErrorMessage] = useState("");
+
   const [formData, setFormData] = useState({
     name: "",
     description: "",
+    is_predefined: false, // default value for the checkbox
   });
-
+  // Expected format for templates:
+  //   {
+  //     "name": "Universal Template",
+  //     "description": "this is a template about Universe",
+  //     "is_predefined": true
+  //   }
   const handleChange = (e) => {
-    const { name, value } = e.target;
+    const { name, value, type, checked } = e.target;
+    const newValue = type === "checkbox" ? checked : value;
     setFormData((prevData) => ({
       ...prevData,
-      [name]: value,
+      [name]: newValue,
     }));
 
     // Optionally clear error message when user types valid input
@@ -73,15 +81,28 @@ function CreateTemplateModal({ onClose, onSubmit }) {
                 className="md:min-w-input-width min-h-[5rem] py-2 max-h-[125px] border-2 border-gray-300 rounded-md px-4 text-sm focus:border-blue-500 focus:outline-none w-full"
                 name="description"
                 id="templateDescription"
-                label="Description"
                 placeholder="Description (optional)"
                 value={formData.description}
                 onChange={handleChange}
               ></textarea>
             </div>
+            <div className="mt-5 w-full flex items-center">
+              <input
+                type="checkbox"
+                id="is_predefined"
+                name="is_predefined"
+                checked={formData.is_predefined}
+                onChange={handleChange}
+                className="mr-2"
+              />
+              <label htmlFor="is_predefined" className="text-sm font-medium">
+                Predefined Template
+              </label>
+            </div>
             <div className="flex justify-center mt-6">
               <button
                 type="submit"
+                disabled={false}
                 className="bg-sunglow mb-4 hover:bg-blue-700 hover:cursor-pointer text-white px-4 py-2 rounded-lg mr-2"
               >
                 Save
