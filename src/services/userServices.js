@@ -14,7 +14,9 @@ class UserService {
         refreshToken: data.refresh_token,
         userName: data.user_name,
         email: data.email,
+        userId: data.user_id,
         company: data.company,
+        companyId: data.companyID || none,
         role: data.role,
       };
 

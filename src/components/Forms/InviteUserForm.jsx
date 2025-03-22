@@ -6,7 +6,7 @@ import { useDispatch } from "react-redux";
 import UserService from "../../services/userServices";
 import { ImSpinner4, ImSpinner5, ImSpinner6, ImSpinner8 } from "react-icons/im";
 
-const InviteUserForm = ({ setApiResponse, onClose }) => {
+const InviteUserForm = ({ setApiResponse, onClose, setShowToast = none }) => {
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
   const {
@@ -25,9 +25,11 @@ const InviteUserForm = ({ setApiResponse, onClose }) => {
     setLoading(true);
     UserService.inviteUser({ email: data.email })
       .then((res) => {
-        setApiResponse({ errors: false, message: res.message });
+        setApiResponse({ errors: true, message: "User Invited Successfully" });
         reset();
         onClose();
+        setShowToast ? setShowToast(true) : "";
+        UserService.fetchUserList(dispatch);
       })
       .catch((error) => {
         let errorMessage = "Error inviting user";

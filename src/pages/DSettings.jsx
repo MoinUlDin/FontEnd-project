@@ -134,7 +134,7 @@ function DSettings() {
               </thead>
               <tbody>
                 {difficultyLevels.map((levelObj) => (
-                  <tr key={levelObj.level} className="border-b">
+                  <tr key={levelObj.level} className="border-b border-gray-300">
                     <td className="px-4 py-2">{levelObj.level}</td>
                     <td className="px-4 py-2">
                       <input

@@ -2,11 +2,12 @@ import React, { useState, useEffect, useRef } from "react";
 import { Outlet } from "react-router-dom";
 import Sidebar from "./Sidebar";
 import { useSelector, useDispatch } from "react-redux";
-import { logoutAndClear } from "../features/authslice";
+import { logoutAndClear, login } from "../features/authslice";
 import defualt_img from "../assets/profile_img.png";
 import { useNavigate, useLocation, Link } from "react-router-dom";
 import apiClient from "../services/apiClient";
 import { fetchList } from "../features/companySlice";
+
 const DashboardLayout = () => {
   // Access user data from Redux store
   const user = useSelector((state) => state.auth.user);
@@ -17,6 +18,34 @@ const DashboardLayout = () => {
   const [showCredits, setShowCredits] = useState(false);
   const [loading, setLoading] = useState(false);
 
+  useEffect(() => {
+    if (!user) {
+      const userdata = localStorage.getItem("userData");
+      if (userdata) {
+        try {
+          const parsedData = JSON.parse(userdata);
+          const parsedUser = {
+            user_name: parsedData.userName,
+            email: parsedData.email,
+            user_id: parsedData.userId,
+            company: parsedData.company,
+            companyID: parsedData.companyId,
+            role: parsedData.role,
+          };
+          console.log("sending user data:", parsedUser);
+          // Dispatch the login action to update the Redux store.
+          dispatch(login(parsedUser));
+        } catch (error) {
+          console.error("Error parsing stored user data:", error);
+          dispatch(logoutAndClear());
+          navigate("/");
+        }
+      } else {
+        dispatch(logoutAndClear());
+        navigate("/");
+      }
+    }
+  }, [user]);
   useEffect(() => {
     if (user?.role === "ADMIN" || user?.role === "SUPER_ADMIN") {
       setShowCredits(false);

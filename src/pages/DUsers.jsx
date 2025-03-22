@@ -138,7 +138,7 @@ function DUsers() {
           <Toast message={apiResponse.message} onClose={setShowToast} />
         </div>
       )}
-      {/* User Invitation Form */}
+      {/* User delete Form */}
       {deleteVisible && (
         <DeleteUserForm
           emailList={emailList}
@@ -149,7 +149,11 @@ function DUsers() {
       )}
       {/* User Invitation Form */}
       {inviteVisible && (
-        <InviteUserForm onClose={onClose} setApiResponse={setApiResponse} />
+        <InviteUserForm
+          onClose={onClose}
+          setShowToast={setShowToast}
+          setApiResponse={setApiResponse}
+        />
       )}
     </div>
   );

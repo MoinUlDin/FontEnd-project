@@ -21,6 +21,7 @@ const authSlice = createSlice({
         user_name,
         email,
         company,
+        companyID = none,
         role,
       } = action.payload;
       state.accessToken = access_token;
@@ -28,8 +29,9 @@ const authSlice = createSlice({
       state.user = {
         userName: user_name,
         userId: user_id,
-        email,
+        companyId: companyID,
         company,
+        email,
         role,
       };
     },
