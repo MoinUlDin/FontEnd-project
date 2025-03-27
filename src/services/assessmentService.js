@@ -47,6 +47,24 @@ class AssessmentService {
     }
   }
 
+  static async updateAssessmentStatus(id, payload, dispatch) {
+    try {
+      console.log("payload:", payload);
+      const response = await apiClient.patch(`tests/test_instances/${id}/`, {
+        candidate_status: payload,
+      });
+
+      // Option 1: Update the entire assessments list:
+      await AssessmentService.fetchAssessments(dispatch);
+      // Option 2: Alternatively, if you have an update action in your reducer,
+      // you can dispatch that here with the new data.
+      return response.data;
+    } catch (error) {
+      console.error("Error updating assessment:", error);
+      throw error;
+    }
+  }
+
   // You can add additional methods (create, update, delete) here as needed.
 }
 

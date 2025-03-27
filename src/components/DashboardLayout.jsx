@@ -119,13 +119,13 @@ const DashboardLayout = () => {
       </aside>
 
       {/* Main content area */}
-      <main className="flex-1 bg-gray-100">
+      <div className="flex-1 overflow-hidden bg-gray-100 w-[calc(100svw - 200px)]">
         {/* Sticky header with user info */}
         <div className="sticky top-0 z-10 bg-gray-100 p-4 flex justify-between items-center border-b border-gray-200">
           <h1 className="hidden md:block text-2xl font-bold">{title}</h1>
 
           {showCredits && (
-            <div className="flex gap-2 justify-center items-center text-2xl md:text-lg font-bold ">
+            <div className="flex gap-0.5 sm:gap-2 justify-center items-center text-sm  md:text-lg font-bold ">
               <span>Credits:</span>
               <span className="flex justify-between items-center gap-1 ptr">
                 {company[0]?.credits}
@@ -142,15 +142,17 @@ const DashboardLayout = () => {
               className="flex items-center hover:cursor-pointer focus:outline-none mr-2 md:mr-4"
             >
               <div className="flex flex-col items-center justify-end">
-                <span className="ml-2 capitalize mr-2 md:mr-4 font-medium text-gray-700">
+                <span className="ml-2 capitalize mr-2 md:mr-4 sm:text-[12px] sm:text-sm md:text-lg font-medium text-gray-700">
                   {user?.userName || "User"}
                 </span>
-                <span className="text-[10px] italic ">{user?.company}</span>
+                <span className="text-[8px] sm:text-[10px] italic ">
+                  {user?.company}
+                </span>
               </div>
               <img
                 src={user?.profilePicture || defualt_img}
                 alt="Profile"
-                className="w-8 h-8 rounded-full hover:scale-110"
+                className=" size-6 sm:size-8 rounded-full hover:scale-110"
               />
             </button>
             {dropdownOpen && (
@@ -179,10 +181,10 @@ const DashboardLayout = () => {
         </div>
 
         {/* Dynamic main content rendered here */}
-        <div className="p-6">
+        <div className="md:p-6 sm:p-4 p-1">
           <Outlet />
         </div>
-      </main>
+      </div>
     </div>
   );
 };

@@ -21,7 +21,9 @@ function LoginPage() {
 
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState("");
-
+  useEffect(() => {
+    localStorage.removeItem("userData");
+  }, []);
   // Local state to toggle password visibility
   const [showPassword, setShowPassword] = useState(false);
 

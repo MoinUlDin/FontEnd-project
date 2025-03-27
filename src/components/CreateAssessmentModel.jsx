@@ -101,7 +101,7 @@ function CreateAssessmentModel({ onClose, selectedTemplateId }) {
         className="absolute inset-0 bg-black opacity-60"
         onClick={onClose}
       ></div>
-      <div className="relative bg-white rounded-2xl overflow-hidden min-h-90 z-10 min-w-[800px] border-2 border-amber-700">
+      <div className="relative bg-white rounded-2xl overflow-hidden min-h-90 z-10 max-w-[95svw] border-2 border-amber-700">
         {/* Header */}
         <div className="text-xl flex px-3 md:px-5 justify-between font-bold bg-black py-4 text-white">
           <h2>Create Assessment</h2>
@@ -111,17 +111,17 @@ function CreateAssessmentModel({ onClose, selectedTemplateId }) {
         </div>
         {/* Form */}
         <form
-          className="grid grid-cols-9 min-h-[320px]"
+          className="grid grid-cols-9 max-h-[90svh] overflow-auto"
           onSubmit={handleSubmit(onSubmit)}
         >
-          <div className="h-full col-span-3 bg-orange-300">
+          <div className="h-full col-span-3 hidden md:block bg-orange-300">
             <img src={sideimg} alt="side" />
           </div>
-          <div className="col-span-6">
+          <div className="col-span-9 md:col-span-6">
             {/* form input container */}
             <div className="grid grid-cols-2  justify-center px-4">
               {/* form inner left side */}
-              <div className="flex flex-col max-w-50  mr-10 mt-6">
+              <div className="flex flex-col max-w-50 col-span-2 xs:col-span-1  mr-10 mt-6">
                 {/* Candidate Email */}
                 <div className="w-full">
                   <TextField
@@ -176,7 +176,7 @@ function CreateAssessmentModel({ onClose, selectedTemplateId }) {
                 </div>
               </div>
               {/* form inner right side */}
-              <div className="flex flex-col">
+              <div className="flex flex-col col-span-2 xs:col-span-1">
                 {/* Difficulty Level Autocomplete */}
                 <div className="mt-5 w-full">
                   <Controller

@@ -50,7 +50,7 @@ const Toast = ({ message, duration = 5, onClose, className }) => {
     const totalDelay = duration * 1000 + 600;
     const timer = setTimeout(() => {
       setShow(false);
-      setTimeout(onClose, 300);
+      setTimeout(onClose(), 300);
     }, totalDelay);
     return () => clearTimeout(timer);
   }, [duration, onClose]);

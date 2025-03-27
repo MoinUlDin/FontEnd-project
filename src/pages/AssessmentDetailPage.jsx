@@ -8,6 +8,7 @@ import { useParams } from "react-router-dom";
 import profile_img from "../assets/profile_img.png";
 import { BsClockHistory } from "react-icons/bs";
 import { CgSandClock } from "react-icons/cg";
+import { VscWorkspaceTrusted } from "react-icons/vsc";
 dayjs.extend(duration);
 
 export default function AssessmentDetailPage() {
@@ -20,7 +21,7 @@ export default function AssessmentDetailPage() {
   // Get assessment details from Redux store.
   // (Assuming that the details are stored once fetched in state.assessment.details)
   const assessment = useSelector((state) => state.assessment.details);
-
+  console.log("assessment", assessment);
   // Fetch assessment details once when the component mounts (or when id changes)
   useEffect(() => {
     if (id) {
@@ -88,20 +89,22 @@ export default function AssessmentDetailPage() {
   };
 
   return (
-    <div className="">
-      <div className="grid grid-cols-9 justify-items-center space-y-4 px-2 md:px-5 py-2 mb-3 md:mb-6 md:py-4 bg-gray-400 rounded-lg md:rounded-[1.5rem]">
+    <div
+      className={`overflow-scroll md:h-[calc(100svh-140px)] h-[calc(100svh-110px)]`}
+    >
+      <div className="grid grid-cols-9 justify-items-center space-y-4 px-2 md:px-5 py-2 mb-3 md:mb-6 md:py-4 bg-gray-400 rounded-lg md:rounded-[1.5rem] max-w-[90svw] mx-auto md:max-w-[70svw]">
         {/* Candidate Information */}
-        <div className="flex items-center gap-3 col-span-5">
+        <div className="flex items-center gap-3 col-span-9 xs:col-span-5">
           <img
             className="size-8 md:size-12 lg:size-14 rounded-full"
             src={profile_img}
             alt=""
           />
           <div>
-            <p className="w-[calc(51px+5vw)] sm:w-auto text-sm md:text-lg truncate capitalize">
+            <p className="w-[calc(85px+5vw)] sm:w-auto text-sm md:text-lg truncate capitalize">
               {candidate.userName}
             </p>
-            <div className="w-[calc(51px+5vw)] sm:w-auto">
+            <div className="w-[calc(85px+5vw)] sm:w-auto">
               <p className="text-[8px] md:text-12 truncate">
                 {candidate.email}
               </p>
@@ -109,7 +112,7 @@ export default function AssessmentDetailPage() {
           </div>
         </div>
         {/* Started */}
-        <div className="col-span-4 flex gap-3 items-center">
+        <div className="col-span-9 xs:col-span-4 flex gap-3 items-center">
           <CgSandClock className="text-xl sm:text-2xl md:text-3xl  text-blue-800" />
           <div>
             <p className="text-sm md:text-14">Test Started </p>
@@ -119,7 +122,7 @@ export default function AssessmentDetailPage() {
           </div>
         </div>
         {/* Ens */}
-        <div className="flex items-center col-span-5 gap-3">
+        <div className="flex items-center gap-3 col-span-9 xs:col-span-5 ">
           <BsClockHistory className="text-xl sm:text-2xl md:text-4xl  text-blue-800" />
           <div>
             <p className="text-sm md:text-14">Test Duration</p>
@@ -127,38 +130,45 @@ export default function AssessmentDetailPage() {
           </div>
         </div>
         {/* Scoring */}
-        <div className="col-span-4">
-          <p className="text-sm md:text-14">Final Score</p>
-          <p className="text-12 md:text-12 mt-2">
-            {final_score ? `${final_score}%` : "-"}
-          </p>
+        <div className="flex items-center gap-5 xs:gap-3 col-span-9 xs:col-span-4">
+          <VscWorkspaceTrusted className="text-xl md:text-3xl  text-blue-800" />
+          <div>
+            <p className="text-sm md:text-14">Final Score</p>
+            <p className="text-12 md:text-12 mt-2">
+              {final_score ? `${final_score}%` : "-"}
+            </p>
+          </div>
         </div>
       </div>
 
       {/* Category Percentages */}
-      <div className="md:mt-10 mb-3 p-3 md:mb-15 md:p-5 w-[80%] bg-gray-700 rounded-tl-[5rem]  rounded-br-[5rem] flex flex-col items-center text-blue-200">
-        <h2 className="text-2xl font-bold mb-2 pb-2 border-b border-gray-500">
+      <div className="mt-10 md:mt-18 lg:mt-22 mb-3 p-3 md:mb-15 md:p-5 bg-gray-600 lg:rounded-tl-[5rem]  lg:rounded-br-[5rem] rounded-br-2xl rounded-tl-3xl md:rounded-br-4xl md:rounded-tl-4xl flex flex-col items-center text-blue-200 max-w-[90svw] mx-auto md:max-w-[70svw]">
+        <h2 className="text-lg sm:text-xl md:text-2xl  font-bold mb-2 pb-2 border-b border-gray-500">
           Category Percentages
         </h2>
-        <div className="self-start flex justify-evenly w-full">
-          <p>Name</p>
-          <p>Questions</p>
-          <p>Score</p>
-        </div>
-
-        {/* {Object.entries(catPercentages).map(([key, value]) => (
-          <div
-            key={key}
-            className="text-lg self-start flex justify-evenly w-full"
-          >
-            {key}: {value}
+        <div className="mx-auto min-w-[80%] md:min-w-[90%] px-2 text-[10px] xs:text-sm sm:text-xl md:text-2xl">
+          <div className="grid grid-cols-3 content-center text-gray-200 w-full font-bold">
+            <p>Name</p>
+            <p>Questions</p>
+            <p>Score</p>
           </div>
-        ))} */}
+          {Object.entries(catPercentages).map(([categoryName, stats]) => (
+            <div key={categoryName} className="grid grid-cols-3 w-full ">
+              <p className="">{categoryName}</p>
+              <p className="">{stats.total_questions}</p>
+              <p className="">
+                {parseInt((stats.score / stats.weight) * 100)} %
+              </p>
+            </div>
+          ))}
+        </div>
       </div>
 
       {/* Questions and Answers */}
       <div>
-        <h2 className="text-xl font-bold mb-2">Questions and Answers</h2>
+        <h2 className="xs:text-sm md:text-xl font-bold m-2 mt-10 md:mt-18 lg:mt-22 md:m-4">
+          Questions and Answers
+        </h2>
         {selQuestions.map((question) => {
           const answerObj = getAnswerForQuestion(question);
           const candidateAnswer = answerObj ? answerObj.answer_text : null;

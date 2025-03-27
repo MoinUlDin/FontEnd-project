@@ -31,6 +31,9 @@ function DPayments() {
         setLoading(false);
       });
   };
+  const closeToast = () => {
+    setShowToast(false);
+  };
   useEffect(() => {
     if (companies.length == 0) {
       fetchcompanylist();
@@ -66,6 +69,7 @@ function DPayments() {
         type: "success",
         text: response.data.message || "Code redeemed successfully!",
       });
+      fetchcompanylist();
       setRedeemCode("");
       setShowToast(true);
     } catch (error) {
@@ -110,7 +114,9 @@ function DPayments() {
           <div className="mt-24"></div>
         </div>
 
-        {showToast && <Toast message={"Action successfull"} />}
+        {showToast && (
+          <Toast message={"Action successfull"} onClose={closeToast} />
+        )}
       </div>
     );
   }
