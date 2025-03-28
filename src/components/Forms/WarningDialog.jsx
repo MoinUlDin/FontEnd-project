@@ -1,6 +1,11 @@
 import React from "react";
 
-const WarningDialog = ({ message, onConfirm, onCancel }) => {
+const WarningDialog = ({
+  message,
+  confirmbtnText = "Yes, Delete",
+  onConfirm,
+  onCancel,
+}) => {
   return (
     <div className="fixed inset-0 flex items-center justify-center z-50">
       {/* Overlay */}
@@ -28,7 +33,7 @@ const WarningDialog = ({ message, onConfirm, onCancel }) => {
             }}
             className="px-4 py-2 bg-red-500 ptr text-white rounded hover:bg-red-600"
           >
-            Yes, Delete
+            {confirmbtnText}
           </button>
         </div>
       </div>

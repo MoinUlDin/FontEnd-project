@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { useForm, Controller } from "react-hook-form";
+import { useForm, Controller, useFieldArray } from "react-hook-form";
 import AssessmentService from "../services/assessmentService";
 import TempService from "../services/tempService";
 import { useDispatch, useSelector } from "react-redux";
 import { ImSpinner8 } from "react-icons/im";
+import { FiX, FiPlus } from "react-icons/fi";
 import sideimg from "../assets/report.avif";
-import { FiX } from "react-icons/fi";
 import { TextField, Autocomplete, Button } from "@mui/material";
 
 function CreateAssessmentModel({ onClose, selectedTemplateId }) {
@@ -13,7 +13,7 @@ function CreateAssessmentModel({ onClose, selectedTemplateId }) {
   const [apiError, setApiError] = useState("");
   const [isSaving, setIsSaving] = useState(false);
 
-  // Get template list from Redux; since it's stored as an object, convert to an array.
+  // Get template list from Redux; convert to an array.
   const templatesObj = useSelector((state) => state.templates.list || {});
   const templatesArray = Object.values(templatesObj);
 
@@ -41,11 +41,13 @@ function CreateAssessmentModel({ onClose, selectedTemplateId }) {
     setValue,
     control,
     clearErrors,
+    reset,
     formState: { errors },
   } = useForm({
     defaultValues: {
-      candidate_email: "",
+      candidate_emails: [""], // initialize with one empty field
       allocated_time: "",
+      job_role: "",
       negative_marking: false,
       difficulty_level: "Easy",
       template: selectedTemplate ? selectedTemplate : null,
@@ -53,6 +55,19 @@ function CreateAssessmentModel({ onClose, selectedTemplateId }) {
     },
     mode: "onBlur",
   });
+
+  // Setup dynamic candidate email fields.
+  const { fields, append, remove } = useFieldArray({
+    control,
+    name: "candidate_emails",
+  });
+
+  // Ensure at least one email field is present on initial render.
+  useEffect(() => {
+    if (fields.length === 0) {
+      append("");
+    }
+  }, [fields, append]);
 
   // If a selected template is provided, lock the Template field.
   useEffect(() => {
@@ -68,31 +83,74 @@ function CreateAssessmentModel({ onClose, selectedTemplateId }) {
     setApiError("");
     clearErrors();
     setIsSaving(true);
-    const payload = {
-      candidate_email: data.candidate_email,
+
+    // Common payload values for each candidate
+    const basePayload = {
       allocated_time: data.allocated_time,
       negative_marking: data.negative_marking,
       difficulty_level: data.difficulty_level,
+      job_role: data.job_role,
       template_id: data.template ? data.template.id : "",
       description: data.description,
     };
-    try {
-      await AssessmentService.createAssessment(payload, dispatch);
-      onClose();
-    } catch (error) {
-      console.error("Error creating assessment:", error);
-      let errMsg = error.response?.data?.message;
-      if (Array.isArray(errMsg)) {
-        errMsg = errMsg.join(" ");
-      } else if (!errMsg) {
-        errMsg =
-          error.response?.data?.detail ||
-          error.response?.data?.non_field_errors?.join(" ");
+
+    let results = [];
+
+    // Process candidate emails sequentially.
+    for (const email of data.candidate_emails) {
+      try {
+        await AssessmentService.createAssessment(
+          { ...basePayload, candidate_email: email },
+          dispatch
+        );
+        results.push({ email, success: true });
+      } catch (error) {
+        results.push({ email, success: false, error });
       }
-      setApiError(errMsg || "Error creating assessment. Please try again.");
-    } finally {
-      setIsSaving(false);
     }
+
+    // Identify failed emails.
+    const failedAttempts = results.filter((r) => !r.success);
+
+    // Retry failed emails sequentially once.
+    if (failedAttempts.length > 0) {
+      let retryResults = [];
+      for (const attempt of failedAttempts) {
+        try {
+          await AssessmentService.createAssessment(
+            { ...basePayload, candidate_email: attempt.email },
+            dispatch
+          );
+          retryResults.push({ email: attempt.email, success: true });
+        } catch (error) {
+          retryResults.push({ email: attempt.email, success: false, error });
+        }
+      }
+
+      // Final check for any failed emails.
+      const finalFailures = retryResults.filter((r) => !r.success);
+      if (finalFailures.length > 0) {
+        alert(
+          `Some candidate emails failed: ${finalFailures
+            .map((f) => f.email)
+            .join(", ")}. Please try again.`
+        );
+        reset({
+          candidate_emails: [""],
+          allocated_time: "",
+          job_role: "",
+          negative_marking: false,
+          difficulty_level: "Easy",
+          template: selectedTemplate ? selectedTemplate : null,
+          description: "",
+        });
+      } else {
+        onClose();
+      }
+    } else {
+      onClose();
+    }
+    setIsSaving(false);
   };
 
   return (
@@ -111,36 +169,65 @@ function CreateAssessmentModel({ onClose, selectedTemplateId }) {
         </div>
         {/* Form */}
         <form
-          className="grid grid-cols-9 max-h-[90svh] overflow-auto"
+          className="grid grid-cols-10 max-h-[90svh] overflow-auto"
           onSubmit={handleSubmit(onSubmit)}
         >
-          <div className="h-full col-span-3 hidden md:block bg-orange-300">
-            <img src={sideimg} alt="side" />
+          <div className="h-full  p-3 col-span-10 md:col-span-4  flex flex-col justify-center">
+            {fields.map((field, index) => (
+              <div key={field.id} className="flex items-center">
+                <TextField
+                  id={`candidate_emails_${index}`}
+                  label="Candidate Email"
+                  variant="outlined"
+                  margin="normal"
+                  size="small"
+                  {...register(`candidate_emails.${index}`, {
+                    required: "Candidate email is required",
+                  })}
+                />
+                {index === fields.length - 1 && (
+                  <button
+                    type="button"
+                    onClick={() => append("")}
+                    className="ml-2 mt-3 ptr"
+                    title="Add another candidate email"
+                  >
+                    <FiPlus className="text-xl text-blue-800" />
+                  </button>
+                )}
+                {fields.length > 1 && (
+                  <button
+                    type="button"
+                    onClick={() => remove(index)}
+                    className="ml-2 mt-3"
+                    title="Remove candidate email"
+                  >
+                    <FiX className="text-xl text-red-600" />
+                  </button>
+                )}
+              </div>
+            ))}
           </div>
-          <div className="col-span-9 md:col-span-6">
-            {/* form input container */}
-            <div className="grid grid-cols-2  justify-center px-4">
-              {/* form inner left side */}
-              <div className="flex flex-col max-w-50 col-span-2 xs:col-span-1  mr-10 mt-6">
-                {/* Candidate Email */}
+          <div className="col-span-10 md:col-span-6">
+            <div className="grid grid-cols-2 justify-center px-4">
+              <div className="flex flex-col max-w-50 col-span-2 xs:col-span-1 mr-10 mt-6">
                 <div className="w-full">
                   <TextField
-                    id="candidate_email"
-                    label="Candidate Email"
+                    id="job_role"
+                    label="Job Role"
                     variant="outlined"
                     margin="normal"
                     size="small"
-                    {...register("candidate_email", {
-                      required: "Candidate email is required",
+                    {...register("job_role", {
+                      required: "Job role is required",
                     })}
                   />
-                  {errors.candidate_email && (
+                  {errors.job_role && (
                     <p className="text-red-500 text-xs">
-                      {errors.candidate_email.message}
+                      {errors.job_role.message}
                     </p>
                   )}
                 </div>
-                {/* Allocated Time */}
                 <div className="mt-5 w-full">
                   <TextField
                     id="allocated_time"
@@ -159,7 +246,6 @@ function CreateAssessmentModel({ onClose, selectedTemplateId }) {
                     </p>
                   )}
                 </div>
-                {/* Negative Marking Checkbox */}
                 <div className="mt-5 w-full flex items-center">
                   <input
                     type="checkbox"
@@ -175,9 +261,7 @@ function CreateAssessmentModel({ onClose, selectedTemplateId }) {
                   </label>
                 </div>
               </div>
-              {/* form inner right side */}
               <div className="flex flex-col col-span-2 xs:col-span-1">
-                {/* Difficulty Level Autocomplete */}
                 <div className="mt-5 w-full">
                   <Controller
                     name="difficulty_level"
@@ -201,7 +285,6 @@ function CreateAssessmentModel({ onClose, selectedTemplateId }) {
                     )}
                   />
                 </div>
-                {/* Template Autocomplete */}
                 <div className="mt-5 w-full">
                   <Controller
                     name="template"
@@ -232,7 +315,6 @@ function CreateAssessmentModel({ onClose, selectedTemplateId }) {
                     </p>
                   )}
                 </div>
-
                 <div className="flex justify-center items-end mt-8">
                   <button
                     type="submit"

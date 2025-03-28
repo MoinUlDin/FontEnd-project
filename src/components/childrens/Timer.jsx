@@ -3,6 +3,7 @@ import React, { useEffect } from "react";
 import dayjs from "dayjs";
 import duration from "dayjs/plugin/duration";
 dayjs.extend(duration);
+// import beepSound from "../assets/beep.mp3"; // Ensure you have this file
 
 export default function Timer({
   remainingTime,
@@ -28,15 +29,20 @@ export default function Timer({
     setRemainingTime(remaining);
   }, [testInstanceId, allocatedTime, setRemainingTime]);
 
-  // Start the interval that decrements remaining time every second
+  // Start the interval that decrements remaining time every second and plays beep if < 30 seconds.
   useEffect(() => {
     const interval = setInterval(() => {
       setRemainingTime((prev) => {
-        if (prev <= 1) {
-          clearInterval(interval);
-          return 0;
+        const newTime = prev <= 1 ? 0 : prev - 1;
+        if (newTime < 30 && newTime !== prev) {
+          // Play beep sound
+          // const beep = new Audio(beepSound);
+          // beep.play().catch((err) => console.error("Beep play error:", err));
         }
-        return prev - 1;
+        if (newTime === 0) {
+          clearInterval(interval);
+        }
+        return newTime;
       });
     }, 1000);
     return () => clearInterval(interval);
@@ -49,9 +55,11 @@ export default function Timer({
 
   return (
     <div>
-      <div className="mb-4 text-center gap-4 flex justify-end items-center">
-        <h4 className="font-bold">Time Left:</h4>
-        <p className="text-xl">{formattedTime}</p>
+      <div className="mb-4 mr-3 text-center gap-4 flex justify-end items-center">
+        <h4 className=" text-2xl font-bold">Time Left:</h4>
+        <p className={`text-2xl ${remainingTime < 30 ? "text-red-500" : ""}`}>
+          {formattedTime}
+        </p>
       </div>
     </div>
   );

@@ -8,6 +8,8 @@ import { RegisterPage, DUsers, DTemplates } from "./pages/index.js";
 import AssessmentDataTable from "./pages/AssessmentDataTable.jsx";
 import AssessmentDataGrid from "./pages/AssessmentDataGrid.jsx";
 import NewTemplateEditPage from "./pages/NewTemplateEditPage.jsx";
+import TestLandingPage from "./pages/TestLandingPage.jsx";
+import TestWindowWrapper from "./components/TestWindowWrapper.jsx";
 // import AssessmentPage from "./pages/AssessmentPage.jsx";
 import {
   LoginPage,
@@ -60,8 +62,16 @@ function App() {
           element={<TemplateEditPage />}
         />
         <Route
+          path="/tests/landing/:test_instance_id"
+          element={<TestLandingPage />}
+        />
+        <Route
           path="/tests/take_test/:test_instance_id"
-          element={<TestPage />}
+          element={
+            <TestWindowWrapper>
+              <TestPage />
+            </TestWindowWrapper>
+          }
         />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/users/confirm-email/:token" element={<ConfirmEmail />} />

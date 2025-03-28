@@ -6,7 +6,7 @@ import Toast from "../components/childrens/FloatingMessage";
 import { FiCopy, FiTrash2 } from "react-icons/fi";
 import dayjs from "dayjs";
 import profile_img from "../assets/profile_img.png";
-import { Tooltip } from "@mui/material";
+import { Tooltip, TextField } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
 import FilterBy from "../components/childrens/FilterBy";
 import CreateAssessmentModel from "../components/CreateAssessmentModel";
@@ -70,6 +70,10 @@ export default function AssessmentDataGrid() {
   // Active tab: 1 = All, 2 = Uncategorized, 3 = Shortlisted, 4 = Hired, 5 = Rejected
   const [activeTab, setActiveTab] = useState(1);
 
+  // *** New state for date range filtering ***
+  const [startDate, setStartDate] = useState("");
+  const [endDate, setEndDate] = useState("");
+
   const inactiveClass = "border-b border-gray-400 text-10";
   const activeTabcss = "bg-blue-800 text-white px-2 md:px-4 lg:px-6";
 
@@ -105,13 +109,28 @@ export default function AssessmentDataGrid() {
   const handleShortlist = (id) => handleUpdateStatus(id, "Shortlisted");
   const handleReject = (id) => handleUpdateStatus(id, "Rejected");
 
-  // Filter assessments based on activeTab and candidate_status.
+  // Filter assessments based on activeTab, candidate_status, and date range.
   const filteredAssessments = assessments.filter((assessment) => {
-    if (activeTab === 1) return true; // All
-    if (activeTab === 2) return assessment.candidate_status === "Uncategorized";
-    if (activeTab === 3) return assessment.candidate_status === "Shortlisted";
-    if (activeTab === 4) return assessment.candidate_status === "Hired";
-    if (activeTab === 5) return assessment.candidate_status === "Rejected";
+    // Filter by candidate status first
+    if (activeTab === 2 && assessment.candidate_status !== "Uncategorized")
+      return false;
+    if (activeTab === 3 && assessment.candidate_status !== "Shortlisted")
+      return false;
+    if (activeTab === 4 && assessment.candidate_status !== "Hired")
+      return false;
+    if (activeTab === 5 && assessment.candidate_status !== "Rejected")
+      return false;
+
+    // *** Filter by date range if provided ***
+    if (startDate || endDate) {
+      // Exclude assessments without a start_time
+      if (!assessment.start_time) return false;
+      const assessmentDate = dayjs(normalizeDateString(assessment.start_time));
+      if (!assessmentDate.isValid()) return false;
+      if (startDate && assessmentDate.isBefore(dayjs(startDate))) return false;
+      if (endDate && assessmentDate.isAfter(dayjs(endDate).endOf("day")))
+        return false;
+    }
     return true;
   });
 
@@ -154,12 +173,12 @@ export default function AssessmentDataGrid() {
     setDeleteId(null);
   };
 
-  // Define DataGrid columns
+  // Define DataGrid columns (unchanged for brevity)
   const columns = [
     {
       field: "candidate",
       headerName: "Candidate",
-      width: 250,
+      width: 200,
       sortable: true,
       renderCell: (params) => {
         const row = params?.row;
@@ -171,12 +190,12 @@ export default function AssessmentDataGrid() {
               className="rounded-full h-8 w-8"
             />
             <div>
-              <div className="text-sm font-bold text-purple-700">
-                {row?.candidate?.username || "-"}
-              </div>
               <div className="text-xs flex items-center gap-1">
-                {row?.candidate?.email || "-"}
+                {row?.candidate?.username || "-"}
                 <CopyEmail email={row?.candidate?.email || "-"} />
+              </div>
+              <div className="text-sm font-bold text-purple-700">
+                {row?.candidate?.email || "-"}
               </div>
             </div>
           </div>
@@ -184,14 +203,18 @@ export default function AssessmentDataGrid() {
       },
     },
     {
+      field: "job_role",
+      headerName: "Job Role",
+      width: 120,
+      sortable: true,
+      renderCell: (params) => params.value || "-",
+    },
+    {
       field: "template",
       headerName: "Template",
       width: 140,
       sortable: true,
-      renderCell: (params) => {
-        const template = params.value;
-        return template || "-";
-      },
+      renderCell: (params) => params.value || "-",
     },
     {
       field: "status",
@@ -311,17 +334,57 @@ export default function AssessmentDataGrid() {
           onCancel={handleCancelDelete}
         />
       )}
-      {/* Header section with FilterBy and Tabs */}
+      {/* Header section with FilterBy, Tabs, and Date Range */}
       <div className="text-2xl font-bold pb-6 border-b border-gray-200 flex flex-col md:flex-row justify-between items-center gap-3">
-        <div className="hidden md:block">
-          <FilterBy />
+        <div className="hidden md:flex gap-2 lg:gap-3">
+          {/* Date range inputs */}
+          <TextField
+            type="date"
+            label="Start Date"
+            value={startDate}
+            size="small"
+            onClick={(e) => {
+              // If the input supports showPicker (supported in some browsers), call it.
+              if (e.target.showPicker) {
+                e.target.showPicker();
+              }
+            }}
+            onChange={(e) => setStartDate(e.target.value)}
+            slotProps={{
+              inputLabel: { shrink: true },
+            }}
+            sx={{
+              "& input": { cursor: "pointer" },
+            }}
+          />
+          <TextField
+            type="date"
+            label="End Date"
+            value={endDate}
+            size="small"
+            onClick={(e) => {
+              // If the input supports showPicker (supported in some browsers), call it.
+              if (e.target.showPicker) {
+                e.target.showPicker();
+              }
+            }}
+            onChange={(e) => setEndDate(e.target.value)}
+            slotProps={{
+              inputLabel: { shrink: true },
+            }}
+            sx={{
+              "& input": { cursor: "pointer" },
+            }}
+          />
         </div>
-        <button
-          onClick={() => setShowModal(true)}
-          className="text-[8px] flex justify-center items-center hover:cursor-pointer bg-sunglow rounded-4xl px-5 py-4"
-        >
-          Create Assessment
-        </button>
+        <div className="flex flex-col md:flex-row gap-2 items-center">
+          <button
+            onClick={() => setShowModal(true)}
+            className="text-[8px] flex justify-center items-center hover:cursor-pointer bg-sunglow rounded-4xl px-5 py-4"
+          >
+            Create Assessment
+          </button>
+        </div>
       </div>
       <div className="bg-white my-2 p-2 ">
         <ul className="flex text-[8px] md:text-[10px] py-3 lg:text-sm justify-between items-center w-full md:max-w-[70svw]">
@@ -332,7 +395,7 @@ export default function AssessmentDataGrid() {
             }`}
           >
             All{" "}
-            <span className="rounded-full bg-gray-300 px-2">
+            <span className="rounded-full bg-gray-300 px-2 text-black">
               {assessments.length}
             </span>
           </li>
@@ -343,7 +406,7 @@ export default function AssessmentDataGrid() {
             }`}
           >
             Uncategorized{" "}
-            <span className="rounded-full bg-gray-300 px-2">
+            <span className="rounded-full bg-gray-300 px-2 text-black">
               {
                 assessments.filter(
                   (ass) => ass.candidate_status === "Uncategorized"
@@ -358,7 +421,7 @@ export default function AssessmentDataGrid() {
             }`}
           >
             Shortlisted{" "}
-            <span className="rounded-full bg-gray-300 px-2">
+            <span className="rounded-full bg-gray-300 px-2 text-black">
               {
                 assessments.filter(
                   (ass) => ass.candidate_status === "Shortlisted"
@@ -373,7 +436,7 @@ export default function AssessmentDataGrid() {
             }`}
           >
             Hired{" "}
-            <span className="rounded-full bg-gray-300 px-2">
+            <span className="rounded-full bg-gray-300 px-2 text-black">
               {
                 assessments.filter((ass) => ass.candidate_status === "Hired")
                   .length
@@ -387,7 +450,7 @@ export default function AssessmentDataGrid() {
             }`}
           >
             Rejected{" "}
-            <span className="rounded-full bg-gray-300 px-2">
+            <span className="rounded-full bg-gray-300 px-2 text-black">
               {
                 assessments.filter((ass) => ass.candidate_status === "Rejected")
                   .length
@@ -395,63 +458,19 @@ export default function AssessmentDataGrid() {
             </span>
           </li>
         </ul>
-        {/* only show this when user selects some item in from list  */}
         <div
           className={`${
             itemsSelected ? "flex" : "hidden"
-          } mr-3  gap-3 items-center text-lg m-2`}
+          } mr-3 gap-3 items-center text-lg m-2`}
         >
-          <Tooltip title="Hire" placement="top">
-            <button onClick={() => handleHire(row?.id)}>
-              <div className="ptr">
-                <AdminPanelSettings fontSize="small" color="success" />
-              </div>
-            </button>
-          </Tooltip>
-          <Tooltip title="Shortlist" placement="top">
-            <button onClick={() => handleShortlist(row?.id)}>
-              <div className="ptr">
-                <PersonAdd fontSize="small" color="primary" />
-              </div>
-            </button>
-          </Tooltip>
-          <Tooltip title="Reject" placement="top">
-            <button onClick={() => handleReject(row?.id)}>
-              <div className="ptr">
-                <PersonOff fontSize="small" color="primary" />
-              </div>
-            </button>
-          </Tooltip>
-          <Tooltip title="Delete" placement="top">
-            <button onClick={() => handleDeleteClick(row?.id)}>
-              <div className="ptr">
-                <DeleteForever fontSize="small" color="error" />
-              </div>
-            </button>
-          </Tooltip>
+          {/* Bulk action buttons if needed */}
         </div>
       </div>
 
       <div className="flex flex-col h-[500px] w-full">
         <DataGrid
-          rows={
-            activeTab === 1
-              ? assessments
-              : assessments.filter((assessment) => {
-                  if (activeTab === 2)
-                    return assessment.candidate_status === "Uncategorized";
-                  if (activeTab === 3)
-                    return assessment.candidate_status === "Shortlisted";
-                  if (activeTab === 4)
-                    return assessment.candidate_status === "Hired";
-                  if (activeTab === 5)
-                    return assessment.candidate_status === "Rejected";
-                  return true;
-                })
-          }
+          rows={filteredAssessments}
           columns={columns}
-          disableSelectionOnClick
-          checkboxSelection
           rowHeight={70}
           headerHeight={60}
           sx={{
@@ -459,7 +478,7 @@ export default function AssessmentDataGrid() {
             ".MuiDataGrid-cell": {
               borderBottom: "1px solid #e0f0e0",
               whiteSpace: "normal",
-              lineHeight: "1.9",
+              lineHeight: "1.4",
               display: "flex",
               alignItems: "center",
               justifyContent: "center",

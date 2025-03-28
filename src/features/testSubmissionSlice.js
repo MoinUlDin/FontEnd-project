@@ -15,6 +15,10 @@ const testSubmissionSlice = createSlice({
       const { questionId, answer } = action.payload;
       state.answers[questionId] = answer;
     },
+    restoreAnswers: (state, action) => {
+      // Replace current answers with those restored from localStorage.
+      state.answers = action.payload;
+    },
     submitTestStart: (state) => {
       state.loading = true;
       state.error = null;
@@ -32,6 +36,7 @@ const testSubmissionSlice = createSlice({
 
 export const {
   saveAnswer,
+  restoreAnswers,
   submitTestStart,
   submitTestSuccess,
   submitTestFailure,

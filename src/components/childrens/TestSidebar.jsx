@@ -4,7 +4,7 @@ export default function TestSidebar({ questions, current, answers, onJump }) {
   return (
     <div>
       <h3 className="font-bold mb-2">Questions</h3>
-      <div className="grid grid-cols-9 gap-2">
+      <div className="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-7 lg:grid-cols-9 gap-2">
         {questions.map((question, index) => {
           // Check if this question (by its id) has been answered.
           const answered = Boolean(answers[question.id]);
@@ -16,7 +16,7 @@ export default function TestSidebar({ questions, current, answers, onJump }) {
                 current === index
                   ? "bg-blue-500 text-white"
                   : "bg-white text-black"
-              } ${answered ? "border-green-500" : "border-gray-300"}`}
+              } ${answered ? "border-green-800 border-2" : "border-gray-300"}`}
             >
               {index + 1}
             </button>

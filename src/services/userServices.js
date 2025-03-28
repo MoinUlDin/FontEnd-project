@@ -88,6 +88,18 @@ class UserService {
       throw error;
     }
   }
+
+  static async updateProfile(payload) {
+    try {
+      const response = await apiClient.patch("users/profile/update/", payload);
+      return response.data;
+    } catch (error) {
+      const errorMessage =
+        error.response?.data?.message ||
+        "Profile update failed. Please try again.";
+      throw new Error(errorMessage);
+    }
+  }
 }
 
 export default UserService;
