@@ -1,0 +1,318 @@
+[
+  {
+    "id": 5,
+    "name": "General Knowledge",
+    "weight": 40,
+    "questions": [
+      {
+        "id": "d43e3345-4c63-4e43-8729-248a09f00e5c",
+        "question_type": "mcq",
+        "category": 5,
+        "text": "What does JSX stand for?",
+        "options": {
+          "option1": "JavaScript XML",
+          "option2": "JavaScript Extended",
+          "option3": "JavaScript Syntax Extension",
+          "option4": "JavaScript Extra"
+        },
+        "correct_answer": "option3",
+        "weight": 10,
+        "categoryID": 5,
+        "categoryName": "General Knowledge"
+      },
+      {
+        "qtype": "mcq",
+        "text": "What is the capital of France?",
+        "weight": 10,
+        "correct_answer": "option1",
+        "options": {
+          "option1": "Paris",
+          "option2": "Berlin",
+          "option3": "Madrid",
+          "option4": "Rome"
+        },
+        "id": 1743587243460.4065
+      },
+      {
+        "qtype": "mcq",
+        "text": "Which planet is known as the Red Planet?",
+        "weight": 10,
+        "correct_answer": "option1",
+        "options": {
+          "option1": "Mars",
+          "option2": "Venus",
+          "option3": "Jupiter",
+          "option4": "Saturn"
+        },
+        "id": 1743587243460.127
+      },
+      {
+        "qtype": "mcq",
+        "text": "Who wrote the play 'Romeo and Juliet'?",
+        "weight": 10,
+        "correct_answer": "option1",
+        "options": {
+          "option1": "William Shakespeare",
+          "option2": "Charles Dickens",
+          "option3": "Jane Austen",
+          "option4": "Mark Twain"
+        },
+        "id": 1743587243460.6973
+      },
+      {
+        "qtype": "mcq",
+        "text": "What is the largest ocean on Earth?",
+        "weight": 10,
+        "correct_answer": "option1",
+        "options": {
+          "option1": "Pacific Ocean",
+          "option2": "Atlantic Ocean",
+          "option3": "Indian Ocean",
+          "option4": "Arctic Ocean"
+        },
+        "id": 1743587243460.464
+      },
+      {
+        "qtype": "mcq",
+        "text": "Which country is famous for its ancient pyramids?",
+        "weight": 10,
+        "correct_answer": "option1",
+        "options": {
+          "option1": "Egypt",
+          "option2": "Mexico",
+          "option3": "India",
+          "option4": "China"
+        },
+        "id": 1743587243460.4265
+      },
+      {
+        "qtype": "mcq",
+        "text": "What is the currency of Japan?",
+        "weight": 10,
+        "correct_answer": "option1",
+        "options": {
+          "option1": "Yen",
+          "option2": "Dollar",
+          "option3": "Euro",
+          "option4": "Pound"
+        },
+        "id": 1743587243460.0405
+      },
+      {
+        "qtype": "mcq",
+        "text": "Who painted the Mona Lisa?",
+        "weight": 10,
+        "correct_answer": "option1",
+        "options": {
+          "option1": "Leonardo da Vinci",
+          "option2": "Vincent van Gogh",
+          "option3": "Pablo Picasso",
+          "option4": "Claude Monet"
+        },
+        "id": 1743587243460.197
+      },
+      {
+        "qtype": "mcq",
+        "text": "What is the smallest prime number?",
+        "weight": 10,
+        "correct_answer": "option1",
+        "options": {
+          "option1": "2",
+          "option2": "1",
+          "option3": "3",
+          "option4": "0"
+        },
+        "id": 1743587243460.1199
+      },
+      {
+        "qtype": "mcq",
+        "text": "In which continent is Brazil located?",
+        "weight": 10,
+        "correct_answer": "option1",
+        "options": {
+          "option1": "South America",
+          "option2": "Africa",
+          "option3": "Asia",
+          "option4": "Europe"
+        },
+        "id": 1743587243460.0256
+      },
+      {
+        "qtype": "mcq",
+        "text": "What is the boiling point of water at sea level (in Celsius)?",
+        "weight": 10,
+        "correct_answer": "option1",
+        "options": {
+          "option1": "100",
+          "option2": "90",
+          "option3": "80",
+          "option4": "70"
+        },
+        "id": 1743587243460.7888
+      }
+    ]
+  },
+  {
+    "id": 6,
+    "name": "Advance Django",
+    "weight": 60,
+    "questions": [
+      {
+        "qtype": "mcq",
+        "text": "What is Django primarily used for?",
+        "weight": 10,
+        "correct_answer": "option1",
+        "options": {
+          "option1": "Web development",
+          "option2": "Data analysis",
+          "option3": "Mobile app development",
+          "option4": "Game development"
+        },
+        "id": 1743587243461.8396
+      },
+      {
+        "qtype": "mcq",
+        "text": "Which file in a Django project defines the URL routes?",
+        "weight": 10,
+        "correct_answer": "option1",
+        "options": {
+          "option1": "urls.py",
+          "option2": "settings.py",
+          "option3": "models.py",
+          "option4": "views.py"
+        },
+        "id": 1743587243461.889
+      },
+      {
+        "qtype": "mcq",
+        "text": "What is the purpose of Django's ORM?",
+        "weight": 10,
+        "correct_answer": "option1",
+        "options": {
+          "option1": "To interact with databases using Python",
+          "option2": "To manage URL routing",
+          "option3": "To create templates",
+          "option4": "To handle HTTP requests"
+        },
+        "id": 1743587243461.9414
+      },
+      {
+        "qtype": "mcq",
+        "text": "Which command is used to start a new Django project?",
+        "weight": 10,
+        "correct_answer": "option1",
+        "options": {
+          "option1": "django-admin startproject",
+          "option2": "python manage.py runserver",
+          "option3": "django-admin startapp",
+          "option4": "python manage.py migrate"
+        },
+        "id": 1743587243461.7068
+      },
+      {
+        "qtype": "mcq",
+        "text": "How do you create a new Django app within a project?",
+        "weight": 10,
+        "correct_answer": "option1",
+        "options": {
+          "option1": "python manage.py startapp",
+          "option2": "django-admin startproject",
+          "option3": "django-admin startapp",
+          "option4": "python manage.py startproject"
+        },
+        "id": 1743587243461.7642
+      },
+      {
+        "qtype": "mcq",
+        "text": "What is the purpose of Django middleware?",
+        "weight": 10,
+        "correct_answer": "option1",
+        "options": {
+          "option1": "To process request/response objects globally",
+          "option2": "To define URL patterns",
+          "option3": "To interact with databases",
+          "option4": "To manage static files"
+        },
+        "id": 1743587243461.471
+      },
+      {
+        "qtype": "mcq",
+        "text": "Which Django setting is used to define static files directories?",
+        "weight": 10,
+        "correct_answer": "option1",
+        "options": {
+          "option1": "STATICFILES_DIRS",
+          "option2": "INSTALLED_APPS",
+          "option3": "TEMPLATES",
+          "option4": "DATABASES"
+        },
+        "id": 1743587243461.0164
+      },
+      {
+        "qtype": "mcq",
+        "text": "How can you apply database migrations in Django?",
+        "weight": 10,
+        "correct_answer": "option1",
+        "options": {
+          "option1": "python manage.py migrate",
+          "option2": "python manage.py runserver",
+          "option3": "django-admin startapp",
+          "option4": "python manage.py shell"
+        },
+        "id": 1743587243461.8186
+      },
+      {
+        "qtype": "mcq",
+        "text": "What is the Django admin interface used for?",
+        "weight": 10,
+        "correct_answer": "option1",
+        "options": {
+          "option1": "To manage site data",
+          "option2": "To serve static files",
+          "option3": "To create models",
+          "option4": "To handle HTTP requests"
+        },
+        "id": 1743587243461.3113
+      },
+      {
+        "qtype": "mcq",
+        "text": "Which decorator is commonly used to require user login in Django views?",
+        "weight": 10,
+        "correct_answer": "option1",
+        "options": {
+          "option1": "@login_required",
+          "option2": "@require_POST",
+          "option3": "@csrf_exempt",
+          "option4": "@permission_required"
+        },
+        "id": 1743587243461.0552
+      },
+      {
+        "qtype": "mcq",
+        "text": "What is the role of Django's settings.py file?",
+        "weight": 10,
+        "correct_answer": "option1",
+        "options": {
+          "option1": "It contains configuration for the project",
+          "option2": "It defines URL routes",
+          "option3": "It manages database migrations",
+          "option4": "It handles user authentication"
+        },
+        "id": 1743587243461.1301
+      },
+      {
+        "qtype": "mcq",
+        "text": "How can you perform complex queries in Django's ORM?",
+        "weight": 10,
+        "correct_answer": "option1",
+        "options": {
+          "option1": "Using QuerySet methods like filter(), exclude(), annotate(), and aggregate()",
+          "option2": "Using raw SQL only",
+          "option3": "Using Django templates",
+          "option4": "Using JavaScript functions"
+        },
+        "id": 1743587243461.8174
+      }
+    ]
+  }
+]

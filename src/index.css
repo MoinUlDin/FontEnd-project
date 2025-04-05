@@ -1,0 +1,61 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap");
+@import "tailwindcss";
+@theme {
+  --color-sunglow: #faa53d;
+  --color-bgresult: #f5e8d5;
+  --text-btn: 14px;
+  --text-10: 10px;
+  --text-12: 12px;
+  --spacing-input-width: 17rem;
+  --text-dash-it: 12px; /*Dashbord item Title (it) */
+  --text-dash-i: 9px;
+  --spacing-sg-lg: 6rem; /*section gap =sg larger screen (on Y)*/
+  --spacing-sg-md: 2rem;
+  --spacing-sg-sm: 1rem;
+  --spacing-dash-lg: 50rem;
+  --spacing-dash-: 40rem;
+  --spacing-templist: 4px;
+  --spacing-templist-md: 8px;
+  --breakpoint-xs: 28rem;
+}
+
+.section {
+  @apply min-h-svh my-sg-sm md:my-sg-md lg:my-sg-lg;
+}
+body {
+  font-family: "Inter", sans-serif;
+  background-color: #f5f5f5;
+}
+.custom_grid {
+  @apply grid grid-cols-5 gap-4 items-center;
+}
+.custom_grid > :first-child {
+  @apply col-span-3;
+}
+.custom_grid > :not(:first-child) {
+  @apply place-self-center;
+}
+.assessment_grid {
+  @apply grid grid-cols-10 items-center gap-5;
+}
+
+.alter_bg > :nth-child(even) {
+  @apply bg-gray-200;
+}
+.btn {
+  @apply hover:cursor-pointer outline-0 transition-all duration-200;
+}
+.ptr {
+  @apply hover:cursor-pointer transition-all duration-300;
+}
+
+.listItem {
+  /* Write the dynamic font-size directly */
+  font-size: clamp(1rem, calc(12px + 1vh), 20px);
+  /* Apply the rest of the Tailwind classes using @apply */
+  @apply hover:cursor-pointer font-semibold text-[#28296C] hover:text-[#EB1C35] transition-colors duration-300;
+}
+
+.bgred {
+  @apply bg-red-900;
+}

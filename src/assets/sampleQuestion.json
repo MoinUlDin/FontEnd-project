@@ -1,0 +1,257 @@
+{
+  "template_id": "Remove this field in your file. it will included automatically",
+  "categories": [
+    {
+      "category_name": "General",
+      "category_weight": "40",
+      "questions": [
+        {
+          "qtype": "mcq",
+          "text": "What is React?",
+          "weight": "10",
+          "correct_answer": "option1",
+          "options": {
+            "option1": "A JavaScript library for building user interfaces",
+            "option2": "A programming language",
+            "option3": "A CSS framework",
+            "option4": "A backend framework"
+          }
+        },
+        {
+          "qtype": "mcq",
+          "text": "What does JSX stand for?",
+          "weight": "10",
+          "correct_answer": "option3",
+          "options": {
+            "option1": "JavaScript XML",
+            "option2": "JavaScript Extended",
+            "option3": "JavaScript Syntax Extension",
+            "option4": "JavaScript Extra"
+          }
+        },
+        {
+          "qtype": "mcq",
+          "text": "Which hook is primarily used for managing state in functional components?",
+          "weight": "10",
+          "correct_answer": "option1",
+          "options": {
+            "option1": "useState",
+            "option2": "useEffect",
+            "option3": "useContext",
+            "option4": "useReducer"
+          }
+        },
+        {
+          "qtype": "mcq",
+          "text": "Which hook is used for performing side effects in React?",
+          "weight": "10",
+          "correct_answer": "option2",
+          "options": {
+            "option1": "useState",
+            "option2": "useEffect",
+            "option3": "useMemo",
+            "option4": "useCallback"
+          }
+        },
+        {
+          "qtype": "mcq",
+          "text": "What does the Virtual DOM do?",
+          "weight": "10",
+          "correct_answer": "option1",
+          "options": {
+            "option1": "Optimizes and batches DOM updates",
+            "option2": "Directly manipulates the browser DOM",
+            "option3": "Handles API calls",
+            "option4": "Manages component state"
+          }
+        },
+        {
+          "qtype": "mcq",
+          "text": "How do you create a new React project using Create React App?",
+          "weight": "10",
+          "correct_answer": "option2",
+          "options": {
+            "option1": "npm create-react-app my-app",
+            "option2": "npx create-react-app my-app",
+            "option3": "react-create-app my-app",
+            "option4": "npm init react-app my-app"
+          }
+        },
+        {
+          "qtype": "mcq",
+          "text": "What is the primary purpose of the useRef hook?",
+          "weight": "10",
+          "correct_answer": "option4",
+          "options": {
+            "option1": "To manage state",
+            "option2": "To perform side effects",
+            "option3": "To memoize values",
+            "option4": "To persist values across renders without causing re-renders"
+          }
+        },
+        {
+          "qtype": "mcq",
+          "text": "Which hook is used for memoizing expensive computations?",
+          "weight": "10",
+          "correct_answer": "option3",
+          "options": {
+            "option1": "useState",
+            "option2": "useReducer",
+            "option3": "useMemo",
+            "option4": "useEffect"
+          }
+        },
+        {
+          "qtype": "mcq",
+          "text": "What is the significance of keys in React lists?",
+          "weight": "10",
+          "correct_answer": "option1",
+          "options": {
+            "option1": "They help React identify which items have changed, are added, or are removed",
+            "option2": "They style the list items",
+            "option3": "They bind event handlers",
+            "option4": "They store component state"
+          }
+        },
+        {
+          "qtype": "mcq",
+          "text": "Which of the following is NOT a valid React hook?",
+          "weight": "10",
+          "correct_answer": "option3",
+          "options": {
+            "option1": "useState",
+            "option2": "useEffect",
+            "option3": "useProps",
+            "option4": "useRef"
+          }
+        }
+      ]
+    },
+    {
+      "category_name": "Advance",
+      "category_weight": "60",
+      "questions": [
+        {
+          "qtype": "mcq",
+          "text": "What is the React Context API used for?",
+          "weight": "10",
+          "correct_answer": "option2",
+          "options": {
+            "option1": "Managing local component state",
+            "option2": "Sharing data across components without prop drilling",
+            "option3": "Handling side effects",
+            "option4": "Optimizing rendering"
+          }
+        },
+        {
+          "qtype": "mcq",
+          "text": "How do you optimize performance with React.memo()?",
+          "weight": "10",
+          "correct_answer": "option1",
+          "options": {
+            "option1": "By memoizing the rendered output of a component",
+            "option2": "By caching API responses",
+            "option3": "By preventing state updates",
+            "option4": "By lazy loading components"
+          }
+        },
+        {
+          "qtype": "mcq",
+          "text": "What is the useCallback hook used for?",
+          "weight": "10",
+          "correct_answer": "option2",
+          "options": {
+            "option1": "Memoizing component state",
+            "option2": "Caching function references to prevent unnecessary re-renders",
+            "option3": "Performing side effects",
+            "option4": "Updating the DOM directly"
+          }
+        },
+        {
+          "qtype": "mcq",
+          "text": "How do you implement lazy loading in React?",
+          "weight": "10",
+          "correct_answer": "option3",
+          "options": {
+            "option1": "Using React.lazy() and Suspense",
+            "option2": "Using useMemo()",
+            "option3": "Using React.lazy() and Suspense",
+            "option4": "Using useEffect()"
+          }
+        },
+        {
+          "qtype": "mcq",
+          "text": "What is a higher-order component (HOC) in React?",
+          "weight": "10",
+          "correct_answer": "option1",
+          "options": {
+            "option1": "A function that takes a component and returns a new component",
+            "option2": "A component that manages global state",
+            "option3": "A built-in React hook",
+            "option4": "A method for lazy loading components"
+          }
+        },
+        {
+          "qtype": "mcq",
+          "text": "What are render props in React?",
+          "weight": "10",
+          "correct_answer": "option2",
+          "options": {
+            "option1": "Props that determine how a component is rendered",
+            "option2": "A technique for sharing code between components using a prop whose value is a function",
+            "option3": "A new API for routing",
+            "option4": "An alternative to the Context API"
+          }
+        },
+        {
+          "qtype": "mcq",
+          "text": "How does useReducer differ from useState?",
+          "weight": "10",
+          "correct_answer": "option4",
+          "options": {
+            "option1": "useReducer is used only for API calls",
+            "option2": "useReducer cannot update state",
+            "option3": "useReducer is used for local component state only",
+            "option4": "useReducer is better suited for managing complex state logic and state transitions"
+          }
+        },
+        {
+          "qtype": "mcq",
+          "text": "What is React Suspense used for?",
+          "weight": "10",
+          "correct_answer": "option3",
+          "options": {
+            "option1": "To manage global state",
+            "option2": "To handle errors in components",
+            "option3": "To wait for some code to load and declaratively specify a loading state",
+            "option4": "To memoize functions"
+          }
+        },
+        {
+          "qtype": "mcq",
+          "text": "How do error boundaries work in React?",
+          "weight": "10",
+          "correct_answer": "option1",
+          "options": {
+            "option1": "They catch JavaScript errors anywhere in their child component tree and display a fallback UI",
+            "option2": "They prevent state updates",
+            "option3": "They optimize component rendering",
+            "option4": "They lazy load components"
+          }
+        },
+        {
+          "qtype": "mcq",
+          "text": "What is the difference between controlled and uncontrolled components in React?",
+          "weight": "10",
+          "correct_answer": "option2",
+          "options": {
+            "option1": "Controlled components use refs; uncontrolled components use state",
+            "option2": "Controlled components have their form data controlled by React state, while uncontrolled components manage their own state internally",
+            "option3": "There is no difference",
+            "option4": "Uncontrolled components are only used in class components"
+          }
+        }
+      ]
+    }
+  ]
+}
