@@ -121,6 +121,7 @@ function CreateAssessmentModel({ onClose, selectedTemplateId }) {
         );
         results.push({ email, success: true });
       } catch (error) {
+        console.log("error", error);
         results.push({ email, success: false, error });
       }
     }
@@ -149,7 +150,7 @@ function CreateAssessmentModel({ onClose, selectedTemplateId }) {
         alert(
           `Some candidate emails failed: ${finalFailures
             .map((f) => f.email)
-            .join(", ")}. Please try again.`
+            .join(", ")}. ${results.map((m) => m.error).join(",")}`
         );
         reset({
           candidate_emails: [""],

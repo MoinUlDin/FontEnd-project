@@ -34,7 +34,8 @@ class AssessmentService {
       return response.data;
     } catch (error) {
       console.error("Error creating assessment:", error);
-      throw error;
+      const message = error?.response?.data?.message;
+      throw new Error(message);
     }
   }
   static async deleteAssessment(id, dispatch) {
