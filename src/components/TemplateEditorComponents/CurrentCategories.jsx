@@ -12,8 +12,8 @@ import {
   copyQuestionsToCategory,
 } from "../../features/templateSlice";
 import EditAbleList from "./EditAbleList";
-import sampleFile from "../../assets/sampleQuestion.json";
 import { FiDownload, FiEdit, FiPlus } from "react-icons/fi";
+import csvToJson from "../../helpers/csvToJson";
 
 function CurrentCategories() {
   const [visible, setVisible] = useState(false);
@@ -67,17 +67,22 @@ function CurrentCategories() {
   const onclose = () => setDialogOpen(false);
 
   // Updated: Trigger sample file download.
-  const handleDownload = () => {
-    const fileData = JSON.stringify(sampleFile, null, 2);
-    const blob = new Blob([fileData], { type: "application/json" });
-    const url = window.URL.createObjectURL(blob);
-    const link = document.createElement("a");
-    link.href = url;
-    link.download = "sampleQuestion.json";
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-    window.URL.revokeObjectURL(url);
+  const handleDownload = async () => {
+    try {
+      const response = await fetch("/sampleQuestion.csv");
+      const textContent = await response.text();
+      const blob = new Blob([textContent], { type: "text/csv" });
+      const url = window.URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = "sampleQuestion.csv";
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      window.URL.revokeObjectURL(url);
+    } catch (error) {
+      console.error("Error fetching sample file:", error);
+    }
   };
 
   // Updated: Open file selector for bulk import.
@@ -91,10 +96,19 @@ function CurrentCategories() {
   const handleFileChange = (e) => {
     const file = e.target.files[0];
     if (file) {
+      const extension = file.name.split(".").pop().toLowerCase();
       const reader = new FileReader();
       reader.onload = (event) => {
         try {
-          const jsonData = JSON.parse(event.target.result);
+          let jsonData;
+          const fileContent = event.target.result;
+          if (extension === "csv" || extension === "txt") {
+            // Use csvToJson for CSV or text file
+            jsonData = csvToJson(fileContent);
+          } else {
+            throw new Error("Unsupported file format");
+          }
+          // Process the jsonData similar to before.
           if (jsonData.categories) {
             const currentCategories = editTemplate.categories || [];
             jsonData.categories.forEach((catData) => {
@@ -132,15 +146,20 @@ function CurrentCategories() {
           console.error("Error processing imported file", error);
         }
       };
-      reader.readAsText(file);
+      // For Excel files we need to read as ArrayBuffer; for others as text.
+      if (extension === "xls" || extension === "xlsx") {
+        reader.readAsArrayBuffer(file);
+      } else {
+        reader.readAsText(file);
+      }
       e.target.value = "";
     }
   };
+
   const [editingCategoryId, setEditingCategoryId] = useState(null);
 
   const handleUpdateCategory = (id, newName, newWeight) => {
     // Dispatch an action to update the category.
-    // Make sure your templateSlice has an updateCategory reducer that updates the category in editTemplate.
     dispatch(updateCategory({ id, name: newName, weight: newWeight }));
     setEditingCategoryId(null);
   };
@@ -200,7 +219,7 @@ function CurrentCategories() {
         type="file"
         ref={fileInputRef}
         onChange={handleFileChange}
-        accept=".txt,.json,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+        accept=".csv,.txt"
         style={{ display: "none" }}
       />
       {/* Form to add new category (conditionally rendered) */}
