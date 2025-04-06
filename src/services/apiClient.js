@@ -5,8 +5,8 @@ class ApiClient {
   constructor() {
     this.client = axios.create({
       // Change URL
-      baseURL: "https://backendrighthire.thevista365.com/",
-      // baseURL: "http://localhost:8000",
+      // baseURL: "https://backendrighthire.thevista365.com/",
+      baseURL: "http://localhost:8000",
       headers: { "Content-Type": "application/json" },
     });
 
