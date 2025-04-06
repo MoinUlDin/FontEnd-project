@@ -19,9 +19,9 @@ import { useNavigate } from "react-router-dom";
 import { login } from "../features/authslice";
 import UserService from "../services/userServices"; // Import UserService
 import { ImSpinner8 } from "react-icons/im";
-import { blueGrey } from "@mui/material/colors";
 import Toast from "../components/childrens/FloatingMessage";
 import apiClient from "../services/apiClient";
+import { logoutAndClear } from "../features/authslice";
 
 function LoginPage() {
   const dispatch = useDispatch();
@@ -77,7 +77,12 @@ function LoginPage() {
 
       // Dispatch login to Redux
       dispatch(login(data));
-      console.log(data);
+      if (data?.role == "END_USER") {
+        logoutAndClear();
+        setToastMessage("End Users are not allowed to navigate to dashbaord");
+        setShowToast(true);
+        return;
+      }
       navigate("/dashboard/templates");
     } catch (err) {
       console.log(err);
@@ -137,17 +142,19 @@ function LoginPage() {
             className="w-80 mb-4"
             onChange={handleChange}
             size="small"
-            InputProps={{
-              endAdornment: (
-                <InputAdornment position="end">
-                  <IconButton
-                    onClick={() => setShowPassword(!showPassword)}
-                    edge="end"
-                  >
-                    {showPassword ? <VisibilityOff /> : <Visibility />}
-                  </IconButton>
-                </InputAdornment>
-              ),
+            slotProps={{
+              input: {
+                endAdornment: (
+                  <InputAdornment position="end">
+                    <IconButton
+                      onClick={() => setShowPassword(!showPassword)}
+                      edge="end"
+                    >
+                      {showPassword ? <VisibilityOff /> : <Visibility />}
+                    </IconButton>
+                  </InputAdornment>
+                ),
+              },
             }}
           />
         </div>

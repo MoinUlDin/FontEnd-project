@@ -32,14 +32,14 @@ export default function QuestionCard({ question, currentAnswer, onSave }) {
 
   return (
     <div className="bg-white p-6 h-full rounded-lg shadow-lg">
-      <h2 className="text-xl font-bold mb-4">{question.text}</h2>
+      <h2 className="text-xl select-none font-bold mb-4">{question.text}</h2>
       {question.options ? (
         <div className="grid grid-cols-1 gap-2">
           {Object.entries(question.options).map(([key, text]) => (
             <button
               key={key}
               onClick={() => setSelectedOption(key)}
-              className={`border rounded p-2 hover:cursor-pointer text-left transition-colors ${
+              className={`border select-none rounded p-2 hover:cursor-pointer text-left transition-colors ${
                 selectedOption === key
                   ? "bg-blue-200 border-blue-500"
                   : "border-gray-300 hover:bg-gray-50"

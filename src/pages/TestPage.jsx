@@ -17,6 +17,7 @@ import Timer from "../components/childrens/Timer";
 import { logoutAndClear } from "../features/authslice";
 import { ImSpinner8 } from "react-icons/im";
 import Toast from "../components/childrens/FloatingMessage";
+import FullScreenPrompt from "../components/FullScreenPrompt";
 import {
   fetchSettingsStart,
   fetchSettingsSuccess,
@@ -59,6 +60,7 @@ export default function TestPage() {
   const [showToast, setShowToast] = useState(false);
   const [toastMessage, setToastMessage] = useState("");
   const [autoSubmitted, setAutoSubmitted] = useState(false);
+  const [showPrompt, setShowPrompt] = useState(true);
   const [safeRemainBlurTime, setSafeRemainBlurTime] = useState(10);
   const [showWarning, setShowWarning] = useState(false);
   const progressKey = `testProgress_${test_instance_id}`;
@@ -66,6 +68,38 @@ export default function TestPage() {
     (state) => state.settings.settings?.safe_blur_time
   );
   const [autoSubmitEnabled, setAutoSubmitEnabled] = useState(false);
+
+  const requestFullScreen = () => {
+    const elem = document.documentElement;
+    if (elem.requestFullscreen) {
+      elem.requestFullscreen();
+    } else if (elem.mozRequestFullScreen) {
+      // Firefox
+      elem.mozRequestFullScreen();
+    } else if (elem.webkitRequestFullscreen) {
+      // Chrome, Safari and Opera
+      elem.webkitRequestFullscreen();
+    } else if (elem.msRequestFullscreen) {
+      // IE/Edge
+      elem.msRequestFullscreen();
+    }
+  };
+  const handleAllowFullScreen = () => {
+    requestFullScreen();
+    setShowPrompt(false);
+  };
+
+  useEffect(() => {
+    const handleFullscreenChange = () => {
+      if (!document.fullscreenElement) {
+        console.log("Exited fullscreen");
+        setShowPrompt(true);
+      }
+    };
+    document.addEventListener("fullscreenchange", handleFullscreenChange);
+    return () =>
+      document.removeEventListener("fullscreenchange", handleFullscreenChange);
+  }, []);
 
   useEffect(() => {
     console.log("safeRemainBlurTime via api", safeRemainBlurTime);
@@ -241,12 +275,21 @@ export default function TestPage() {
         setAutoSubmitted(true);
       }
       dispatch(logoutAndClear());
+      setTimeout(() => {
+        window.close();
+      }, 3000);
     } finally {
       setLoading(false);
       localStorage.removeItem(progressKey);
       localStorage.removeItem("testStartTime");
       localStorage.removeItem("testInstanceId");
       dispatch(logoutAndClear());
+
+      if (document.fullscreenElement) {
+        document.exitFullscreen().catch((error) => {
+          console.error("Error exiting fullscreen:", error);
+        });
+      }
     }
   };
 
@@ -348,6 +391,10 @@ export default function TestPage() {
       {showToast && (
         <Toast message={toastMessage} onClose={() => setShowToast(false)} />
       )}
+      <div>
+        {showPrompt && <FullScreenPrompt onAllow={handleAllowFullScreen} />}
+        {/* The rest of your TestPage content */}
+      </div>
     </div>
   );
 }

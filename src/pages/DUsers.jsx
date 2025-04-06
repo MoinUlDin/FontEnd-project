@@ -33,10 +33,18 @@ const DUsers = () => {
 
   // Fetch user list if not available
   useEffect(() => {
-    if (userList.length === 0) {
-      userServices.fetchUserList(dispatch);
-    }
-  }, [dispatch, userList]);
+    const fetchData = async () => {
+      if (userList.length === 0) {
+        try {
+          const response = await userServices.fetchUserList(dispatch);
+          console.log("response User", response);
+        } catch (error) {
+          console.log("Error Fetching User", error);
+        }
+      }
+    };
+    fetchData();
+  }, [dispatch, userList.length]);
 
   // Filter user list based on selected email (if any)
   const filteredUsers = selectedEmail

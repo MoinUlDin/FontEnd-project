@@ -40,7 +40,7 @@ const TestLandingPage = () => {
     const testUrl = `${window.location.origin}/tests/take_test/${test_instance_id}/?token=${token}`;
     openTestWindow(testUrl);
 
-    navigate("/");
+    window.close();
   };
 
   return (
