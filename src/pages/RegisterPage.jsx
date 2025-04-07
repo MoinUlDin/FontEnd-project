@@ -55,12 +55,11 @@ function RegisterPage() {
       // Optionally, after a delay, navigate to login
     } catch (err) {
       console.error("Registration error:", err);
-      // If the API provides a message, display it.
-      setApiMessage(
-        err.response.data?.email || err.message || "Unkown error occurs."
-      );
+      // Use err.message directly, as our thrown error doesn't have a response property.
+      setApiMessage(err.message || "Error Registration Failed.");
     } finally {
       setIsLoading(false);
+      setToast(true);
     }
   };
 

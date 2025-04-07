@@ -86,7 +86,9 @@ class UserService {
       return response.data;
     } catch (error) {
       const errorMessage =
-        error.response?.data?.non_field_errors || "Registrations Failed.";
+        error.response?.data?.non_field_errors ||
+        error.response?.data?.email ||
+        "Registrations Failed.";
       throw new Error(errorMessage);
     }
   }
