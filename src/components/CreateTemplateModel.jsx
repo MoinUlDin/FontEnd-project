@@ -1,22 +1,35 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import sideimg from "../assets/report.avif";
 import { FiX } from "react-icons/fi";
 import { TextField } from "@mui/material";
 
 function CreateTemplateModal({ onClose, onSubmit }) {
   const [errorMessage, setErrorMessage] = useState("");
-
+  // Initially, set is_predefined to true.
   const [formData, setFormData] = useState({
     name: "",
     description: "",
-    is_predefined: false, // default value for the checkbox
+    is_predefined: true,
   });
-  // Expected format for templates:
-  //   {
-  //     "name": "Universal Template",
-  //     "description": "this is a template about Universe",
-  //     "is_predefined": true
-  //   }
+  // State to control the visibility of the checkbox.
+  const [showCheckbox, setShowCheckbox] = useState(false);
+
+  useEffect(() => {
+    // Attempt to retrieve user data from local storage
+    const userDataStr = localStorage.getItem("userData");
+    if (userDataStr) {
+      try {
+        const userData = JSON.parse(userDataStr);
+        // Show the checkbox only if the role is ADMIN or SUPER_ADMIN
+        if (userData.role === "ADMIN" || userData.role === "SUPER_ADMIN") {
+          setShowCheckbox(true);
+        }
+      } catch (error) {
+        console.error("Error parsing userData from localStorage", error);
+      }
+    }
+  }, []);
+
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
     const newValue = type === "checkbox" ? checked : value;
@@ -86,19 +99,21 @@ function CreateTemplateModal({ onClose, onSubmit }) {
                 onChange={handleChange}
               ></textarea>
             </div>
-            <div className="mt-5 w-full flex items-center">
-              <input
-                type="checkbox"
-                id="is_predefined"
-                name="is_predefined"
-                checked={formData.is_predefined}
-                onChange={handleChange}
-                className="mr-2"
-              />
-              <label htmlFor="is_predefined" className="text-sm font-medium">
-                Predefined Template
-              </label>
-            </div>
+            {showCheckbox && (
+              <div className="mt-5 w-full flex items-center">
+                <input
+                  type="checkbox"
+                  id="is_predefined"
+                  name="is_predefined"
+                  checked={formData.is_predefined}
+                  onChange={handleChange}
+                  className="mr-2"
+                />
+                <label htmlFor="is_predefined" className="text-sm font-medium">
+                  Predefined Template
+                </label>
+              </div>
+            )}
             <div className="flex justify-center mt-6">
               <button
                 type="submit"
