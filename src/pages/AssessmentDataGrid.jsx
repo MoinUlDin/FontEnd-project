@@ -530,7 +530,7 @@ export default function AssessmentDataGrid() {
         </div>
       </div>
 
-      <div className="flex flex-col h-[500px] w-full">
+      <div className="flex flex-col h-[590px] w-full">
         <DataGrid
           rows={filteredAssessments}
           columns={columns}

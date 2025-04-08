@@ -49,12 +49,12 @@ class UserService {
   }
   static async toggleInactive(payload, dispatch) {
     try {
-      console.log("We are in");
       const response = await apiClient.patch("users/inactive/", payload);
       UserService.fetchUserList(dispatch);
       console.log("Response", response.data);
       return response.data;
     } catch (error) {
+      console.log("error Inactivating", error);
       const message = error.response?.data?.message;
       throw new Error(message);
     }
@@ -99,7 +99,8 @@ class UserService {
       dispatch(deleteUser(id));
       return response.data;
     } catch (error) {
-      throw error;
+      const message = error?.response?.data?.message || "Unkown Error";
+      throw new Error(message);
     }
   }
 

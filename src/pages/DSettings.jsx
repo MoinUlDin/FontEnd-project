@@ -3,16 +3,16 @@ import React, { useState, useEffect } from "react";
 import apiClient from "../services/apiClient"; // Axios instance
 import { ImSpinner10 } from "react-icons/im";
 import { useDispatch, useSelector } from "react-redux";
-import { Autocomplete, TextField } from "@mui/material";
 import { setDifficultyLevels } from "../features/assessmentSlice";
 import GeneralSettings from "../components/GeneralSettings";
 import Toast from "../components/childrens/FloatingMessage";
 
 function DSettings() {
   const dispatch = useDispatch();
-  const difficultyLevels = useSelector(
+  const reduxDifficulty = useSelector(
     (state) => state.assessment.difficultyLevels
   );
+  const [difficulty, setDifficulty] = useState(null);
   const [loading, setLoading] = useState(false);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState("");
@@ -21,15 +21,15 @@ function DSettings() {
   const user = useSelector((state) => state.auth.user);
   const [showLevelSettings, setShowLevelSettings] = useState(false);
 
-  // Define the restrictions for each difficulty level.
+  // Define restrictions for each difficulty level.
   const levelRanges = {
-    easy: { min: 4, max: 12 },
-    medium: { min: 12, max: 25 },
-    hard: { min: 18, max: 50 },
-    include: { min: 60, max: 100 },
+    easy: { min: 3, max: 20 },
+    medium: { min: 10, max: 30 },
+    hard: { min: 20, max: 50 },
+    include: { min: 10, max: 100 },
   };
 
-  // Show level settings only if user is ADMIN or SUPER_ADMIN
+  // Show level settings only if user is ADMIN or SUPER_ADMIN.
   useEffect(() => {
     if (user?.role === "ADMIN" || user?.role === "SUPER_ADMIN") {
       setShowLevelSettings(true);
@@ -40,21 +40,28 @@ function DSettings() {
 
   // Fetch the difficulty levels when the component mounts.
   useEffect(() => {
-    if (difficultyLevels.length === 0) {
+    // If state from redux is empty or you want to load from the backend.
+    if (!difficulty) {
       setLoading(true);
       apiClient
         .get("/tests/difficulty_levels/")
         .then((response) => {
-          dispatch(setDifficultyLevels(response.data));
+          // Expecting a response like: [{ "Easy": 6, "Medium": 15, "Hard": 23, "Include": 30 }]
+          const data = response.data;
+          if (Array.isArray(data) && data.length > 0) {
+            setDifficulty(data[0]);
+            // You can also update your redux state if needed.
+            dispatch(setDifficultyLevels(data[0]));
+          }
         })
         .catch((err) => {
           console.error("Error fetching difficulty levels:", err);
         })
         .finally(() => setLoading(false));
     }
-  }, [dispatch, difficultyLevels]);
+  }, [dispatch, difficulty]);
 
-  // Load preferred difficulty from localStorage for the current user
+  // Load preferred difficulty from localStorage for the current user.
   useEffect(() => {
     if (user?.email) {
       const storedPref = localStorage.getItem("userPreferredDifficulty");
@@ -62,7 +69,7 @@ function DSettings() {
         try {
           const parsed = JSON.parse(storedPref);
           if (parsed.email === user.email) {
-            setPreferredDifficulty(parsed.difficulty);
+            // Optional: you can do something with parsed.difficulty here.
           }
         } catch (e) {
           console.error("Error parsing stored preferred difficulty", e);
@@ -71,12 +78,11 @@ function DSettings() {
     }
   }, [user]);
 
-  // Handler for when an input value changes in the table.
+  // Handler for when an input value changes.
   const handleChange = (level, newValue) => {
     // Get the appropriate range for the level (using lower case)
     const range = levelRanges[level.toLowerCase()];
     if (range) {
-      // Clamp the value if it is outside the allowed range.
       if (newValue < range.min) {
         newValue = range.min;
       }
@@ -84,45 +90,41 @@ function DSettings() {
         newValue = range.max;
       }
     }
-    // Update state with new value
-    dispatch(
-      setDifficultyLevels(
-        difficultyLevels.map((item) =>
-          item.level === level
-            ? { ...item, number_of_questions: newValue }
-            : item
-        )
-      )
-    );
+    setDifficulty((prevState) => ({
+      ...prevState,
+      [level]: newValue,
+    }));
   };
 
-  // Submit the updated difficulty levels
+  // Submit the updated difficulty levels.
   const handleSubmitLevels = (e) => {
     e.preventDefault();
     setSaving(true);
     setError("");
     setMessage("");
     apiClient
-      .post("/tests/difficulty_levels/", difficultyLevels)
+      .post("/tests/difficulty_levels/", difficulty)
       .then((response) => {
         setMessage(
           response.data.message || "Difficulty levels updated successfully."
         );
         setShowToast(true);
+        // Optionally update redux state.
+        dispatch(setDifficultyLevels(difficulty));
       })
       .catch((err) => {
         console.error(err);
         setMessage(
           err.response?.data?.message || "Error updating difficulty levels"
         );
+        setShowToast(true);
       })
       .finally(() => {
         setSaving(false);
-        setShowToast(true);
       });
   };
 
-  if (loading) {
+  if (loading || difficulty === null) {
     return (
       <div className="flex items-center justify-center py-10">
         <ImSpinner10 className="animate-spin mr-2" />
@@ -149,39 +151,72 @@ function DSettings() {
                 </tr>
               </thead>
               <tbody>
-                {difficultyLevels.map((levelObj) => {
-                  // Get restrictions for this level if available
-                  const range = levelRanges[levelObj.level.toLowerCase()] || {};
-                  return (
-                    <tr
-                      key={levelObj.level}
-                      className="border-b border-gray-300"
-                    >
-                      <td className="px-4 py-2">{levelObj.level}</td>
-                      <td className="px-4 py-2">
-                        <input
-                          type="number"
-                          value={levelObj.number_of_questions}
-                          onChange={(e) =>
-                            handleChange(
-                              levelObj.level,
-                              parseInt(e.target.value, 10)
-                            )
-                          }
-                          min={range.min}
-                          max={range.max}
-                          className="border rounded p-1 w-20"
-                        />
-                      </td>
-                    </tr>
-                  );
-                })}
+                <tr className="border-b border-gray-300">
+                  <td className="px-4 py-2">Easy</td>
+                  <td className="px-4 py-2">
+                    <input
+                      type="number"
+                      value={difficulty.Easy}
+                      onChange={(e) =>
+                        handleChange("Easy", parseInt(e.target.value, 10))
+                      }
+                      min={levelRanges.easy.min}
+                      max={levelRanges.easy.max}
+                      className="border rounded p-1 w-20"
+                    />
+                  </td>
+                </tr>
+                <tr className="border-b border-gray-300">
+                  <td className="px-4 py-2">Medium</td>
+                  <td className="px-4 py-2">
+                    <input
+                      type="number"
+                      value={difficulty.Medium}
+                      onChange={(e) =>
+                        handleChange("Medium", parseInt(e.target.value, 10))
+                      }
+                      min={levelRanges.medium.min}
+                      max={levelRanges.medium.max}
+                      className="border rounded p-1 w-20"
+                    />
+                  </td>
+                </tr>
+                <tr className="border-b border-gray-300">
+                  <td className="px-4 py-2">Hard</td>
+                  <td className="px-4 py-2">
+                    <input
+                      type="number"
+                      value={difficulty.Hard}
+                      onChange={(e) =>
+                        handleChange("Hard", parseInt(e.target.value, 10))
+                      }
+                      min={levelRanges.hard.min}
+                      max={levelRanges.hard.max}
+                      className="border rounded p-1 w-20"
+                    />
+                  </td>
+                </tr>
+                <tr className="border-b border-gray-300">
+                  <td className="px-4 py-2">Include</td>
+                  <td className="px-4 py-2">
+                    <input
+                      type="number"
+                      value={difficulty.Include}
+                      onChange={(e) =>
+                        handleChange("Include", parseInt(e.target.value, 10))
+                      }
+                      min={levelRanges.include.min}
+                      max={levelRanges.include.max}
+                      className="border rounded p-1 w-20"
+                    />
+                  </td>
+                </tr>
               </tbody>
             </table>
             <button
               type="submit"
               disabled={saving}
-              className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition-colors"
+              className="bg-blue-600 ptr text-white px-4 py-2 rounded hover:bg-blue-700 transition-colors"
             >
               {saving ? "Saving..." : "Save Changes"}
             </button>
@@ -190,10 +225,10 @@ function DSettings() {
         </>
       )}
 
-      {/* General Settins */}
+      {/* General Settings */}
       <GeneralSettings />
 
-      {/* floating Message with Toast */}
+      {/* Floating Toast Message */}
       {showToast && (
         <Toast message={message} onClose={() => setShowToast(false)} />
       )}

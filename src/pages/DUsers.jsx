@@ -121,7 +121,7 @@ const DUsers = () => {
         setShowToast(true);
       })
       .catch((error) => {
-        setApiResponse({ error: true, message: error });
+        setApiResponse({ error: true, message: error.message });
         setShowToast(true);
       })
       .finally(() => {

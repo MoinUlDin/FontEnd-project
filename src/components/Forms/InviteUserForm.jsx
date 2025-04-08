@@ -45,7 +45,7 @@ const InviteUserForm = ({ setApiResponse, onClose, setShowToast = none }) => {
           error: true,
           message: errorMessage,
         });
-        console.error("Error inviting user:", error);
+        console.error("Error inviting user:", setApiResponse);
       })
       .finally(() => {
         setLoading(false);
