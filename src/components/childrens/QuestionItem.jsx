@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 // Import your actions from your Redux slice
@@ -12,17 +12,12 @@ export default function QuestionItem({
   margin = "",
   fontsize = "",
   checkbox = false,
+  expanded = false,
+  onToggle = () => {},
 }) {
-  const [isExpanded, setIsExpanded] = useState(false);
   const dispatch = useDispatch();
-  const questions = useSelector((state) => {
-    if (state.category?.selected.length > 0) {
-      return state.category.selected;
-    }
-  });
-  const toggleExpand = () => {
-    setIsExpanded((prev) => !prev);
-  };
+  // Get selected questions from Redux store
+  const selected = useSelector((state) => state.category?.selected || []);
 
   // Handle checkbox changes: dispatch add or remove action based on checked state.
   const handleCheckboxChange = (e) => {
@@ -42,11 +37,12 @@ export default function QuestionItem({
             type="checkbox"
             className="mr-5 p-5 hover:cursor-pointer"
             onChange={handleCheckboxChange}
+            checked={selected.includes(question.id)}
           />
         )}
         <div
           className="flex grow justify-between items-center cursor-pointer"
-          onClick={toggleExpand}
+          onClick={onToggle}
         >
           <span className={`font-medium text-14 max-w-[70%] ${fontsize}`}>
             {question.text}
@@ -56,7 +52,7 @@ export default function QuestionItem({
       </div>
 
       {/* Expandable details: options and correct answer */}
-      {isExpanded && (
+      {expanded && (
         <div className={`ml-4 mt-1 ${margin} ${fontsize}`}>
           <ul className="list-disc ml-4">
             <li>Option 1: {question.options.option1}</li>

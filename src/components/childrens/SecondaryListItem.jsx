@@ -13,12 +13,16 @@ function SecondaryListItem({
   checkbox = false,
   bin = false,
   editable = false, // new prop
+  expanded, // prop to control if the category is expanded
+  onToggle, // callback to toggle category expansion
+  selectedQuestions = [], // passed global selected question IDs
 }) {
   const dispatch = useDispatch();
   // For editable mode, use questions from parent; otherwise, maintain local state.
   const [localQuestions, setLocalQuestions] = useState(questions);
 
-  const [isExpanded, setIsExpanded] = useState(false);
+  // State to control which question is expanded within this category.
+  const [expandedQuestionId, setExpandedQuestionId] = useState(null);
 
   // Only fetch API data if not in editable mode.
   const storedDetail = useSelector((state) =>
@@ -34,13 +38,13 @@ function SecondaryListItem({
         setLocalQuestions(questions);
       }
     }
-  }, [questions, editable]);
+  }, [questions, editable, storedDetail]);
 
   useEffect(() => {
     if (
       !editable &&
       id !== undefined &&
-      isExpanded &&
+      expanded && // Only fetch when the category is expanded.
       localQuestions.length === 0
     ) {
       if (
@@ -55,11 +59,8 @@ function SecondaryListItem({
         });
       }
     }
-  }, [isExpanded, localQuestions, storedDetail, dispatch, id, editable]);
+  }, [expanded, localQuestions, storedDetail, dispatch, id, editable]);
 
-  const toggleExpand = () => {
-    setIsExpanded((prev) => !prev);
-  };
   const handleRemoveQuestion = (categoryId, questionId) => {
     dispatch(removeQuestion({ categoryId, questionId }));
   };
@@ -67,7 +68,7 @@ function SecondaryListItem({
   return (
     <div className="md:max-w-dash-lg max-w-dash mt-templist md:mt-templist-md">
       <div
-        onClick={toggleExpand}
+        onClick={onToggle} // Use the passed toggle callback for category expansion.
         className="custom_grid bg-white shadow-md rounded-lg p-4 hover:shadow-lg hover:shadow-gray-400 hover:scale-x-101 hover:cursor-pointer transition-all duration-100"
       >
         <div className="col-span-3">
@@ -82,7 +83,7 @@ function SecondaryListItem({
           {localQuestions.length}
         </div>
       </div>
-      {isExpanded && (
+      {expanded && (
         <div className="ml-4 mt-2">
           {localQuestions.map((question, index) => (
             <div
@@ -95,6 +96,12 @@ function SecondaryListItem({
                   fontsize="text-12"
                   margin="mt-2"
                   checkbox={checkbox}
+                  expanded={question.id === expandedQuestionId}
+                  onToggle={() =>
+                    setExpandedQuestionId((prev) =>
+                      prev === question.id ? null : question.id
+                    )
+                  }
                 />
               </div>
               {bin && (

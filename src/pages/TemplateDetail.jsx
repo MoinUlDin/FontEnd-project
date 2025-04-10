@@ -15,6 +15,7 @@ export default function TemplateDetail() {
     (state) => state.templates.detailedTemplate
   );
   const [loading, setLoading] = useState(false);
+  const [expandedCategoryId, setExpandedCategoryId] = useState(null);
 
   // Provide a default empty array for categories if it's not defined yet.
   const categories = detailedTemplate.categories || [];
@@ -82,7 +83,15 @@ export default function TemplateDetail() {
             id={item.id}
             weight={item.weight}
             questions={item.questions}
-            //questions={item.questions.length}
+            // NEW: Pass expanded state based on the parent's expandedCategoryId.
+            expanded={expandedCategoryId === item.id}
+            // NEW: Pass callback to toggle expansion. If item is already expanded, collapse it;
+            // otherwise, set it as expanded.
+            onToggle={() =>
+              setExpandedCategoryId(
+                expandedCategoryId === item.id ? null : item.id
+              )
+            }
           />
         ))}
       </div>

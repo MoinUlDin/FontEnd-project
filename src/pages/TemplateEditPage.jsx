@@ -49,9 +49,10 @@ function TemplateEditPage() {
     setLoading(true);
     TempService.postTemplate(editTemplate, dispatch)
       .then((data) => {
-        setError(data?.message || "Template saved successfully");
+        setError(
+          data?.message + ". Redirecting" || "Template saved successfully"
+        );
         setShowToast(true);
-        console.log("Template saved successfully:", data);
         setTimeout(() => {
           navigate("/dashboard/templates");
         }, 3000);

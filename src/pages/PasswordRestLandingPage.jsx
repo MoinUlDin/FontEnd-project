@@ -1,6 +1,14 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
+import {
+  Box,
+  TextField,
+  Button,
+  Typography,
+  InputAdornment,
+  IconButton,
+} from "@mui/material";
+import { Visibility, VisibilityOff } from "@mui/icons-material";
 import { useParams, useNavigate } from "react-router-dom";
-import { Box, TextField, Button, Typography } from "@mui/material";
 import apiClient from "../services/apiClient";
 import Toast from "../components/childrens/FloatingMessage";
 
@@ -13,22 +21,28 @@ const PasswordRestLandingPage = () => {
     confirmNewPassword: "",
   });
 
+  const [showPassword, setShowPassword] = useState({
+    newPassword: false,
+    confirmNewPassword: false,
+  });
+
   const [error, setError] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
   const [toast, showToast] = useState(false);
 
-  // Handle input changes
   const handleChange = (e) => {
     setPasswords({ ...passwords, [e.target.name]: e.target.value });
   };
 
-  // Validate password format
+  const handleToggleVisibility = (field) => {
+    setShowPassword((prev) => ({ ...prev, [field]: !prev[field] }));
+  };
+
   const validatePassword = (password) => {
     const regex = /^(?=.*[A-Z])(?=.*\d).{8,}$/;
     return regex.test(password);
   };
 
-  // Handle form submission
   const handleSubmit = async () => {
     setError("");
     setSuccessMessage("");
@@ -57,8 +71,6 @@ const PasswordRestLandingPage = () => {
 
       setSuccessMessage(response.data.message);
       showToast(true);
-
-      // Redirect to login after a short delay
       setTimeout(() => navigate("/login"), 3000);
     } catch (err) {
       setError(err.response?.data?.message || "Failed to reset password.");
@@ -87,20 +99,49 @@ const PasswordRestLandingPage = () => {
       <TextField
         label="New Password"
         name="newPassword"
-        type="password"
+        type={showPassword.newPassword ? "text" : "password"}
         fullWidth
         margin="normal"
         value={passwords.newPassword}
         onChange={handleChange}
+        InputProps={{
+          endAdornment: (
+            <InputAdornment position="end">
+              <IconButton
+                onClick={() => handleToggleVisibility("newPassword")}
+                edge="end"
+              >
+                {showPassword.newPassword ? <VisibilityOff /> : <Visibility />}
+              </IconButton>
+            </InputAdornment>
+          ),
+        }}
       />
+
       <TextField
         label="Confirm New Password"
         name="confirmNewPassword"
-        type="password"
+        type={showPassword.confirmNewPassword ? "text" : "password"}
         fullWidth
         margin="normal"
         value={passwords.confirmNewPassword}
         onChange={handleChange}
+        InputProps={{
+          endAdornment: (
+            <InputAdornment position="end">
+              <IconButton
+                onClick={() => handleToggleVisibility("confirmNewPassword")}
+                edge="end"
+              >
+                {showPassword.confirmNewPassword ? (
+                  <VisibilityOff />
+                ) : (
+                  <Visibility />
+                )}
+              </IconButton>
+            </InputAdornment>
+          ),
+        }}
       />
 
       <Button

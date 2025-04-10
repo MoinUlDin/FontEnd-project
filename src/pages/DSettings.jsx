@@ -31,8 +31,10 @@ function DSettings() {
 
   // Show level settings only if user is ADMIN or SUPER_ADMIN.
   useEffect(() => {
+    console.log("user", user, "User.role", user.role);
     if (user?.role === "ADMIN" || user?.role === "SUPER_ADMIN") {
       setShowLevelSettings(true);
+      console.log("after setting showlevelsettings to true", showLevelSettings);
     } else {
       setShowLevelSettings(false);
     }
@@ -41,16 +43,20 @@ function DSettings() {
   // Fetch the difficulty levels when the component mounts.
   useEffect(() => {
     // If state from redux is empty or you want to load from the backend.
-    if (!difficulty) {
+    console.log("difficulty", difficulty, "ShowLeve", showLevelSettings);
+    if (!difficulty && showLevelSettings) {
+      console.log("tring to get level settings", loading);
       setLoading(true);
       apiClient
         .get("/tests/difficulty_levels/")
         .then((response) => {
           // Expecting a response like: [{ "Easy": 6, "Medium": 15, "Hard": 23, "Include": 30 }]
           const data = response.data;
+          console.log("Data", data);
           if (Array.isArray(data) && data.length > 0) {
             setDifficulty(data[0]);
             // You can also update your redux state if needed.
+            console.log("dispatching data");
             dispatch(setDifficultyLevels(data[0]));
           }
         })
@@ -59,7 +65,7 @@ function DSettings() {
         })
         .finally(() => setLoading(false));
     }
-  }, [dispatch, difficulty]);
+  }, [dispatch, difficulty, showLevelSettings]);
 
   // Load preferred difficulty from localStorage for the current user.
   useEffect(() => {
@@ -124,11 +130,11 @@ function DSettings() {
       });
   };
 
-  if (loading || difficulty === null) {
+  if (loading) {
     return (
       <div className="flex items-center justify-center py-10">
         <ImSpinner10 className="animate-spin mr-2" />
-        <span>Loading difficulty levels...</span>
+        <span>Loading User Settings...</span>
       </div>
     );
   }
@@ -156,7 +162,7 @@ function DSettings() {
                   <td className="px-4 py-2">
                     <input
                       type="number"
-                      value={difficulty.Easy}
+                      value={difficulty?.Easy}
                       onChange={(e) =>
                         handleChange("Easy", parseInt(e.target.value, 10))
                       }
@@ -171,7 +177,7 @@ function DSettings() {
                   <td className="px-4 py-2">
                     <input
                       type="number"
-                      value={difficulty.Medium}
+                      value={difficulty?.Medium}
                       onChange={(e) =>
                         handleChange("Medium", parseInt(e.target.value, 10))
                       }
@@ -186,7 +192,7 @@ function DSettings() {
                   <td className="px-4 py-2">
                     <input
                       type="number"
-                      value={difficulty.Hard}
+                      value={difficulty?.Hard}
                       onChange={(e) =>
                         handleChange("Hard", parseInt(e.target.value, 10))
                       }
@@ -201,7 +207,7 @@ function DSettings() {
                   <td className="px-4 py-2">
                     <input
                       type="number"
-                      value={difficulty.Include}
+                      value={difficulty?.Include}
                       onChange={(e) =>
                         handleChange("Include", parseInt(e.target.value, 10))
                       }

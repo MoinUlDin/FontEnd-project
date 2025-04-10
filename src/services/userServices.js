@@ -44,7 +44,8 @@ class UserService {
 
       return response.data;
     } catch (error) {
-      throw error;
+      const message = error.response?.data?.message || "An Error Occurs";
+      throw new Error(message);
     }
   }
   static async toggleInactive(payload, dispatch) {

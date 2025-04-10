@@ -32,19 +32,12 @@ const InviteUserForm = ({ setApiResponse, onClose, setShowToast = none }) => {
         UserService.fetchUserList(dispatch);
       })
       .catch((error) => {
-        let errorMessage = "Error inviting user";
-        if (error) {
-          if (typeof error === "object") {
-            errorMessage =
-              error.response?.data?.message || error.message || errorMessage;
-          } else {
-            errorMessage = error;
-          }
-        }
+        let errorMessage = error?.message || "Error inviting user";
         setApiResponse({
           error: true,
           message: errorMessage,
         });
+        setShowToast ? setShowToast(true) : "";
         console.error("Error inviting user:", setApiResponse);
       })
       .finally(() => {

@@ -12,7 +12,7 @@ import {
   copyQuestionsToCategory,
 } from "../../features/templateSlice";
 import EditAbleList from "./EditAbleList";
-import { FiDownload, FiEdit, FiPlus } from "react-icons/fi";
+import { FiDownload, FiPlus } from "react-icons/fi";
 import csvToJson from "../../helpers/csvToJson";
 
 function CurrentCategories() {
@@ -156,6 +156,7 @@ function CurrentCategories() {
     }
   };
 
+  // Manage editing state for inline editing of category details.
   const [editingCategoryId, setEditingCategoryId] = useState(null);
 
   const handleUpdateCategory = (id, newName, newWeight) => {
@@ -164,7 +165,9 @@ function CurrentCategories() {
     setEditingCategoryId(null);
   };
 
-  // Prepare rows for rendering the editable list.
+  // NEW: Manage expanded category state (only one expanded at a time).
+  const [expandedCategoryId, setExpandedCategoryId] = useState(null);
+
   return (
     <div className="px-7">
       {/* Top right buttons */}
@@ -286,11 +289,18 @@ function CurrentCategories() {
                 weight={item.weight}
                 questions={item.questions}
                 bin={true}
-                // Pass a flag to indicate whether this category is being edited.
+                checkbox={false} // or pass true if needed
                 editing={editingCategoryId === item.id}
                 onUpdateCategory={handleUpdateCategory}
                 onCancelEdit={() => setEditingCategoryId(null)}
                 onRemove={() => handleRemoveCategory(item.id)}
+                // NEW props to control expansion
+                expanded={expandedCategoryId === item.id}
+                onToggle={() =>
+                  setExpandedCategoryId(
+                    expandedCategoryId === item.id ? null : item.id
+                  )
+                }
               />
             </div>
             <FaEdit

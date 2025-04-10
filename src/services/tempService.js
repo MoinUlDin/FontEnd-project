@@ -40,6 +40,16 @@ class TempService {
       throw error;
     }
   }
+  static async deleteTemplate(id) {
+    try {
+      const endpoint = `tests/templates/${id}/`;
+      const response = await apiClient.delete(endpoint);
+      return response.data;
+    } catch (error) {
+      console.error("Error deleting template:", error);
+      throw error;
+    }
+  }
 }
 
 export default TempService;

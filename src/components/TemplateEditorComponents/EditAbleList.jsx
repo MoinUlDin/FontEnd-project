@@ -15,12 +15,15 @@ function EditAbleList({
   onUpdateCategory,
   onCancelEdit,
   onRemove,
+  expanded, // prop from parent for category expansion control
+  onToggle, // callback from parent to toggle category expansion
 }) {
   const dispatch = useDispatch();
-  const [isExpanded, setIsExpanded] = useState(false);
   // Local state for editing category name and weight.
   const [editName, setEditName] = useState(title);
   const [editWeight, setEditWeight] = useState(weight);
+  // Local state to control which question is expanded (only one at a time).
+  const [expandedQuestionId, setExpandedQuestionId] = useState(null);
 
   useEffect(() => {
     // Whenever the props change, reset local editing values.
@@ -28,28 +31,26 @@ function EditAbleList({
     setEditWeight(weight);
   }, [title, weight]);
 
-  const toggleExpand = () => {
-    // If currently in edit mode, collapse first.
+  // Toggle for category expansion uses the passed-in callback.
+  const toggleCategoryExpand = () => {
     if (editing) {
       onCancelEdit();
     }
-    setIsExpanded((prev) => !prev);
+    onToggle();
   };
 
   const handleSave = () => {
-    // Validate if needed before updating.
     onUpdateCategory(id, editName, editWeight);
   };
 
   const handleRemoveQuestion = (categoryId, questionId) => {
-    // You already have a removeQuestion dispatch here.
     dispatch(removeQuestion({ categoryId, questionId }));
   };
 
   return (
     <div className="md:max-w-dash-lg max-w-dash mt-templist md:mt-templist-md">
       <div
-        onClick={toggleExpand}
+        onClick={toggleCategoryExpand}
         className="custom_grid bg-white shadow-md rounded-lg p-4 hover:shadow-lg hover:shadow-gray-400 hover:scale-x-101 hover:cursor-pointer transition-all duration-100"
       >
         <div className="col-span-3">
@@ -99,7 +100,7 @@ function EditAbleList({
           </button>
         </div>
       )}
-      {isExpanded && !editing && (
+      {expanded && !editing && (
         <div className="ml-4 mt-2">
           {questions.map((question) => (
             <div className="flex items-center gap-3" key={question.id}>
@@ -109,6 +110,14 @@ function EditAbleList({
                   fontsize="text-12"
                   margin="mt-2"
                   checkbox={checkbox}
+                  // Only the question matching expandedQuestionId is expanded.
+                  expanded={expandedQuestionId === question.id}
+                  // Toggle this question's expansion.
+                  onToggle={() =>
+                    setExpandedQuestionId(
+                      expandedQuestionId === question.id ? null : question.id
+                    )
+                  }
                 />
               </div>
               {bin && (

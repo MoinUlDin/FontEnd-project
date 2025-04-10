@@ -3,7 +3,13 @@ import PropTypes from "prop-types";
 import { useSpring, animated } from "@react-spring/web";
 import { FiX } from "react-icons/fi";
 
-const Toast = ({ message, duration = 5, onClose, className }) => {
+const Toast = ({
+  message,
+  duration = 3,
+  onClose,
+  className,
+  barColor = "bg-blue-400",
+}) => {
   const [show, setShow] = useState(true);
   const [hasEntered, setHasEntered] = useState(false);
 
@@ -83,7 +89,7 @@ const Toast = ({ message, duration = 5, onClose, className }) => {
       </div>
       <animated.div
         style={progressSpring}
-        className="h-1 bg-blue-400 rounded-full"
+        className={`h-1 ${barColor} rounded-full`}
       />
     </animated.div>
   );

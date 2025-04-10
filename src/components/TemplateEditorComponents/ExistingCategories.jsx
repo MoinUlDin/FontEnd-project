@@ -11,14 +11,20 @@ function ExistingCategories() {
   const [error, setError] = useState("");
   const dispatch = useDispatch();
 
-  // Selected questions
+  // Selected questions from Redux
   const selected = useSelector((state) => state.category?.selected || []);
 
-  // API categories list
+  // API categories list from Redux
   const categories = useSelector((state) => state.category?.list || []);
 
   // Remove "All" from the initial state
   const [selectedOptions, setSelectedOptions] = useState([]);
+
+  // New state: Only one category can be expanded at a time
+  const [expandedCategoryId, setExpandedCategoryId] = useState(null);
+
+  // Dialog state
+  const [dialogOpen, setDialogOpen] = useState(false);
 
   useEffect(() => {
     if (categories.length === 0) {
@@ -37,8 +43,10 @@ function ExistingCategories() {
         )
       : categories; // Show all if nothing is selected
 
-  // Dialog state
-  const [dialogOpen, setDialogOpen] = useState(false);
+  // Handler to toggle expansion: allow only one expanded list at a time.
+  const handleToggle = (id) => {
+    setExpandedCategoryId((prev) => (prev === id ? null : id));
+  };
 
   return (
     <div className="py-4 px-4">
@@ -84,6 +92,9 @@ function ExistingCategories() {
             title={item.name}
             weight={item.weight}
             checkbox={true}
+            expanded={expandedCategoryId === item.id} // Pass expanded state
+            onToggle={() => handleToggle(item.id)} // Pass toggle callback
+            selectedQuestions={selected} // Pass selected questions for checkbox status
           />
         ))}
       </div>

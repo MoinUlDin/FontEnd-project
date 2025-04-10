@@ -8,6 +8,7 @@ import CreateTemplateModal from "../components/CreateTemplateModel"; // Import t
 import CreateAssessmentModel from "../components/CreateAssessmentModel";
 import Toast from "../components/childrens/FloatingMessage";
 import { ImSpinner10 } from "react-icons/im";
+import { FiTrash } from "react-icons/fi";
 
 function DTemplates() {
   const dispatch = useDispatch();
@@ -19,6 +20,7 @@ function DTemplates() {
   const activeClass = "border-b-2 border-blue-400 font-bold ";
   const [showAssessmentModal, setShowAssessmentModal] = useState(false);
   const [selectedTemplateId, setSelectedTemplateId] = useState(null);
+  const [toastbarColor, setToastbarColor] = useState(undefined);
   const [showToast, setShowToast] = useState(false);
   const [apiResponse, setApiResponse] = useState("");
 
@@ -119,6 +121,9 @@ function DTemplates() {
               createdat={item.created_at}
               createdby={item.created_by}
               onInvite={handleInvite}
+              setShowToast={setShowToast}
+              setToastbarColor={setToastbarColor}
+              setApiResponse={setApiResponse}
             />
           ))
         ) : (
@@ -147,7 +152,16 @@ function DTemplates() {
         />
       )}
       {/* Show floating message */}
-      {showToast && <Toast message={apiResponse} />}
+      {showToast && (
+        <Toast
+          onClose={() => {
+            setShowToast(false);
+            setToastbarColor(undefined);
+          }}
+          barColor={toastbarColor}
+          message={apiResponse}
+        />
+      )}
     </div>
   );
 }

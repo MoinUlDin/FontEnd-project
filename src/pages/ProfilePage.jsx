@@ -188,14 +188,14 @@ const ProfilePage = () => {
         email: resetEmail,
       });
       setToastMessage(response.data.message);
-      showToast(true);
+      setShowToast(true);
       setOpenResetDialog(false);
     } catch (error) {
       setToastMessage(
         error.response?.data?.message ||
           "Error sending reset email. Please try again."
       );
-      showToast(true);
+      setShowToast(true);
     }
     setLoading(false);
   };
@@ -308,7 +308,7 @@ const ProfilePage = () => {
               sx={{ ml: 2 }}
               onClick={() => setOpenResetDialog(true)}
             >
-              Reset Email
+              Reset Password
             </Button>
           </Box>
         )}
@@ -476,7 +476,7 @@ const ProfilePage = () => {
             {loading ? (
               <div className="flex items-center gap-2">
                 <ImSpinner8 className="animate-spin" />
-                <span>Pleas wait.</span>
+                <span>Please wait.</span>
               </div>
             ) : (
               "Reset"

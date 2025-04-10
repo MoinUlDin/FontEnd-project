@@ -1,5 +1,5 @@
 // src/components/OverallSummaryTable.jsx
-import React from "react";
+import React, { useState } from "react";
 import { DataGrid } from "@mui/x-data-grid";
 import { LinearProgress } from "@mui/material";
 
@@ -150,18 +150,22 @@ const OverallSummaryTable = ({ data }) => {
       },
     },
   ];
+  const [columnVisibilityModel, setColumnVisibilityModel] = useState({
+    job_role: false,
+  });
 
+  const handleColumnVisibilityChange = (newModel) => {
+    setColumnVisibilityModel(newModel);
+  };
   return (
     <div className="h-[600px] w-full">
       <DataGrid
         rows={formattedRows}
         columns={columns}
         pageSize={10}
-        rowsPerPageOptions={[10, 25, 50]}
         rowHeight={80}
-        columnVisibilityModel={{
-          job_role: false,
-        }}
+        columnVisibilityModel={columnVisibilityModel}
+        onColumnVisibilityModelChange={handleColumnVisibilityChange}
         sx={{
           border: "none",
           ".MuiDataGrid-cell": {

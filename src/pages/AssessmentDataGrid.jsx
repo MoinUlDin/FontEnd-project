@@ -146,6 +146,18 @@ export default function AssessmentDataGrid() {
 
   useEffect(() => {
     AssessmentService.fetchAssessments(dispatch)
+      .then((rawData) => {
+        // Suppose rawData is an array of objects, each with a nested "candidate"
+        const flattenedData = rawData.map((item) => ({
+          ...item,
+          username: item.candidate?.username ?? "-",
+          email: item.candidate?.email ?? "-",
+        }));
+
+        // Now store flattenedData in your Redux store or local state
+        dispatch({ type: "assessment/setAssessments", payload: flattenedData });
+        //dispatch(setAssessments(flattenedData)); or you can impot setAssesments and use this both are same
+      })
       .catch((error) => console.log("Error fetching assessments", error))
       .finally(() => setLoading(false));
   }, [dispatch]);
@@ -218,12 +230,20 @@ export default function AssessmentDataGrid() {
     {
       field: "username",
       headerName: "Username",
-      valueGetter: (params) => params || "-",
+      width: 120,
+      valueGetter: (params) => params,
+      renderCell: (params) => {
+        return params?.row?.candidate?.username || "-";
+      },
     },
     {
       field: "email",
       headerName: "Email",
-      valueGetter: (params) => params || "-",
+      width: 130,
+      valueGetter: (params) => params,
+      renderCell: (params) => {
+        return params?.row?.candidate?.email || "-";
+      },
     },
     {
       field: "job_role",
@@ -343,6 +363,14 @@ export default function AssessmentDataGrid() {
     },
   ];
 
+  const [columnVisibilityModel, setColumnVisibilityModel] = useState({
+    username: false,
+    email: false,
+  });
+
+  const handleColumnVisibilityChange = (newModel) => {
+    setColumnVisibilityModel(newModel);
+  };
   if (loading) {
     return (
       <div className="text-xl md:text-[3rem] mt-10 md:mt-20 font-bold flex gap-5 items-center justify-center">
@@ -536,13 +564,10 @@ export default function AssessmentDataGrid() {
           columns={columns}
           rowHeight={70}
           headerHeight={60}
+          columnVisibilityModel={columnVisibilityModel}
+          onColumnVisibilityModelChange={handleColumnVisibilityChange}
           slots={{
             toolbar: GridToolbar,
-          }}
-          columnVisibilityModel={{
-            // hiding columns
-            email: false,
-            username: false,
           }}
           slotProps={{
             // toolbar: {
