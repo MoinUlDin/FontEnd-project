@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import CategoryService from "../../services/categoriesService";
 import { FaTrash } from "react-icons/fa";
 import { removeQuestion } from "../../features/templateSlice";
+import { GrClone } from "react-icons/gr";
 
 function SecondaryListItem({
   title,
@@ -64,22 +65,33 @@ function SecondaryListItem({
   const handleRemoveQuestion = (categoryId, questionId) => {
     dispatch(removeQuestion({ categoryId, questionId }));
   };
+  const handleClone = (e) => {
+    e.stopPropagation(); // Prevent triggering the category toggle.
+    console.log("Cloning question with ID: ", id);
+  };
 
   return (
     <div className="md:max-w-dash-lg max-w-dash mt-templist md:mt-templist-md">
       <div
         onClick={onToggle} // Use the passed toggle callback for category expansion.
-        className="custom_grid bg-white shadow-md rounded-lg p-4 hover:shadow-lg hover:shadow-gray-400 hover:scale-x-101 hover:cursor-pointer transition-all duration-100"
+        className="custom_grid bg-white shadow-md rounded-lg p-4 pr-1 hover:shadow-lg hover:shadow-gray-400 hover:scale-x-101 hover:cursor-pointer transition-all duration-100"
       >
         <div className="col-span-3">
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-4">
             <p className="text-purple-600 font-semibold text-dash-it hover:underline">
               {title}
             </p>
+            <div
+              onClick={handleClone}
+              className="text-[10px] xs:hidden flex flex-col justify-center items-center"
+            >
+              <GrClone />
+              <span>clone</span>
+            </div>
           </div>
         </div>
         <div className="place-self-center text-dash-it">{weight}</div>
-        <div className="place-self-center text-dash-it">
+        <div className="place-self-center text-dash-it flex gap-2">
           {localQuestions.length}
         </div>
       </div>

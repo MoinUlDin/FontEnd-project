@@ -23,7 +23,7 @@ function DTemplates() {
   const [toastbarColor, setToastbarColor] = useState(undefined);
   const [showToast, setShowToast] = useState(false);
   const [apiResponse, setApiResponse] = useState("");
-
+  const [filterQuery, setFilterQuery] = useState("");
   // State to control modal visibility
   const [showModal, setShowModal] = useState(false);
 
@@ -55,9 +55,19 @@ function DTemplates() {
   };
 
   // Filter templates by created_by_id when "My Templates" is selected.
-  const filteredTemplates = all
-    ? templates
-    : templates.filter((template) => template.created_by_id === user.userId);
+  const templateNames = templates.map((template) => template.name);
+  const filteredTemplates = (() => {
+    // When filterQuery is present, filter templates by name
+    if (filterQuery.trim().length >= 1) {
+      return templates.filter((template) =>
+        template.name.toLowerCase().includes(filterQuery.toLowerCase())
+      );
+    }
+    // Fallback to previous filtering logic: either all or the user’s templates
+    return all
+      ? templates
+      : templates.filter((template) => template.created_by_id === user.userId);
+  })();
 
   if (loading) {
     return (
@@ -72,7 +82,11 @@ function DTemplates() {
     <div>
       <div className="text-2xl font-bold pb-6 border-b border-gray-200 flex justify-between ">
         <div className="hidden md:block">
-          <FilterBy />
+          <FilterBy
+            title="Search"
+            list={templateNames}
+            onSelect={(selected) => setFilterQuery(selected)}
+          />
         </div>
         <button
           onClick={() => setShowModal(true)}

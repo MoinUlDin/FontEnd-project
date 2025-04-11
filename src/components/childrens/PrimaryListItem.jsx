@@ -57,7 +57,7 @@ function PrimaryListItem({
           <div className="flex items-center gap-2">
             <a
               href="#"
-              className="text-purple-600 font-semibold text-dash-it hover:underline"
+              className="text-purple-600 iconhove font-semibold text-dash-it hover:underline"
             >
               {title}
             </a>
@@ -66,27 +66,27 @@ function PrimaryListItem({
             <Link
               onClick={handleInviteClick}
               to=""
-              className="hover:text-purple-600 text-dash-i flex gap-1 items-center"
+              className="hover:text-purple-600 iconhove text-dash-i flex gap-1 items-center"
             >
               <FiMail /> Invite
             </Link>
             <Link
               to={`/dashboard/template/${id}`}
-              className="hover:text-purple-600 text-dash-i flex gap-1 items-center"
+              className="hover:text-purple-600 iconhove text-dash-i flex gap-1 items-center"
             >
               <FiEye />
               Preview
             </Link>
             <Link
               to={`/tempate/edit-template/${id}`}
-              className="hover:text-purple-600 text-dash-i flex gap-1 items-center"
+              className="hover:text-purple-600 iconhove text-dash-i flex gap-1 items-center"
             >
               <FiEdit />
               Edit
             </Link>
             <button
               onClick={handleDelete}
-              className="hover:text-purple-600 ptr text-dash-i flex gap-1 items-center"
+              className="hover:text-red-600 iconhove text-dash-i flex gap-1 items-center"
             >
               <FiTrash />
               Delete

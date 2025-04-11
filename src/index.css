@@ -59,3 +59,7 @@ body {
 .bgred {
   @apply bg-red-900;
 }
+
+.iconhove {
+  @apply hover:text-sm hover:cursor-pointer duration-100 select-none;
+}

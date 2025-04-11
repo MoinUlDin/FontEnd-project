@@ -1,6 +1,14 @@
+import { Tooltip } from "@mui/material";
 import React, { useState, useMemo, useRef, useEffect } from "react";
+import { FiFilter } from "react-icons/fi";
 
-function FilterBy({ id = "", list = [], css = "", onSelect }) {
+function FilterBy({
+  id = "",
+  title = "Search By",
+  list = [],
+  css = "",
+  onSelect,
+}) {
   const [inputValue, setInputValue] = useState("");
   const [isFocused, setIsFocused] = useState(false);
   const [dropdownOpen, setDropdownOpen] = useState(false);
@@ -79,17 +87,17 @@ function FilterBy({ id = "", list = [], css = "", onSelect }) {
           className="text-[9px] max-w-[40%] hover:cursor-pointer"
           onClick={handleLabelClick}
         >
-          Search By <span>▼</span>
+          {title} <span>▼</span>
         </label>
       </div>
       {dropdownOpen && filteredOptions.length > 0 && (
         <ul
-          className={`absolute z-10 left-4 bg-white border shadow-xl shadow-gray-300 rounded min-w-[8rem] border-gray-300 mt-1 ${maxw}`}
+          className={`absolute max-h-84 overflow-auto z-10 left-1 bg-white border shadow-xl shadow-gray-300 rounded min-w-[13rem] border-gray-300 mt-1 ${maxw}`}
         >
           {filteredOptions.map((option, index) => (
             <li
               key={index}
-              className="px-3 py-1 border-b border-b-gray-200 rounded hover:bg-blue-100 hover:cursor-pointer text-[10px]"
+              className="px-4 py-3 border-b border-b-gray-200 rounded hover:bg-blue-100 hover:cursor-pointer  text-[12px]"
               onMouseDown={() => {
                 // onMouseDown prevents input blur before selection
                 setInputValue(option);
@@ -104,6 +112,15 @@ function FilterBy({ id = "", list = [], css = "", onSelect }) {
           ))}
         </ul>
       )}
+      <Tooltip
+        title="Clear Filter"
+        placement="top"
+        className="hover:text-blue-600 absolute -right-10 top-0 p-1 text-2xl ptr"
+      >
+        <span onClick={() => setInputValue("")}>
+          <FiFilter />
+        </span>
+      </Tooltip>
     </div>
   );
 }
