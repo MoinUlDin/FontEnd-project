@@ -12,7 +12,7 @@ function FilterBy({
   const [inputValue, setInputValue] = useState("");
   const [isFocused, setIsFocused] = useState(false);
   const [dropdownOpen, setDropdownOpen] = useState(false);
-  const maxw = "max-w-50";
+  const maxw = "lg:max-w-50 md:max-w-40 sm:max-w-30";
   const containerRef = useRef(null);
 
   // useMemo to filter options based on inputValue and list
@@ -117,7 +117,12 @@ function FilterBy({
         placement="top"
         className="hover:text-blue-600 absolute -right-10 top-0 p-1 text-2xl ptr"
       >
-        <span onClick={() => setInputValue("")}>
+        <span
+          onClick={() => {
+            setInputValue("");
+            if (onSelect) onSelect("");
+          }}
+        >
           <FiFilter />
         </span>
       </Tooltip>

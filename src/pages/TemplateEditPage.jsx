@@ -59,7 +59,10 @@ function TemplateEditPage() {
       })
       .catch((error) => {
         console.error("Save error:", error);
-        setError(error.response?.data?.errors?.toString());
+        setError(
+          error.response?.data?.message ||
+            error.response?.data?.errors?.toString()
+        );
         setShowToast(true);
       })
       .finally(() => setLoading(false));

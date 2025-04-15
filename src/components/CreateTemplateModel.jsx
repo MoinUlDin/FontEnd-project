@@ -9,7 +9,7 @@ function CreateTemplateModal({ onClose, onSubmit }) {
   const [formData, setFormData] = useState({
     name: "",
     description: "",
-    is_predefined: true,
+    is_predefined: false,
   });
   // State to control the visibility of the checkbox.
   const [showCheckbox, setShowCheckbox] = useState(false);
@@ -28,7 +28,7 @@ function CreateTemplateModal({ onClose, onSubmit }) {
         console.error("Error parsing userData from localStorage", error);
       }
     }
-  }, []);
+  }, [showCheckbox]);
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;

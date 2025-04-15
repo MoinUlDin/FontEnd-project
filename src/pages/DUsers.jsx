@@ -221,10 +221,12 @@ const DUsers = () => {
   return (
     <div className="p-4">
       {/* Header with filter and invite button */}
-      <div className="flex justify-between items-center mb-4">
-        <FilterBy list={emailList} onSelect={setSelectedEmail} />
+      <div className="flex justify-between flex-col sm:flex-row gap-4 items-center mb-4">
+        <div className="max-w-[50svw]">
+          <FilterBy list={emailList} onSelect={setSelectedEmail} />
+        </div>
         <Button variant="contained" onClick={() => setInviteVisible(true)}>
-          <div className="flex gap-2 items-center">
+          <div className="flex gap-1 text-[10px] xs:text-[12px] sm:text-sm sm:gap-2 items-center">
             <Mail fontSize="small" />
             <p>Invite User</p>
           </div>

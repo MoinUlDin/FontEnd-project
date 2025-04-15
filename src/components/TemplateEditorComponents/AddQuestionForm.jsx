@@ -102,7 +102,6 @@ const AddQuestionForm = ({ onSubmitSuccess, onClose }) => {
               <Controller
                 name="isMCQ"
                 control={control}
-                rules={{ required: "Question type is required" }}
                 render={({ field }) => (
                   <FormControl error={!!errors.isMCQ}>
                     <FormControlLabel

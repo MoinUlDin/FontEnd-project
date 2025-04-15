@@ -81,45 +81,48 @@ function DTemplates() {
   return (
     <div>
       <div className="text-2xl font-bold pb-6 border-b border-gray-200 flex justify-between ">
-        <div className="hidden md:block">
-          <FilterBy
-            title="Search"
-            list={templateNames}
-            onSelect={(selected) => setFilterQuery(selected)}
-          />
-        </div>
-        <button
-          onClick={() => setShowModal(true)}
-          className="text-[8px] hover:cursor-pointer bg-sunglow rounded-4xl px-4 p-1"
-        >
-          Create Template
-        </button>
-        <div className="text-10 min-w-[20%] px-2 flex justify-between mr-2">
-          <div>
-            <button
-              className={`p-2 ${
-                all ? "font-bold text-blue-800" : ""
-              } hover:cursor-pointer hover:-translate-y-0.5 transition-all duration-300 `}
-              onClick={() => setAll(true)}
-            >
-              All Templates
-            </button>
-            <div
-              className={`w-full ${all ? activeClass : inactiveClass}`}
-            ></div>
+        <div className="flex flex-col sm:flex-row gap-3 sm:flex-1 justify-between">
+          <div className="grow-0 max-w-[55svw]">
+            <FilterBy
+              title="Search"
+              list={templateNames}
+              onSelect={(selected) => setFilterQuery(selected)}
+            />
           </div>
-          <div>
-            <button
-              className={`p-2 ${
-                all ? "" : "font-bold text-blue-800"
-              } hover:cursor-pointer hover:-translate-y-0.5 transition-all duration-300`}
-              onClick={() => setAll(false)}
-            >
-              My Templates
-            </button>
-            <div
-              className={`w-full ${all ? inactiveClass : activeClass}`}
-            ></div>
+
+          <button
+            onClick={() => setShowModal(true)}
+            className="text-[8px] hover:cursor-pointer py-3 sm:py-0 bg-sunglow rounded-4xl px-4 p-1"
+          >
+            Create Template
+          </button>
+          <div className="text-10 min-w-[20%] px-2 flex justify-between mr-2">
+            <div>
+              <button
+                className={`p-2 ${
+                  all ? "font-bold text-blue-800" : ""
+                } hover:cursor-pointer hover:-translate-y-0.5 transition-all duration-300 `}
+                onClick={() => setAll(true)}
+              >
+                All Templates
+              </button>
+              <div
+                className={`w-full ${all ? activeClass : inactiveClass}`}
+              ></div>
+            </div>
+            <div>
+              <button
+                className={`p-2 ${
+                  all ? "" : "font-bold text-blue-800"
+                } hover:cursor-pointer hover:-translate-y-0.5 transition-all duration-300`}
+                onClick={() => setAll(false)}
+              >
+                My Templates
+              </button>
+              <div
+                className={`w-full ${all ? inactiveClass : activeClass}`}
+              ></div>
+            </div>
           </div>
         </div>
       </div>

@@ -56,7 +56,8 @@ class UserService {
       return response.data;
     } catch (error) {
       console.log("error Inactivating", error);
-      const message = error.response?.data?.message;
+      const message =
+        error.response?.data?.message || error.response?.data?.detail;
       throw new Error(message);
     }
   }

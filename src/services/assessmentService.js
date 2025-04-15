@@ -34,7 +34,8 @@ class AssessmentService {
       return response.data;
     } catch (error) {
       console.error("Error creating assessment:", error);
-      const message = error?.response?.data?.message;
+      const message =
+        error?.response?.data?.message || error?.response?.data?.detail;
       throw new Error(message);
     }
   }
