@@ -19,6 +19,8 @@ function PrimaryListItem({
   const fDate = dayjs(createdat).format("D-MMM-YYYY");
   const [showWarning, setShowWarning] = useState(false);
   const dispatch = useDispatch();
+  const warningMessage =
+    "Are you Sure to delele? You will loose all tests conducted using this template. Still want to proceed. ";
   const handleInviteClick = (e) => {
     e.preventDefault();
     onInvite(id);
@@ -102,7 +104,7 @@ function PrimaryListItem({
       </div>
       {showWarning && (
         <WarningDialog
-          message="Are you Sure to delele? You can not revert this actions later. "
+          message={warningMessage}
           onConfirm={handleDeleteConfirm}
           onCancel={() => {
             setShowWarning(false);

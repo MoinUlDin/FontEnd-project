@@ -60,12 +60,17 @@ export default function QuestionItem({
       {expanded && (
         <div className={`ml-4 mt-1 ${margin} ${fontsize}`}>
           {type === "mcq" ? (
-            <ul className="list-disc ml-4">
-              <li>Option 1: {question.options?.option1}</li>
-              <li>Option 2: {question.options?.option2}</li>
-              <li>Option 3: {question.options?.option3}</li>
-              <li>Option 4: {question.options?.option4}</li>
-            </ul>
+            <div>
+              <ul className="list-disc ml-4">
+                <li>Option 1: {question.options?.option1}</li>
+                <li>Option 2: {question.options?.option2}</li>
+                <li>Option 3: {question.options?.option3}</li>
+                <li>Option 4: {question.options?.option4}</li>
+              </ul>
+              <p className={margin}>
+                <strong>Correct Answer:</strong> {question.correct_answer}
+              </p>
+            </div>
           ) : (
             <p className={margin}>
               <strong>Correct Answer:</strong> {question.correct_answer}
