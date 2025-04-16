@@ -96,7 +96,7 @@ function SecondaryListItem({
     <div className="md:max-w-dash-lg max-w-dash mt-templist md:mt-templist-md">
       <div
         onClick={onToggle} // Use the passed toggle callback for category expansion.
-        className="custom_grid bg-white shadow-md rounded-lg p-4 pr-1 hover:shadow-lg hover:shadow-gray-400 hover:scale-x-101 border hover:cursor-pointer transition-all duration-100"
+        className="custom_grid bg-white shadow-md rounded-lg p-4 pr-1 hover:shadow-lg hover:shadow-gray-400 hover:scale-x-101 hover:cursor-pointer transition-all duration-100"
       >
         <div className="col-span-3">
           <div className="flex items-center gap-4">
@@ -105,7 +105,7 @@ function SecondaryListItem({
             </p>
             <div
               onClick={handleClone}
-              className="text-[10px] flex flex-col justify-center items-center"
+              className="text-[10px] hidden flex-col justify-center items-center"
             >
               <GrClone className="text-blue-500" />
               <span>clone</span>
