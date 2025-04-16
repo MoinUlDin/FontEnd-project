@@ -110,7 +110,7 @@ function CreateTemplateModal({ onClose, onSubmit }) {
                   className="mr-2"
                 />
                 <label htmlFor="is_predefined" className="text-sm font-medium">
-                  Predefined Template
+                  Add to Predefined Templates
                 </label>
               </div>
             )}

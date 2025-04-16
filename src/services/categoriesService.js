@@ -19,6 +19,7 @@ class CategoryService {
       const response = await apiClient.get(`tests/categories/${id}/`);
       // Dispatch the detailed category data along with its id.
       dispatch(setDetailedCategory({ id, data: response.data }));
+      return response.data;
     } catch (error) {
       throw error;
     }

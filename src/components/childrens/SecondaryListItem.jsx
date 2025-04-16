@@ -3,7 +3,7 @@ import QuestionItem from "./QuestionItem"; // Your question component
 import { useDispatch, useSelector } from "react-redux";
 import CategoryService from "../../services/categoriesService";
 import { FaTrash } from "react-icons/fa";
-import { removeQuestion } from "../../features/templateSlice";
+import { removeQuestion, addCategory } from "../../features/templateSlice";
 import { GrClone } from "react-icons/gr";
 
 function SecondaryListItem({
@@ -65,16 +65,38 @@ function SecondaryListItem({
   const handleRemoveQuestion = (categoryId, questionId) => {
     dispatch(removeQuestion({ categoryId, questionId }));
   };
-  const handleClone = (e) => {
+
+  const handleClone = async (e) => {
     e.stopPropagation(); // Prevent triggering the category toggle.
-    console.log("Cloning question with ID: ", id);
+    console.log("Cloning category with ID:", id);
+
+    let detailedCategory;
+    try {
+      // Force fetch detailed category data even if storedDetail exists.
+      detailedCategory = await CategoryService.fetchDetailedCategory(
+        dispatch,
+        id
+      );
+    } catch (error) {
+      console.error("Error fetching detailed data for clone:", error);
+      return; // Optionally, show a message to the user.
+    }
+
+    // If detailedCategory is still undefined (should not happen if API call succeeded), log error.
+    if (!detailedCategory) {
+      console.error("No detailed category data received.");
+      return;
+    }
+
+    // Now dispatch the cloned category (using the fetched detailed data).
+    dispatch(addCategory(detailedCategory));
   };
 
   return (
     <div className="md:max-w-dash-lg max-w-dash mt-templist md:mt-templist-md">
       <div
         onClick={onToggle} // Use the passed toggle callback for category expansion.
-        className="custom_grid bg-white shadow-md rounded-lg p-4 pr-1 hover:shadow-lg hover:shadow-gray-400 hover:scale-x-101 hover:cursor-pointer transition-all duration-100"
+        className="custom_grid bg-white shadow-md rounded-lg p-4 pr-1 hover:shadow-lg hover:shadow-gray-400 hover:scale-x-101 border hover:cursor-pointer transition-all duration-100"
       >
         <div className="col-span-3">
           <div className="flex items-center gap-4">
@@ -83,9 +105,9 @@ function SecondaryListItem({
             </p>
             <div
               onClick={handleClone}
-              className="text-[10px] xs:hidden flex flex-col justify-center items-center"
+              className="text-[10px] flex flex-col justify-center items-center"
             >
-              <GrClone />
+              <GrClone className="text-blue-500" />
               <span>clone</span>
             </div>
           </div>

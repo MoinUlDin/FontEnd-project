@@ -48,7 +48,10 @@ function EditAbleList({
   };
 
   return (
-    <div className="md:max-w-dash-lg max-w-dash mt-templist md:mt-templist-md">
+    <div
+      key={id}
+      className="md:max-w-dash-lg max-w-dash mt-templist md:mt-templist-md"
+    >
       <div
         onClick={toggleCategoryExpand}
         className="custom_grid bg-white shadow-md rounded-lg p-4 hover:shadow-lg hover:shadow-gray-400 hover:scale-x-101 hover:cursor-pointer transition-all duration-100"
