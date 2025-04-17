@@ -92,6 +92,7 @@ function ExistingCategories() {
             title={item.name}
             weight={item.weight}
             checkbox={true}
+            showclone={true}
             expanded={expandedCategoryId === item.id} // Pass expanded state
             onToggle={() => handleToggle(item.id)} // Pass toggle callback
             selectedQuestions={selected} // Pass selected questions for checkbox status

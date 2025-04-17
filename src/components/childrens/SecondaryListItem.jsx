@@ -14,6 +14,7 @@ function SecondaryListItem({
   checkbox = false,
   bin = false,
   editable = false, // new prop
+  showclone = false, // new prop
   expanded, // prop to control if the category is expanded
   onToggle, // callback to toggle category expansion
   selectedQuestions = [], // passed global selected question IDs
@@ -46,14 +47,17 @@ function SecondaryListItem({
       !editable &&
       id !== undefined &&
       expanded && // Only fetch when the category is expanded.
-      localQuestions.length === 0
+      localQuestions.length === 0 &&
+      !storedDetail
     ) {
       if (
         storedDetail &&
         storedDetail.questions &&
         storedDetail.questions.length > 0
       ) {
-        setLocalQuestions(storedDetail.questions);
+        if (storedDetail?.questions) {
+          setLocalQuestions(storedDetail.questions);
+        }
       } else {
         CategoryService.fetchDetailedCategory(dispatch, id).catch((error) => {
           console.error("Error fetching category details: ", error);
@@ -103,13 +107,15 @@ function SecondaryListItem({
             <p className="text-purple-600 font-semibold text-dash-it hover:underline">
               {title}
             </p>
-            <div
-              onClick={handleClone}
-              className="text-[10px] hidden flex-col justify-center items-center"
-            >
-              <GrClone className="text-blue-500" />
-              <span>clone</span>
-            </div>
+            {showclone && (
+              <div
+                onClick={handleClone}
+                className="text-[10px] flex flex-col justify-center items-center"
+              >
+                <GrClone className="text-blue-500" />
+                <span>clone</span>
+              </div>
+            )}
           </div>
         </div>
         <div className="place-self-center text-dash-it">{weight}</div>
